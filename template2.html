@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Automation &amp; Margin Structure — Weekly Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0B2531; --panel:#10303F; --panel2:#143A4B; --raised:#17415455;
+  --line:rgba(126,186,186,.14); --line2:rgba(126,186,186,.28);
+  --mint:#4FD08A; --mint-dim:#2E7D5B; --mint-glow:rgba(79,208,138,.16);
+  --text:#EAF2F2; --muted:#8FA9AE; --faint:#6B888D;
+  --amber:#E8B23E; --red:#E5726B; --green:#4FD08A;
+  --disp:'Space Grotesk',system-ui,sans-serif;
+  --body:'Inter',system-ui,sans-serif;
+  --mono:'Space Mono','SFMono-Regular',Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--ink);color:var(--text);font-family:var(--body);
+  font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(1200px 600px at 78% -10%,rgba(79,208,138,.06),transparent 60%);}
+a{color:inherit;text-decoration:none}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.disp{font-family:var(--disp)}
+
+/* shell */
+.shell{display:grid;grid-template-columns:288px 1fr;min-height:100vh}
+.rail{background:linear-gradient(180deg,#0C2A38,#0A2027);border-right:1px solid var(--line);
+  padding:22px 16px;position:sticky;top:0;height:100vh;overflow-y:auto}
+.brand{display:flex;align-items:center;gap:10px;padding:0 6px 18px;margin-bottom:14px;border-bottom:1px solid var(--line)}
+.brand .mark{height:30px;width:32px;flex:0 0 auto;display:block}  /* placeholder logo; swap in your own */
+.brand .name{font-family:var(--disp);font-weight:700;font-size:15px;letter-spacing:.02em}
+.brand .sub{font-size:11px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;margin-top:1px}
+.rail .eyebrow{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);
+  padding:14px 8px 8px}
+.navitem{display:grid;grid-template-columns:10px 1fr auto;align-items:center;gap:10px;
+  padding:10px 10px;border-radius:9px;cursor:pointer;border:1px solid transparent;transition:background .18s,border-color .18s}
+.navitem:hover{background:var(--raised)}
+.navitem.active{background:linear-gradient(90deg,var(--mint-glow),transparent);border-color:var(--line2)}
+.navitem:focus-visible{outline:2px solid var(--mint);outline-offset:2px}
+.navitem .dot{width:9px;height:9px;border-radius:50%}
+.navitem .lbl{font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.navitem .pct{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.navitem.overview{grid-template-columns:1fr;margin-bottom:4px}
+.navitem.overview .lbl{font-family:var(--disp);font-weight:600;font-size:13.5px;letter-spacing:.02em}
+
+/* main */
+.main{padding:30px 40px 64px;max-width:1180px}
+.topline{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;
+  padding-bottom:20px;margin-bottom:26px;border-bottom:1px solid var(--line)}
+h1{font-family:var(--disp);font-weight:600;font-size:26px;margin:0;letter-spacing:-.01em;line-height:1.15}
+.topline .meta{font-size:12.5px;color:var(--muted);text-align:right}
+.topline .meta b{color:var(--text);font-weight:600}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:11px;letter-spacing:.06em;
+  text-transform:uppercase;padding:4px 10px;border-radius:999px;border:1px solid var(--line2);color:var(--muted)}
+.wkctl{display:flex;align-items:center;gap:9px;justify-content:flex-end}
+.wkctl label{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.wkselect{appearance:none;-webkit-appearance:none;font-family:var(--mono);font-size:13px;font-weight:700;
+  color:var(--text);background:var(--panel);border:1px solid var(--line2);border-radius:10px;
+  padding:9px 34px 9px 13px;cursor:pointer;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' stroke='%234FD08A' stroke-width='1.6' fill='none' stroke-linecap='round'/></svg>");
+  background-repeat:no-repeat;background-position:right 12px center}
+.wkselect:hover{border-color:var(--mint)}
+.wkselect:focus-visible{outline:2px solid var(--mint);outline-offset:2px}
+.wkflag{font-size:10.5px;color:var(--mint);letter-spacing:.04em;margin-top:5px;text-align:right}
+.wkflag.hist{color:var(--amber)}
+
+/* kpi strip */
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:26px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:15px 16px;position:relative;overflow:hidden}
+.kpi .k-lbl{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+.kpi .k-val{font-family:var(--mono);font-size:27px;font-weight:700;line-height:1}
+.kpi .k-sub{font-size:11.5px;color:var(--faint);margin-top:7px}
+.kpi.accent::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--mint)}
+
+/* panels */
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:22px 24px;margin-bottom:22px}
+.panel h2{font-family:var(--disp);font-weight:600;font-size:14px;letter-spacing:.02em;margin:0 0 4px}
+.panel .cap{font-size:12px;color:var(--muted);margin:0 0 18px}
+.grid-2{display:grid;grid-template-columns:1.55fr 1fr;gap:22px;align-items:start}
+@media(max-width:1080px){.grid-2{grid-template-columns:1fr}}
+
+/* table */
+table{width:100%;border-collapse:collapse}
+th{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);font-weight:600;
+  text-align:left;padding:0 12px 11px;border-bottom:1px solid var(--line)}
+th.num,td.num{text-align:right}
+td{padding:13px 12px;border-bottom:1px solid var(--line);font-size:13px;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr{cursor:pointer;transition:background .15s}
+tbody tr:hover{background:var(--raised)}
+tbody tr:focus-visible{outline:2px solid var(--mint);outline-offset:-2px}
+.pname{font-weight:600;font-family:var(--disp);letter-spacing:.01em}
+.psub{font-size:11.5px;color:var(--muted);margin-top:2px}
+.tabnum{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* rag badge */
+.rag{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;white-space:nowrap}
+.rag .dot{width:9px;height:9px;border-radius:50%}
+.rag.big{font-size:12px;padding:5px 12px;border-radius:999px;border:1px solid var(--line2)}
+
+/* bar */
+.bar{position:relative;height:7px;border-radius:4px;background:rgba(255,255,255,.07);overflow:hidden;min-width:64px}
+.bar > i{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:var(--mint);width:0;transition:width .9s cubic-bezier(.2,.7,.2,1)}
+.barwrap{display:flex;align-items:center;gap:11px}
+.barwrap .bn{font-family:var(--mono);font-size:12.5px;min-width:38px;text-align:right}
+
+.delta{font-family:var(--mono);font-weight:700}
+.up{color:var(--green)} .down{color:var(--red)} .flat{color:var(--muted)}
+
+/* detail */
+.dhead{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap;margin-bottom:6px}
+.back{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted);cursor:pointer;
+  padding:6px 0;margin-bottom:14px;transition:color .15s}
+.back:hover{color:var(--mint)}
+.back:focus-visible{outline:2px solid var(--mint);outline-offset:3px;border-radius:4px}
+.oneliner{color:var(--mint);font-size:14px;max-width:640px;margin:8px 0 0}
+.metastrip{display:flex;flex-wrap:wrap;gap:26px;margin:20px 0 26px;padding:16px 20px;
+  background:var(--panel);border:1px solid var(--line);border-radius:13px}
+.metastrip .m .ml{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.metastrip .m .mv{font-size:13.5px;font-weight:600;margin-top:3px}
+.thisweek{background:linear-gradient(120deg,var(--panel2),var(--panel));border:1px solid var(--line2);
+  border-radius:15px;padding:22px 24px;margin-bottom:22px}
+.thisweek .eyebrow{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mint);margin-bottom:10px}
+.thisweek .hl{font-family:var(--disp);font-size:16px;font-weight:500;line-height:1.45;margin:0 0 14px}
+.thisweek .steps{font-size:13.5px;color:var(--text);background:rgba(0,0,0,.18);border-left:3px solid var(--mint);
+  padding:12px 15px;border-radius:0 9px 9px 0}
+.thisweek .conf{margin-top:12px;font-size:12px;color:var(--muted)}
+.status-pill{font-size:11px;font-weight:600;padding:3px 9px;border-radius:6px;white-space:nowrap}
+.st-done{background:rgba(79,208,138,.16);color:var(--mint)}
+.st-prog{background:rgba(232,178,62,.15);color:var(--amber)}
+.st-block{background:rgba(229,114,107,.16);color:var(--red)}
+.st-ns{background:rgba(255,255,255,.07);color:var(--muted)}
+.sev{font-family:var(--mono);font-size:11px;font-weight:700;padding:2px 8px;border-radius:5px}
+.sev-High{background:rgba(229,114,107,.16);color:var(--red)}
+.sev-Med{background:rgba(232,178,62,.15);color:var(--amber)}
+.sev-Low{background:rgba(143,169,174,.14);color:var(--muted)}
+
+/* onboarding highlight */
+.tag-onb{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:2px 7px;border-radius:5px;margin-left:8px;background:rgba(232,178,62,.16);color:var(--amber);
+  border:1px solid rgba(232,178,62,.35);vertical-align:middle}
+tr.onb-row td{background:rgba(232,178,62,.06)}
+tr.onb-row td:first-child{box-shadow:inset 3px 0 0 var(--amber)}
+.onbcard{background:linear-gradient(120deg,rgba(232,178,62,.10),var(--panel));border:1px solid rgba(232,178,62,.30);
+  border-radius:15px;padding:20px 22px;margin-bottom:22px}
+.onbcard .eyebrow{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin-bottom:12px}
+.onbcard .brow{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+.onbcard .big{font-family:var(--mono);font-size:30px;font-weight:700;color:var(--amber);line-height:1}
+.onbcard .sub{font-size:12.5px;color:var(--muted);line-height:1.5}
+.onbcard .eps{margin-top:15px;display:grid;gap:7px}
+.onbcard .ep{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;
+  padding:8px 12px;background:rgba(0,0,0,.16);border-radius:8px}
+.onbcard .ep .ep-k{color:var(--faint);font-family:var(--mono);font-size:11px;margin-left:6px}
+.onbcard .ep .ev{font-family:var(--mono);color:var(--amber);white-space:nowrap}
+
+/* glossary */
+.gterm{padding:16px 0;border-bottom:1px solid var(--line)}
+.gterm:last-child{border-bottom:none}
+.gterm .gname{font-family:var(--disp);font-weight:600;font-size:14.5px;color:var(--text);margin-bottom:5px}
+.gterm .gwhere{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-left:8px;font-family:var(--body);font-weight:600}
+.gterm .gdef{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:10px}
+.gterm .gcalc{font-family:var(--mono);font-size:12px;color:var(--text);background:rgba(0,0,0,.18);
+  border-left:3px solid var(--mint);padding:10px 13px;border-radius:0 8px 8px 0;line-height:1.6}
+.gterm .gcalc .lbl2{color:var(--faint);text-transform:uppercase;letter-spacing:.08em;font-size:10px;display:block;margin-bottom:4px}
+.gterm .gcalc b{color:var(--mint)}
+
+.empty{color:var(--muted);font-size:13px;padding:18px 12px;text-align:center;font-style:italic}
+/* MS Progress: an untagged milestone is greyed rather than shown as 0%, so it reads
+   as "not measured yet" instead of "no progress" at a glance. */
+.ms-none{color:var(--faint);font-style:italic}
+tr.ms-dim td{opacity:.62}
+footer{color:var(--faint);font-size:11.5px;margin-top:30px;padding-top:18px;border-top:1px solid var(--line);line-height:1.7}
+
+/* view transition */
+.view{animation:fade .32s ease both}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* mobile */
+.hamburger{display:none}
+@media(max-width:820px){
+  .shell{grid-template-columns:1fr}
+  .rail{position:fixed;z-index:40;width:280px;left:-300px;transition:left .25s;box-shadow:0 0 40px rgba(0,0,0,.5)}
+  .rail.open{left:0}
+  .main{padding:20px 18px 60px}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .hamburger{display:inline-flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line2);
+    color:var(--text);border-radius:10px;padding:9px 13px;font-family:var(--disp);font-weight:600;font-size:13px;cursor:pointer;margin-bottom:16px}
+  h1{font-size:21px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="rail" id="rail">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 32 30" role="img" aria-label="Placeholder logo">
+        <rect x="1" y="1" width="30" height="28" rx="6" fill="none" stroke="#8FA9AE" stroke-width="2" stroke-dasharray="4 3"/>
+        <text x="16" y="20" text-anchor="middle" font-size="12" fill="#8FA9AE" font-family="monospace">[ ]</text>
+      </svg>
+      <div><div class="name">[placeholder]</div><div class="sub">Ops Cockpit</div></div>
+    </div>
+    <div class="navitem overview active" id="navOverview" tabindex="0" data-view="overview">
+      <div class="lbl">Portfolio Overview</div>
+    </div>
+    <div class="eyebrow">Projects</div>
+    <div id="navProjects"></div>
+    <div class="eyebrow">Reference</div>
+    <div class="navitem overview" id="navGlossary" tabindex="0" data-view="glossary">
+      <div class="lbl">KPI Glossary</div>
+    </div>
+  </aside>
+  <main class="main" id="main"></main>
+</div>
+
+<script>
+const DATA = __DATA__;
+const RAG = {
+  'On Track':{c:'var(--green)'},
+  'At Risk':{c:'var(--amber)'},
+  'Off Track':{c:'var(--red)'}
+};
+const WEEKS = DATA.weeks;                    // [{week,label}] chronological
+let selectedWeek = DATA.currentWeek;         // default = latest
+let route = {view:'overview', i:null};
+
+const fmtDate = d => new Date(d+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+// Both tolerate a missing date: a project can legitimately have no target GA set yet,
+// and new Date(null) is the epoch, which would render as a ~20,000-day countdown.
+const fmtShort = d => d?new Date(d+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'}):'—';
+const daysToGA = ga => ga?Math.round((new Date(ga)-new Date(selectedWeek))/86400000):null;
+const num = (v,dp=0) => (v==null||isNaN(v))?'—':Number(v).toFixed(dp);
+const isLatest = () => selectedWeek===DATA.currentWeek;
+const weekIdx = () => WEEKS.findIndex(w=>w.week===selectedWeek);
+
+// per-project record for the selected week
+const rec = name => DATA.byWeek[selectedWeek].projects[name];
+const epicsOf = name => DATA.byWeek[selectedWeek].epics[name] || [];
+const barriersOf = name => DATA.byWeek[selectedWeek].barriers[name] || [];
+// Empty for every project with no milestones configured (config.MILESTONES), which is
+// how the MS Progress panel stays off everywhere except the boards that define them.
+const milestonesOf = name => (DATA.byWeek[selectedWeek].milestones||{})[name] || [];
+// Projects reporting in the selected week. A project added to the portfolio part-way
+// through is absent from earlier weeks, so every view has to ask per week rather than
+// assume DATA.projects. The original index is kept because routing keys off it.
+const shown = () => DATA.projects.map((p,i)=>({p,i})).filter(({p})=>!!rec(p.name));
+
+function deltaEl(v){
+  if(v==null) return `<span class="delta flat">—</span>`;
+  const s=v>0.05?'up':(v<-0.05?'down':'flat'); const sign=v>0.05?'+':'';
+  return `<span class="delta ${s}">${sign}${num(v,1)}</span>`;
+}
+const statusClass = s => ({'Done':'st-done','In Progress':'st-prog','Blocked':'st-block','Not Started':'st-ns'}[s]||'st-ns');
+function ragBadge(rag,big){ const r=RAG[rag]||{c:'var(--muted)'}; return `<span class="rag ${big?'big':''}"><span class="dot" style="background:${r.c}"></span>${rag}</span>`; }
+function barCell(pct){ const p=Math.max(0,Math.min(100,pct)); return `<div class="barwrap"><span class="bn tabnum">${num(pct)}%</span><div class="bar"><i data-w="${p}"></i></div></div>`; }
+function animateBars(){ requestAnimationFrame(()=>document.querySelectorAll('.bar > i[data-w]').forEach(el=>{el.style.width=el.dataset.w+'%';})); }
+
+// week dropdown markup (shared by overview + detail toplines)
+function weekControl(){
+  const opts = WEEKS.map(w=>`<option value="${w.week}" ${w.week===selectedWeek?'selected':''}>Week ending ${fmtShort(w.week)}</option>`).join('');
+  const flag = isLatest()
+    ? `<div class="wkflag">● Current reporting week</div>`
+    : `<div class="wkflag hist">◷ Historical view — ${fmtShort(selectedWeek)}</div>`;
+  return `<div class="wkctl"><label for="wkSel">Reporting week</label>
+     <select id="wkSel" class="wkselect" aria-label="Select reporting week">${opts}</select></div>${flag}`;
+}
+
+/* ---------- portfolio trend (all weeks; selected week emphasized) ---------- */
+function trendChart(){
+  const W=560,H=210,pad={l:34,r:14,t:14,b:26};
+  const n=WEEKS.length, sel=weekIdx();
+  const x=i=>pad.l+i*(W-pad.l-pad.r)/(n-1);
+  const y=v=>pad.t+(100-v)*(H-pad.t-pad.b)/100;
+  let grid='';
+  for(let g=0;g<=100;g+=25){ grid+=`<line x1="${pad.l}" y1="${y(g)}" x2="${W-pad.r}" y2="${y(g)}" stroke="var(--line)"/>`+
+     `<text x="${pad.l-7}" y="${y(g)+3.5}" text-anchor="end" fill="var(--faint)" font-size="9" font-family="var(--mono)">${g}</text>`; }
+  WEEKS.forEach((w,i)=>{ grid+=`<text x="${x(i)}" y="${H-8}" text-anchor="middle" fill="${i===sel?'var(--mint)':'var(--faint)'}" font-size="9" font-family="var(--mono)" ${i===sel?'font-weight="700"':''}>${w.label}</text>`; });
+  // marker for selected week
+  const marker=`<line x1="${x(sel)}" y1="${pad.t}" x2="${x(sel)}" y2="${H-pad.b}" stroke="var(--mint)" stroke-width="1" stroke-dasharray="3 3" opacity=".5"/>`;
+  let lines='';
+  // A null in a series is a week before that project joined the portfolio. Its line
+  // starts where its data starts, and the portfolio average counts only the projects
+  // actually reporting that week, so adding a project cannot dent the historic average.
+  Object.values(DATA.series).forEach(vals=>{
+    const pts=vals.map((v,i)=>v==null?null:`${x(i)},${y(v)}`).filter(Boolean).join(' ');
+    if(!pts) return;
+    lines+=`<polyline points="${pts}" fill="none" stroke="rgba(126,186,186,.20)" stroke-width="1.2"/>`; });
+  const avg=WEEKS.map((w,i)=>{ const vals=Object.values(DATA.series).map(s=>s[i]).filter(v=>v!=null);
+    return vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:null; });
+  const apts=avg.map((v,i)=>v==null?null:`${x(i)},${y(v)}`).filter(Boolean).join(' ');
+  const dots=avg.map((v,i)=>v==null?'':`<circle cx="${x(i)}" cy="${y(v)}" r="${i===sel?5:3.2}" fill="var(--mint)" ${i===sel?'stroke="var(--ink)" stroke-width="2"':''}/>`).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Portfolio completion trend">
+    ${grid}${marker}${lines}
+    <polyline points="${apts}" fill="none" stroke="var(--mint)" stroke-width="2.6" stroke-linejoin="round"/>
+    ${dots}
+    ${avg[sel]==null?'':`<text x="${x(sel)}" y="${y(avg[sel])-12}" text-anchor="middle" fill="var(--mint)" font-size="11" font-weight="700" font-family="var(--mono)">${num(avg[sel])}%</text>`}
+  </svg>`;
+}
+function sparkline(vals){
+  const W=300,H=90,pad={l:6,r:6,t:12,b:16},n=vals.length,sel=weekIdx();
+  const x=i=>pad.l+i*(W-pad.l-pad.r)/(n-1);
+  // A null is a week before this project joined the portfolio: it sets no scale and draws
+  // no point, so the spark simply begins where the project's own history begins.
+  const real=vals.filter(v=>v!=null);
+  const mn=(real.length?Math.min(...real):0)-4, mx=(real.length?Math.max(...real):100)+4;
+  const y=v=>pad.t+(mx-v)*(H-pad.t-pad.b)/(mx-mn);
+  const idx=vals.map((v,i)=>v==null?null:i).filter(v=>v!=null);
+  const pts=idx.map(i=>`${x(i)},${y(vals[i])}`).join(' ');
+  const area=idx.length?`${x(idx[0])},${H-pad.b} ${pts} ${x(idx[idx.length-1])},${H-pad.b}`:'';
+  const dots=idx.map(i=>`<circle cx="${x(i)}" cy="${y(vals[i])}" r="${i===sel?4:2.1}" fill="${i===sel?'var(--mint)':'rgba(126,186,186,.5)'}"/>`).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Weekly completion">
+    <defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="var(--mint)" stop-opacity=".22"/><stop offset="1" stop-color="var(--mint)" stop-opacity="0"/>
+    </linearGradient></defs>
+    <polygon points="${area}" fill="url(#sg)"/>
+    <polyline points="${pts}" fill="none" stroke="var(--mint)" stroke-width="2.2" stroke-linejoin="round"/>
+    ${dots}
+    ${vals[sel]==null?'':`<text x="${x(sel)}" y="${y(vals[sel])-8}" text-anchor="middle" fill="var(--mint)" font-size="11" font-weight="700" font-family="var(--mono)">${num(vals[sel])}%</text>`}
+  </svg>`;
+}
+
+/* ---------- OVERVIEW ---------- */
+function renderOverview(){
+  const E=shown(); const P=E.map(e=>e.p);
+  const counts={'On Track':0,'At Risk':0,'Off Track':0};
+  P.forEach(p=>counts[rec(p.name).rag]++);
+  const avg=P.length?P.reduce((a,p)=>a+rec(p.name).pct,0)/P.length:0;
+  const wows=P.map(p=>rec(p.name).wow).filter(v=>v!=null);
+  const avgWow=wows.length?wows.reduce((a,b)=>a+b,0)/wows.length:null;
+  const openBlk=P.reduce((a,p)=>a+rec(p.name).openblk,0);
+
+  const kpi=(lbl,val,sub,color,accent)=>`<div class="kpi ${accent?'accent':''}">
+     <div class="k-lbl">${lbl}</div><div class="k-val" ${color?`style="color:${color}"`:''}>${val}</div>
+     <div class="k-sub">${sub||''}</div></div>`;
+
+  const rows=E.map(({p,i})=>{
+    const r=rec(p.name); const d=daysToGA(p.ga);
+    return `<tr tabindex="0" data-goto="${i}">
+      <td><div class="pname">${p.name}</div><div class="psub">${p.lead} · ${p.workstream}</div></td>
+      <td>${ragBadge(r.rag)}</td>
+      <td style="min-width:150px">${barCell(r.pct)}</td>
+      <td class="num">${deltaEl(r.wow)}</td>
+      <td class="num tabnum">${num(r.planned)}%</td>
+      <td class="num">${deltaEl(r.var)}</td>
+      <td class="num tabnum">${fmtShort(p.ga)}<div class="psub">${d==null?'no date set':d+' days'}</div></td>
+      <td class="num tabnum" style="color:${r.openblk>0?'var(--amber)':'var(--muted)'}">${r.openblk}</td>
+    </tr>`;
+  }).join('');
+
+  return `<div class="view">
+    <button class="hamburger" onclick="toggleRail()">☰ Projects</button>
+    <div class="topline">
+      <div>
+        <div class="chip">Automation &amp; Margin Structure</div>
+        <h1 style="margin-top:12px">Portfolio Overview</h1>
+      </div>
+      <div>${weekControl()}</div>
+    </div>
+    <div class="kpis">
+      ${kpi('On Track',counts['On Track'],'of '+P.length+' projects','var(--green)',true)}
+      ${kpi('At Risk',counts['At Risk'],'need attention','var(--amber)')}
+      ${kpi('Off Track',counts['Off Track'],'intervention','var(--red)')}
+      ${kpi('Avg Complete',num(avg)+'%','story-point weighted')}
+      ${kpi('Avg WoW',avgWow==null?'—':(avgWow>0?'+':'')+num(avgWow,1),avgWow==null?'baseline week':'points this week',avgWow==null?null:(avgWow>=0?'var(--green)':'var(--red)'))}
+      ${kpi('Open Blockers',openBlk,'as of '+fmtShort(selectedWeek),openBlk>0?'var(--amber)':'var(--green)')}
+    </div>
+    <div class="panel">
+      <h2>Portfolio trajectory</h2>
+      <p class="cap">Weighted completion across ${WEEKS.length} weeks · bold line = average, faint = individual projects · dashed marker = selected week</p>
+      ${trendChart()}
+    </div>
+    <div class="panel">
+      <h2>Project status <span style="color:var(--faint);font-weight:400">— week ending ${fmtDate(selectedWeek)}</span></h2>
+      <p class="cap">Click any project to open its page</p>
+      <table>
+        <thead><tr>
+          <th>Project</th><th>Status</th><th>Complete</th><th class="num">WoW</th>
+          <th class="num">Plan</th><th class="num">Var</th><th class="num">Target GA</th><th class="num">Blk</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <footer>
+      <div style="color:var(--text);font-weight:600;margin-bottom:6px">
+        📅 Snapshot generated ${DATA.generatedAt||'—'} · this is a static export, not a live feed.
+      </div>
+      Data source: <b style="color:var(--muted)">tracker.db</b> (SQLite). This view is generated from the database;
+      edit the DB and re-run <span class="mono">build_dashboard.py</span> to refresh. Figures roll up from
+      story-point-weighted Jira epics. Some projects are still illustrative (mock) pending Jira mapping.
+    </footer>
+  </div>`;
+}
+
+/* ---------- DETAIL ---------- */
+function renderDetail(i){
+  const p=DATA.projects[i]; const r=rec(p.name);
+  // The project joined the portfolio after this week, so there is nothing to report.
+  // Say so rather than rendering zeros that would read as a stalled project.
+  if(!r){
+    const first=(DATA.weeks.find(w=>DATA.byWeek[w.week].projects[p.name])||{}).label;
+    return `<div class="view">
+      <button class="hamburger" onclick="toggleRail()">☰ Projects</button>
+      <div class="topline"><div><h1>${p.name}</h1>
+        <div class="psub">${p.lead} · ${p.workstream}</div></div></div>
+      <div class="panel" style="padding:28px">
+        <div class="k-lbl">Not reporting in this week</div>
+        <p style="color:var(--muted);max-width:52ch;line-height:1.6">
+          ${p.name} was added to the portfolio later and has no data for the selected week.
+          ${first?`Its history starts in <strong>${first}</strong>.`:''}
+          Pick a later week to see it.</p>
+      </div></div>`;
+  }
+  const eps=epicsOf(p.name); const blk=barriersOf(p.name);
+  const snap=DATA.series[p.name]; const d=daysToGA(p.ga);
+
+  const card=(lbl,val,color)=>`<div class="kpi"><div class="k-lbl">${lbl}</div>
+     <div class="k-val" ${color?`style="color:${color}"`:''}>${val}</div></div>`;
+
+  const epRows=eps.map(e=>{const onb=e.tag==='Onboarding';return `<tr style="cursor:default" class="${onb?'onb-row':''}">
+    <td><div class="pname" style="font-size:13px">${e.name}${onb?'<span class="tag-onb">Onboarding</span>':''}</div><div class="psub">${e.key} · ${e.owner}</div></td>
+    <td class="num tabnum">${e.pts}</td>
+    <td class="num tabnum">${fmtShort(e.deadline)}</td>
+    <td><span class="status-pill ${statusClass(e.status)}">${e.status}</span></td>
+    <td style="min-width:150px">${barCell(e.pct)}</td>
+  </tr>`}).join('');
+
+  // onboarding focus callout (only if this project has tagged epics)
+  const onb=eps.filter(e=>e.tag==='Onboarding');
+  let onbCard='';
+  if(onb.length){
+    const tot=onb.reduce((a,e)=>a+(e.pts||0),0);
+    const wpct=tot?onb.reduce((a,e)=>a+e.pct*(e.pts||0),0)/tot:0;
+    const done=onb.filter(e=>e.pct>=100).length;
+    const eprows=onb.map(e=>`<div class="ep"><span>${e.name}<span class="ep-k">${e.key}</span></span><span class="ev">${num(e.pct)}% · ${num(e.pts)} pts</span></div>`).join('');
+    onbCard=`<div class="onbcard">
+      <div class="eyebrow">◆ Client Onboarding — focus area</div>
+      <div class="brow"><div class="big">${num(wpct)}%</div>
+        <div class="sub">Story-point-weighted across ${onb.length} onboarding epics · ${done}/${onb.length} complete.<br>
+        Tracked separately from the ${num(r.pct)}% overall platform completion.</div></div>
+      <div class="eps">${eprows}</div>
+    </div>`;
+  }
+
+  // MS Progress — delivery milestones for this board, driven by Jira labels.
+  // The label itself is the join key and stays hidden: it is bookkeeping, and the
+  // deliverable text is what a reader needs. Scope (issues / story points) is shown
+  // next to every figure so a percentage resting on a handful of tickets is obvious
+  // rather than something you have to go and check.
+  const ms=milestonesOf(p.name);
+  let msPanel='';
+  if(ms.length){
+    // Half-points exist on this board, so don't round them away — but don't print a
+    // trailing .0 on the whole numbers that make up most of the scope either.
+    const pts=v=>num(v,Number.isInteger(v)?0:1);
+    const msRows=ms.map((m,i)=>{
+      // pct==null means NO issue carries this label. Rendering 0% there would assert
+      // "no progress", which the data does not support — the honest reading is that
+      // the work has not been tagged yet.
+      const scope = m.pct==null ? '<span class="ms-none">Not yet labelled in Jira</span>'
+        : (m.basis==='count'
+            ? `${m.doneIssues}/${m.issues} issues · unpointed`
+            : `${pts(m.donePts)}/${pts(m.pts)} pts · ${m.issues} issues`);
+      // A plain ordinal, not the Jira label: the label is deliberately hidden, and a
+      // position-derived "MS2" could silently disagree with the label it came from if
+      // the configured order ever changes.
+      return `<tr style="cursor:default"${m.pct==null?' class="ms-dim"':''}>
+        <td class="num tabnum" style="vertical-align:top;color:var(--muted)">${i+1}</td>
+        <td><div style="font-weight:600;font-size:13px;line-height:1.5">${m.text}</div>
+            <div class="psub">${scope}</div></td>
+        <td style="min-width:150px">${m.pct==null?'<span class="ms-none">—</span>':barCell(m.pct)}</td>
+      </tr>`;
+    }).join('');
+    const measured=ms.filter(m=>m.pct!=null).length;
+    // A grid cell, not a full-width panel: it sits beside Weekly trajectory in the
+    // wider (1.55fr) column, which is where the long deliverable text needs the room.
+    msPanel=`<div class="panel" style="margin-bottom:0">
+      <h2>MS Progress</h2>
+      <p class="cap">Delivery milestones · story-point-weighted completion of the Jira
+        issues tagged to each · a tag on an epic counts that epic's children${
+        measured<ms.length?` · ${ms.length-measured} of ${ms.length} not yet tagged in Jira`:''}</p>
+      <table>
+        <thead><tr><th style="width:1%">#</th><th>Milestone / deliverable</th><th>Complete</th></tr></thead>
+        <tbody>${msRows}</tbody>
+      </table>
+    </div>`;
+  }
+
+  // Top row: MS Progress beside Weekly trajectory. Only boards with milestones
+  // configured have an MS panel, so the trajectory goes full-width on its own for
+  // everything else rather than being stranded in the wide 1.55fr column with a
+  // gap beside it.
+  const trajPanel=`<div class="panel" style="margin-bottom:0">
+        <h2>Weekly trajectory</h2>
+        <p class="cap">Completion over ${WEEKS.length} weeks · marker = selected week</p>
+        ${snap?sparkline(snap):''}
+      </div>`;
+  const trajRow = msPanel
+    ? `<div class="grid-2">${msPanel}${trajPanel}</div>`
+    : trajPanel;
+
+  const blkRows=blk.length? blk.map(b=>`<tr style="cursor:default">
+    <td style="max-width:320px"><div style="font-weight:600">${b.barrier}</div><div class="psub">${b.impact}</div></td>
+    <td><span class="sev sev-${b.sev}">${b.sev}</span></td>
+    <td>${b.owner}</td>
+    <td class="num tabnum">${b.raisedWeek?fmtShort(b.raisedWeek):'—'}</td>
+    <td><span class="status-pill ${b.status==='Resolved'?'st-done':(b.status==='Blocked'?'st-block':'st-prog')}">${b.status}</span>${b.status==='Resolved'&&b.resolvedWeek?`<div class="psub">wk ${fmtShort(b.resolvedWeek)}</div>`:''}</td>
+    <td class="num tabnum">${b.target?fmtShort(b.target):'—'}</td>
+  </tr>`).join('') : `<tr><td colspan="6" class="empty">No barriers logged as of this week.</td></tr>`;
+
+  return `<div class="view">
+    <button class="hamburger" onclick="toggleRail()">☰ Projects</button>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap">
+      <div class="back" tabindex="0" data-view="overview">← Portfolio Overview</div>
+      <div>${weekControl()}</div>
+    </div>
+    <div class="dhead">
+      <div>
+        <h1>${p.name}</h1>
+        <p class="oneliner">${p.summary}</p>
+      </div>
+      ${ragBadge(r.rag,true)}
+    </div>
+    <div class="metastrip">
+      <div class="m"><div class="ml">Lead</div><div class="mv">${p.lead}</div></div>
+      <div class="m"><div class="ml">Sponsor</div><div class="mv">${p.sponsor}</div></div>
+      <div class="m"><div class="ml">Workstream</div><div class="mv">${p.workstream}</div></div>
+      <div class="m"><div class="ml">Target GA</div><div class="mv">${fmtDate(p.ga)}</div></div>
+      <div class="m"><div class="ml">Reporting week</div><div class="mv">${fmtDate(selectedWeek)}</div></div>
+    </div>
+    <div class="kpis">
+      ${card('% Complete',num(r.pct)+'%','var(--mint)')}
+      ${card('WoW Δ',r.wow==null?'—':(r.wow>0?'+':'')+num(r.wow,1),r.wow==null?null:(r.wow>=0?'var(--green)':'var(--red)'))}
+      ${card('Planned to date',num(r.planned)+'%')}
+      ${card('Var vs plan',(r.var>0?'+':'')+num(r.var,1),r.var>=0?'var(--green)':'var(--red)')}
+      ${card('Days to GA',d,d<30?'var(--amber)':null)}
+      ${card('Open blockers',r.openblk,r.openblk>0?'var(--amber)':'var(--green)')}
+    </div>
+    <div class="thisweek">
+      <div class="eyebrow">Week ending ${fmtDate(selectedWeek)}</div>
+      <p class="hl">${r.headline||'—'}</p>
+      <div class="steps"><b style="color:var(--mint)">Steps to target →</b> ${r.steps||'—'}</div>
+      ${r.conf?`<div class="conf">Confidence: ${r.conf}</div>`:''}
+    </div>
+    ${onbCard}
+    ${trajRow}
+    <div class="panel" style="margin-top:22px">
+      <h2>Jira Epics</h2>
+      <p class="cap">Story-point-weighted epics · project % is their weighted average</p>
+      <table>
+        <thead><tr><th>Epic</th><th class="num">Pts</th><th class="num">Deadline</th><th>Status</th><th>Complete</th></tr></thead>
+        <tbody>${epRows}</tbody>
+      </table>
+    </div>
+    <div class="panel" style="margin-top:22px">
+      <h2>Barrier log</h2>
+      <p class="cap">Owners and target resolution · open blockers reflect status as of the selected week</p>
+      <table>
+        <thead><tr><th>Barrier</th><th>Severity</th><th>Owner</th><th class="num">Raised</th><th>Status</th><th class="num">Target</th></tr></thead>
+        <tbody>${blkRows}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+
+/* ---------- GLOSSARY ---------- */
+function renderGlossary(){
+  const g=(name,where,def,calc)=>`<div class="gterm">
+    <div class="gname">${name}${where?`<span class="gwhere">${where}</span>`:''}</div>
+    <div class="gdef">${def}</div>
+    <div class="gcalc"><span class="lbl2">Example</span>${calc}</div>
+  </div>`;
+  const panel=(title,cap,body)=>`<div class="panel"><h2>${title}</h2><p class="cap">${cap}</p>${body}</div>`;
+
+  const dates=
+    g('Reporting Week','Top-right week selector',
+      'The week-ending Friday that names a reporting period. All data is bucketed and frozen by reporting week, and the dropdown picks which one you are viewing. It is a label for a week of activity — not the day something happened.',
+      'Selecting "Week ending Jul 10" shows the whole portfolio as it stood for the week ending Friday 10 Jul 2026.')+
+    g('Locked vs Draft Week','Behind the scenes',
+      'A reporting week is <b>Draft</b> while being prepared (hidden from the dashboard) and <b>Locked</b> once finalized (frozen and shown). Only locked weeks appear in the dropdown, and a locked week never changes afterward.',
+      'The current week is staged as a draft, reviewed, then locked — after which its numbers become permanent history.')+
+    g('Selected Reporting Week','Week dropdown',
+      'The week currently chosen in the dropdown. Every figure on the page — KPIs, project table, trajectory marker, barrier log — re-renders “as of” that week. Defaults to the most recent locked week.',
+      'Switch from Jul 10 to Jun 26 and each project shows its Jun 26 %, and the barrier log shows only blockers open by then.')+
+    g('Locked Date (locked_at)','Audit metadata',
+      'The actual calendar day a reporting week was finalized. Audit info only — it is <b>not</b> the reporting week, and is never used to place data into a week.',
+      'The week ending Jul 10 might have been locked on Jul 13 — finalized a few days after the period ended.')+
+    g('Snapshot Generated','Footer',
+      'The timestamp the HTML file was built. Tells anyone you share the file with how fresh their copy is — the dashboard is a static export, not a live feed.',
+      'Footer reads “Snapshot generated 13 Jul 2026, 12:08.” A copy stays at that build time until someone rebuilds and re-shares.')+
+    g('Reporting Week vs Calendar Date','Concept to remember',
+      'The key distinction: a <b>reporting week</b> is a labelled weekly bucket used for all slicing (progress, blockers). <b>Calendar dates</b> — locked date, a blocker’s raised date, the generated timestamp — are real timestamps, shown for audit/freshness and mapped <i>into</i> a reporting week for display.',
+      'A blocker raised on Mon 6 Jul (calendar date) is bucketed into the week ending Fri 10 Jul, so it first appears when you view that reporting week.');
+
+  const completion=
+    g('% Complete','Overview table · Project page',
+      'How much of a project’s planned work is finished, <b>weighted by story points</b> so bigger items count more. It is not a simple average of tasks — a 12-point epic moves the needle more than a 3-point one.',
+      'Epic A = 8 pts at 100% done → 8 pts done.<br>Epic B = 12 pts at 50% done → 6 pts done.<br><b>% Complete = (8 + 6) ÷ (8 + 12) = 14 ÷ 20 = 70%</b>')+
+    g('Story Points',null,
+      'A rough size estimate for a piece of work. Used purely as the <b>weighting</b> behind every % on the dashboard. Work with no story points is invisible to the % (it counts for nothing in the total).',
+      'A 13-pt epic at 50% contributes 6.5 “done” points; a 3-pt epic at 100% contributes only 3. The bigger item dominates the roll-up.')+
+    g('Epic Completion','Project page – Jira Epics',
+      'Each epic’s own progress = its finished story points ÷ its total story points. The project % is the story-point-weighted blend of these. Note these are <b>Jira epics</b> — the board’s own units of work — and not the fixed delivery milestones in MS Progress, which are a separate, hand-defined list.',
+      'An epic with 5 of its 8 story points in “Done” issues → <b>5 ÷ 8 = 63%</b>.')+
+    g('Onboarding Focus %','Project page – highlight (where tagged)',
+      'A separate story-point-weighted % across <b>only</b> the epics tagged “Onboarding,” shown apart from the overall project % so early-stage onboarding work isn’t hidden by a high platform number.',
+      'Onboarding epics: 1pt@100% + 5pt@40% + 6pt@0%.<br>Done = 1 + 2 + 0 = 3; Total = 12.<br><b>Onboarding % = 3 ÷ 12 = 25%</b>')+
+    g('MS Progress','Project page – MS Progress (where defined)',
+      'Progress against the <b>delivery milestones</b>, which are a fixed list per board rather than whatever epics happen to exist. Each milestone is matched to Jira by a label, and its % is the story-point-weighted completion of the issues carrying that label. A label on an <b>epic</b> counts that epic’s child issues, not the epic row — epics carry no story points here, so counting the container would hide all the work beneath it. '+
+      'The scope behind each figure (story points and issue count) is printed beside it, because a high % over a handful of tickets means something very different from the same % over two hundred. Where a milestone has <b>no labelled issues at all</b> it reads “not yet labelled” instead of 0%: nothing being tagged is not evidence that nothing was done.',
+      'A milestone label sits on two epics holding 256 story points between their children, 243 of them in “Done” issues.<br><b>MS Progress = 243 ÷ 256 = 94.9%</b>, shown as “243/256 pts · 126 issues”.<br>If every issue in scope were unpointed, it would fall back to counting issues and say so.');
+
+  const pace=
+    g('Planned to date','Overview table (“Plan”) · Project page',
+      'Where a project <i>should</i> be this week if it progressed evenly toward its target. A straight ramp from 0 to the target across the reporting window.',
+      'Target = 60% over 6 weeks. In week 4:<br><b>Planned = 60% × (4 ÷ 6) = 40%</b>')+
+    g('Variance vs Plan (Var)','Overview table (“Var”) · Project page',
+      'Actual % complete minus planned-to-date. <b>Positive = ahead</b> of schedule, <b>negative = behind</b>.',
+      'Actual = 46%, Planned = 40%.<br><b>Var = 46 − 40 = +6</b> (6 points ahead of plan)')+
+    g('RAG Status','Overview table (“Status”) · Project page badge',
+      'A traffic light derived from the variance — i.e. pace against plan, not raw completion. '+
+      '<b style="color:var(--green)">On Track</b>: within 3 pts of plan (Var ≥ −3). '+
+      '<b style="color:var(--amber)">At Risk</b>: 3–13 pts behind (−13 ≤ Var < −3). '+
+      '<b style="color:var(--red)">Off Track</b>: more than 13 behind (Var < −13).',
+      'Actual 55%, Planned 62% → Var = −7 → <b style="color:var(--amber)">At Risk</b> (amber).')+
+    g('Confidence','Project page – this week',
+      'A plain High / Medium / Low read that mirrors the RAG status (On Track → High, At Risk → Medium, Off Track → Low).',
+      'A project showing <b style="color:var(--green)">On Track</b> → Confidence = High.');
+
+  const trend=
+    g('WoW Δ (Week-over-week)','Overview table (“WoW”) · Project page',
+      'The change in % complete since the previous reporting week. Shows momentum, not absolute progress. First week has no prior, so it shows “—”.',
+      'This week = 46%, last week = 40%.<br><b>WoW = 46 − 40 = +6 pts</b>')+
+    g('Weekly Trajectory','Project page – sparkline',
+      'A small line chart of that project’s % complete across every reporting week. The highlighted dot is the week currently selected in the dropdown.',
+      'Weeks trace 40 → 46 → 51 → 55 → 58 → 61% — a steady climb, with the selected week marked.')+
+    g('Portfolio Trajectory','Overview – trend chart',
+      'The overview trend chart. The <b>bold line is the average % across all projects</b> each week; faint lines are the individual projects; the dashed marker is the selected week.',
+      '3 projects at 60% / 40% / 80% in a week → <b>bold line = (60+40+80) ÷ 3 = 60%</b>');
+
+  const rollup=
+    g('Avg Complete','Overview – KPI strip',
+      'The simple (unweighted) average of the projects’ % complete. Each project counts equally here, regardless of size.',
+      'Projects at 70%, 50%, 90% → <b>(70 + 50 + 90) ÷ 3 = 70%</b>')+
+    g('Avg WoW','Overview – KPI strip',
+      'The average of the projects’ week-over-week changes — the portfolio’s overall momentum this week.',
+      'WoW of +6, +2, −1 → <b>(6 + 2 − 1) ÷ 3 = +2.3 pts</b>')+
+    g('On Track / At Risk / Off Track','Overview – KPI strip',
+      'A count of how many projects fall into each RAG bucket this week (see RAG Status above).',
+      '5 projects: 3 On Track, 1 At Risk, 1 Off Track → the three tiles read 3 / 1 / 1.')+
+    g('Open Blockers','Overview KPI & table (“Blk”) · Project page',
+      'The number of logged barriers that are <b>not yet resolved</b> as of the selected week. A barrier appears once its raised-week is reached and drops off the count once its resolved-week passes.',
+      '3 barriers raised by this week, 1 marked resolved → <b>Open Blockers = 2</b>');
+
+  const timeline=
+    g('Days to GA','Overview table · Project page',
+      'Calendar days between the selected reporting week and the project’s target go-live (GA) date. Turns amber when under 30 days.',
+      'GA = 14 Aug 2026, selected week = 3 Jul 2026 → <b>42 days to GA</b>')+
+    g('Severity','Project page – Barrier log',
+      'The impact level of a logged barrier / blocker: High, Medium, or Low. Drives its colour in the barrier log.',
+      'A blocker that could slip go-live → flagged <b style="color:var(--red)">High</b>.')+
+    g('Barrier Raised / Resolved Week','Project page – Barrier log',
+      'The reporting week a blocker first appeared ("Raised") and, once cleared, the week it was resolved. The barrier log is tied to the week selector, so <b>changing the reporting week shows exactly which blockers were open at that point in time</b> — the week-over-week blocker history.',
+      'A blocker raised in the week ending Jun 26 shows "Raised: Jun 26". Select an earlier week and it disappears; once resolved in the week ending Jul 10 it flips to <b>Resolved · wk Jul 10</b>.');
+
+  return `<div class="view">
+    <button class="hamburger" onclick="toggleRail()">☰ Projects</button>
+    <div class="topline">
+      <div>
+        <div class="chip">Reference</div>
+        <h1 style="margin-top:12px">KPI Glossary</h1>
+      </div>
+    </div>
+    <p class="cap" style="margin:-10px 0 22px;max-width:680px">Plain-language definitions of every metric on the dashboard, each with a worked example. All figures below are illustrative.</p>
+    ${panel('Dates &amp; reporting weeks','How weeks and dates work — start here if a date is confusing',dates)}
+    ${panel('Completion & size','How progress and weighting are measured',completion)}
+    ${panel('Plan & pace','How a project is tracking against its schedule',pace)}
+    ${panel('Change over time','Momentum and trend',trend)}
+    ${panel('Portfolio roll-ups','The overview KPI strip',rollup)}
+    ${panel('Timeline & risks','Dates and blockers',timeline)}
+  </div>`;
+}
+
+/* ---------- nav + routing ---------- */
+function renderNav(){
+  const el=document.getElementById('navProjects');
+  el.innerHTML=shown().map(({p,i})=>{
+    const r=rec(p.name); const rr=RAG[r.rag]||{c:'var(--muted)'};
+    const arr=r.wow==null?'·':(r.wow>0.05?'▲':(r.wow<-0.05?'▼':'·'));
+    const ac=r.wow==null?'var(--muted)':(r.wow>0.05?'var(--green)':(r.wow<-0.05?'var(--red)':'var(--muted)'));
+    return `<div class="navitem${route.view==='detail'&&route.i===i?' active':''}" tabindex="0" data-view="detail" data-i="${i}">
+      <span class="dot" style="background:${rr.c}"></span>
+      <span class="lbl">${p.name}</span>
+      <span class="pct">${num(r.pct)}% <span style="color:${ac}">${arr}</span></span>
+    </div>`;
+  }).join('');
+}
+function setActive(){
+  document.querySelectorAll('.navitem').forEach(n=>n.classList.remove('active'));
+  if(route.view==='overview') document.getElementById('navOverview').classList.add('active');
+  else if(route.view==='glossary') document.getElementById('navGlossary').classList.add('active');
+  else document.querySelectorAll('#navProjects .navitem')[route.i]?.classList.add('active');
+}
+function go(view,i){
+  route={view, i:(view==='detail'?i:null)};
+  const main=document.getElementById('main');
+  main.innerHTML = view==='detail' ? renderDetail(i) : view==='glossary' ? renderGlossary() : renderOverview();
+  renderNav(); setActive(); bindMain(); animateBars();
+  window.scrollTo({top:0,behavior:'auto'});
+  if(window.innerWidth<=820) document.getElementById('rail').classList.remove('open');
+}
+function setWeek(w){ selectedWeek=w; go(route.view, route.i); }
+function bindMain(){
+  const sel=document.getElementById('wkSel');
+  if(sel) sel.onchange=e=>setWeek(e.target.value);
+  document.querySelectorAll('#main [data-goto]').forEach(r=>{
+    r.onclick=()=>go('detail',+r.dataset.goto);
+    r.onkeydown=e=>{if(e.key==='Enter')go('detail',+r.dataset.goto);};
+  });
+  document.querySelectorAll('#main [data-view="overview"]').forEach(b=>{
+    b.onclick=()=>go('overview');
+    b.onkeydown=e=>{if(e.key==='Enter')go('overview');};
+  });
+}
+function toggleRail(){ document.getElementById('rail').classList.toggle('open'); }
+
+document.getElementById('navOverview').addEventListener('click',()=>go('overview'));
+document.getElementById('navOverview').addEventListener('keydown',e=>{if(e.key==='Enter')go('overview');});
+document.getElementById('navGlossary').addEventListener('click',()=>go('glossary'));
+document.getElementById('navGlossary').addEventListener('keydown',e=>{if(e.key==='Enter')go('glossary');});
+document.getElementById('rail').addEventListener('click',e=>{
+  const item=e.target.closest('#navProjects .navitem'); if(!item)return;
+  go('detail',+item.dataset.i);
+});
+document.getElementById('navProjects').addEventListener('keydown',e=>{
+  const item=e.target.closest('.navitem'); if(item&&e.key==='Enter')go('detail',+item.dataset.i);
+});
+
+renderNav();
+go('overview');
+
+</script>
+</body>
+</html>

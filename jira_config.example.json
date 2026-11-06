@@ -1,0 +1,6 @@
+{
+  "_comment": "Copy this to jira_config.json and fill in your values. Keep jira_config.json PRIVATE — do not commit or share it. Alternatively, set JIRA_EMAIL / JIRA_API_TOKEN / JIRA_SITE as environment variables instead of using this file.",
+  "email": "you@example.com",
+  "api_token": "PASTE_YOUR_API_TOKEN_HERE",
+  "site": "[placeholder].atlassian.net"
+}

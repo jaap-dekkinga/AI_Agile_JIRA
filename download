@@ -1,0 +1,23 @@
+# Credentials & secrets
+jira_config.json
+.env
+
+# Database & backups (tracker.db is generated: python seed_demo_db.py, or your own data)
+tracker.db
+tracker.db.bak*
+*.db-journal
+
+# Generated outputs (pre-built examples live in samples/)
+/automation_margin_tracker_dashboard.html
+/exec-talk-script.md
+
+# Temporary pull files
+_jira_*.json
+_mcp_*.json
+
+# Local review artifacts (never share these — they include unlocked draft weeks)
+_preview_dashboard.html
+
+# Python
+__pycache__/
+*.py[cod]

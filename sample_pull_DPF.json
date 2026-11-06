@@ -1,0 +1,138 @@
+{
+  "epics": [
+    {
+      "key": "DPF-13",
+      "name": "Source inventory and schema freeze",
+      "owner": "Riley Chen",
+      "pts": 21.0,
+      "cur_pct": 32.1,
+      "epic_due": "2027-01-30",
+      "latest_child_due": "2027-01-30",
+      "children": 7,
+      "done_children": 2,
+      "credit_children": 2.247
+    },
+    {
+      "key": "DPF-16",
+      "name": "Billing system ingestion",
+      "owner": "Priya Nair",
+      "pts": 21.0,
+      "cur_pct": 54.5,
+      "epic_due": "2027-01-23",
+      "latest_child_due": "2027-01-23",
+      "children": 7,
+      "done_children": 4,
+      "credit_children": 3.815
+    },
+    {
+      "key": "DPF-19",
+      "name": "Operator action ingestion",
+      "owner": "Priya Nair",
+      "pts": 8.0,
+      "cur_pct": 48.4,
+      "epic_due": "2027-02-04",
+      "latest_child_due": "2027-02-04",
+      "children": 3,
+      "done_children": 1,
+      "credit_children": 1.452
+    },
+    {
+      "key": "DPF-22",
+      "name": "Payer-policy ingestion",
+      "owner": "Riley Chen",
+      "pts": 8.0,
+      "cur_pct": 63.5,
+      "epic_due": "2027-02-08",
+      "latest_child_due": "2027-02-08",
+      "children": 3,
+      "done_children": 2,
+      "credit_children": 1.905
+    },
+    {
+      "key": "DPF-25",
+      "name": "Data-quality monitors",
+      "owner": "Priya Nair",
+      "pts": 13.0,
+      "cur_pct": 65.2,
+      "epic_due": "2027-01-15",
+      "latest_child_due": "2027-01-15",
+      "children": 4,
+      "done_children": 3,
+      "credit_children": 2.608
+    },
+    {
+      "key": "DPF-28",
+      "name": "Analytics workspace outputs",
+      "owner": "Marco Silva",
+      "pts": 13.0,
+      "cur_pct": 54.1,
+      "epic_due": "2027-03-02",
+      "latest_child_due": "2027-03-02",
+      "children": 4,
+      "done_children": 2,
+      "credit_children": 2.164
+    },
+    {
+      "key": "DPF-31",
+      "name": "Legacy reporting migration",
+      "owner": "Unassigned",
+      "pts": 34.0,
+      "cur_pct": 60.1,
+      "epic_due": "2027-02-01",
+      "latest_child_due": "2027-02-01",
+      "children": 11,
+      "done_children": 7,
+      "credit_children": 6.611
+    }
+  ],
+  "milestones": [
+    {
+      "label": "MS1",
+      "pct": 98.0,
+      "basis": "points",
+      "issues": 12,
+      "done_issues": 12,
+      "pts": 40.0,
+      "done_pts": 39.2,
+      "tagged": 1,
+      "tagged_epics": 1
+    },
+    {
+      "label": "MS2",
+      "pct": 58.0,
+      "basis": "points",
+      "issues": 12,
+      "done_issues": 7,
+      "pts": 89.0,
+      "done_pts": 51.6,
+      "tagged": 1,
+      "tagged_epics": 1
+    },
+    {
+      "label": "MS3",
+      "pct": 29.0,
+      "basis": "points",
+      "issues": 12,
+      "done_issues": 3,
+      "pts": 76.0,
+      "done_pts": 22.0,
+      "tagged": 1,
+      "tagged_epics": 1
+    },
+    {
+      "label": "MS4",
+      "pct": 8.0,
+      "basis": "points",
+      "issues": 12,
+      "done_issues": 1,
+      "pts": 55.0,
+      "done_pts": 4.4,
+      "tagged": 1,
+      "tagged_epics": 1
+    }
+  ],
+  "sprint": {
+    "name": "DPF Sprint (demo)",
+    "goal": ""
+  }
+}
