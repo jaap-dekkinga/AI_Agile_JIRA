@@ -18,14 +18,14 @@ what each meeting is for. Read the two together: CDD is the method, and this is 
 
 The two meet at the **story**, the roadmap's unit of work: one story, one pull request, merged
 within a few days. CDD makes a story *buildable*: its rules, questions and decisions are
-written down. Agile makes it *scheduled*: groomed, estimated, committed to a sprint and
+written down. Agile makes it *scheduled*: refined, estimated, committed to a sprint and
 demonstrated.
 
-**A groomed story is one whose context is written.** That is why the
+**A refined story is one whose context is written.** That is why the
 [Definition of Ready](#definition-of-ready) below reads like a CDD checklist.
 
 **A meeting decides; the context remembers.** CDD's first rule applies to every meeting on this
-page. A decision made at a standup, a grooming session or a retrospective doesn't exist until
+page. A decision made at a standup, a refinement session or a retrospective doesn't exist until
 it reaches the place it belongs. Each meeting below says what it leaves behind, and where.
 
 ### What lives where
@@ -48,7 +48,7 @@ The PM plays the part a Scrum Master plays elsewhere, alongside the
 The PM's goal is that **no engineer is ever looking for work, or stuck.**
 
 The PM:
-- **Owns the backlog.** Keeps it groomed and ranked, with at least one sprint's worth of Ready
+- **Owns the backlog.** Keeps it refined and ranked, with at least one sprint's worth of Ready
   story points beyond what the current sprint holds. That way a sprint can always be planned,
   and an engineer who finishes early always has something to propose.
 - **Clears impediments.** Takes every blocker raised at standup and gets it an owner, a
@@ -90,7 +90,7 @@ finished. Sprints are named for their dates.
 |---|---|---|---|---|---|
 | [Daily standup](#daily-standup) | Every working day, at the same time | 15 minutes; never more than 30 | Engineering, a PM | Other PMs | Every blocker with an owner, a huddle or a recorded assumption |
 | [Follow-up huddle](#follow-up-huddles) | Straight after standup, or later the same day | As short as it can be | The person blocked, and whoever can clear the blocker | Everyone else | The blocker cleared, or a question in the register |
-| [Backlog grooming](#backlog-grooming) | Mid-sprint, and whenever the Ready backlog runs low | 1 hour; a follow-up if needed | PMs, Engineering | Leadership | Ready stories with points; a roadmap PR; new questions |
+| [Backlog refinement](#backlog-refinement) | Mid-sprint, and whenever the Ready backlog runs low | 1 hour; a follow-up if needed | PMs, Engineering | Leadership | Ready stories with points; a roadmap PR; new questions |
 | [Sprint planning](#sprint-planning) | Before the sprint starts | 1 hour | PMs, Engineering | Leadership | The sprint in Jira: its goal, capacity and agreed stories |
 | [Sprint demo](#sprint-demo) | The sprint's last day | 1 hour, overflow allowed; recorded | Presenters, for their slot; a PM to host | Engineering, PMs, Leadership | The recording |
 | [Sprint retrospective](#sprint-retrospective) | The sprint's last day, after the demo | 1 hour | PMs, Engineering | — | Improvements in the backlog, each with an owner |
@@ -98,7 +98,7 @@ finished. Sprints are named for their dates.
 A typical sprint:
 - **Before day 1:** sprint planning.
 - **Every day:** the standup.
-- **Around day 5:** backlog grooming, and again whenever the Ready backlog runs low.
+- **Around day 5:** backlog refinement, and again whenever the Ready backlog runs low.
 - **Day 10:** the sprint demo, then the retrospective. Planning for the next sprint follows,
   that afternoon or the next morning before any work starts, so the retrospective's lessons
   reach the plan straight away.
@@ -131,14 +131,14 @@ ranked in Jira, most important first. The PMs set the rank, guided by the roadma
 and each story's **Needs**.
 
 Not every item is ready to build, and that is expected. **An item enters a sprint only once it
-is groomed**, which means it meets the Definition of Ready. Grooming is how it gets there.
+is refined**, which means it meets the Definition of Ready. Refinement is how it gets there.
 
 **How much to keep Ready:** at least one sprint's worth of Ready story points beyond what the
-current sprint holds. When the Ready backlog falls below that, the PM calls a grooming session.
+current sprint holds. When the Ready backlog falls below that, the PM calls a refinement session.
 
 ### Definition of Ready
 
-A story is **groomed**, or **Ready**, when an engineer could pick it up tomorrow and start
+A story is **refined**, or **Ready**, when an engineer could pick it up tomorrow and start
 without asking anyone a question. The engineers judge that, not the PM. In this repository it
 means all of the following:
 
@@ -157,9 +157,8 @@ means all of the following:
 5. **It is estimated at 8 points or fewer.** A bigger story is split before it is Ready. This
    keeps the roadmap's rule of one story, one pull request, merged within a few days.
 6. **Its INVEST rating is Good, or each TBD has an owner.** Each story is rated Low, Good or
-   TBD on Independent, Negotiable, Valuable, Estimable, Small and Testable, and carries the
-   matching `invest-good`, `invest-tbd` or `invest-low` label in Jira. A Low story is reworked or
-   split before it is Ready. The rubric is in
+   TBD on Independent, Negotiable, Valuable, Estimable, Small and Testable, in an INVEST table at
+   the end of its Jira description. A Low story is reworked or split before it is Ready. The rubric is in
    [skills/scrum-master/references/invest-rubric.md](../../skills/scrum-master/references/invest-rubric.md).
 
 ### Definition of Done
@@ -211,12 +210,12 @@ to work. The PM schedules the huddle, straight after the standup or later the sa
 The PM also makes sure the outcome is written down where it belongs: an answer added to the
 question in the register, a decision in an ADR, or a changed story in the roadmap.
 
-## Backlog grooming
+## Backlog refinement
 
 **As often as needed, and at least once a sprint, around its midpoint. One hour at most.** PMs
 and Engineering attend; Leadership may.
 
-Grooming turns backlog items into Ready stories. Its aim is always to have enough to plan the
+Refinement turns backlog items into Ready stories. Its aim is always to have enough to plan the
 next sprint and to propose more for the current one. The PM calls a session whenever the Ready
 backlog falls below a sprint's worth.
 
@@ -391,14 +390,14 @@ These terms describe how the team works. The process terms CDD uses are in
 
 | Term | Meaning |
 |---|---|
-| **PM** | A Product Manager or a Project Manager, playing the part a Scrum Master plays elsewhere: clearing impediments and keeping the backlog groomed. |
+| **PM** | A Product Manager or a Project Manager, playing the part a Scrum Master plays elsewhere: clearing impediments and keeping the backlog refined. |
 | **Engineering** | The engineers working the sprint, and the Lead Architect. |
 | **Engineering consensus** | Agreement within Engineering that nobody objects to. An objection that discussion doesn't resolve means no change. |
 | **Sprint** | A fixed two-week time box in which the team delivers an agreed set of stories. Named for its dates; not a release. |
 | **Sprint goal** | One sentence, agreed at planning, saying what a sprint is for. |
 | **Sprint commitment** | The stories Engineering has agreed to deliver in a sprint. It changes only with Engineering's consensus. |
 | **Backlog** | Every item the team will need to address at some point, ranked in Jira by the PMs. |
-| **Groomed**, **Ready** | A backlog item that meets the Definition of Ready: an engineer could start it without asking anyone anything. Only Ready stories enter a sprint. |
+| **Refined**, **Ready** | A backlog item that meets the Definition of Ready: an engineer could start it without asking anyone anything. Only Ready stories enter a sprint. |
 | **Definition of Ready** | The checklist a story passes to be Ready. |
 | **Definition of Done** | The checklist a story passes to be Done. |
 | **Story points** | A relative estimate of a story's size on the Fibonacci scale, 1 to 8. Recorded in Jira. |

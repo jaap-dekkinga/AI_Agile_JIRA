@@ -9,7 +9,7 @@ without your approval of a preview.
 | Folder | What it is | Start with |
 |---|---|---|
 | [`skills/scrum-master/`](skills/scrum-master/) | The skill: workflows for refinement, story writing, sprint planning, retros, milestones and weekly status; the INVEST rubric and templates; an INVEST checker and sprint analytics scripts. | [SKILL.md](skills/scrum-master/SKILL.md) |
-| [`commands/`](commands/) | Slash commands: `/groom`, `/new-story`, `/plan-sprint`, `/retro`, `/weekly-status`. | — |
+| [`commands/`](commands/) | Slash commands: `/refine`, `/new-story`, `/plan-sprint`, `/retro`, `/weekly-status`. | — |
 | [`tools/jira-dashboard/`](tools/jira-dashboard/) | Weekly Jira pull, frozen weekly snapshots, the HTML status dashboard and an exec briefing. Runs offline on demo data. | [README.md](tools/jira-dashboard/README.md) |
 | [`example-project/`](example-project/) | A complete Context Driven Development example for a fictional product: the method, sprint practices, a roadmap mirrored into Jira, open questions, decisions and a glossary. | [START_HERE.md](example-project/START_HERE.md) |
 
@@ -41,7 +41,7 @@ python -m pytest -q tests      # the test suite
   stable ids, then mirrored into Jira. Jira owns rank, points, sprint and assignee; the repo
   owns the story's text and status.
   → [PROJECT_ROADMAP.md#jira](example-project/PROJECT_ROADMAP.md#jira)
-- **A groomed story is one whose context is written.** The Definition of Ready reads like a
+- **A refined story is one whose context is written.** The Definition of Ready reads like a
   CDD checklist, and Engineering decides what enters a sprint, by consensus.
   → [agile-practices.md](example-project/docs/agile-practices.md)
 - **Report from Jira, freeze every week.** Progress is story-point-weighted with partial

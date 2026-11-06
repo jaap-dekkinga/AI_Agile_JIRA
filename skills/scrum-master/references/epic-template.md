@@ -44,5 +44,5 @@ Each with an owner and the assumption we work on meanwhile.
 ## Epic health check
 
 An epic is ready to break into stories when it has a goal, a success measure, a scope with an
-explicit "out" list, and an owner. The skill flags an epic whose stories are mostly `invest-low`
-or `invest-tbd` as at risk for its milestone.
+explicit "out" list, and an owner. The skill flags an epic whose stories are mostly rated Low
+or TBD on INVEST as at risk for its milestone.

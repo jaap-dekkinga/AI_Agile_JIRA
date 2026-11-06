@@ -40,7 +40,7 @@ so that <the benefit to that user or the business>
 | Description | Everything above from "As a" down |
 | Parent | The epic's key |
 | Story points | Set by the team in refinement, never by the skill |
-| Labels | `invest-good` / `invest-tbd` / `invest-low`, plus any team labels |
+| Labels | Team labels, and the milestone label (`MS2`) if the story delivers one |
 | Sprint | Only after Engineering agrees at sprint planning |
 
 ## Checklist before a story is proposed for a sprint

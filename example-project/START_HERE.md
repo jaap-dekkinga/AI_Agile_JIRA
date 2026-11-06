@@ -36,8 +36,8 @@ pull request, and most useful contributions don't involve code at all.
 The full process, with the roles and how they overlap, is in
 **[docs/context-driven-development.md](docs/context-driven-development.md)**.
 
-We plan and deliver in **two-week sprints**, with a daily standup, backlog grooming, sprint
-planning, a sprint demo and a retrospective. PMs keep the backlog groomed and clear blockers,
+We plan and deliver in **two-week sprints**, with a daily standup, backlog refinement, sprint
+planning, a sprint demo and a retrospective. PMs keep the backlog refined and clear blockers,
 and Engineering decides what goes into each sprint. The meetings, and when a story is ready to
 build, are in **[docs/agile-practices.md](docs/agile-practices.md)**.
 
@@ -49,7 +49,7 @@ today.
 | If you are… | You'll mostly read | You'll mostly write | Start with |
 |---|---|---|---|
 | **Leadership**: product direction and goals | Roadmap, blocking questions, decisions | Direction; answers to cross-team questions | [Roadmap](PROJECT_ROADMAP.md) · [Blocking now](docs/platform/open-questions.md#blocking-now) |
-| **Product Management**: requirements, priorities, timeline, domain answers, the backlog | Roadmap, open questions, glossary, rules | Clarified questions, slices, groomed stories, domain meaning of terms and rules | [Roadmap](PROJECT_ROADMAP.md) · [Open questions](docs/platform/open-questions.md) · [Glossary](spec/glossary.md) · [Agile practices](docs/agile-practices.md) |
+| **Product Management**: requirements, priorities, timeline, domain answers, the backlog | Roadmap, open questions, glossary, rules | Clarified questions, slices, refined stories, domain meaning of terms and rules | [Roadmap](PROJECT_ROADMAP.md) · [Open questions](docs/platform/open-questions.md) · [Glossary](spec/glossary.md) · [Agile practices](docs/agile-practices.md) |
 | **Product Owner**: epics, stories, priority, acceptance | Roadmap, glossary, INVEST rubric | Epics and stories with acceptance criteria; answers to TBD questions | [Story template](../skills/scrum-master/references/story-template.md) · [INVEST rubric](../skills/scrum-master/references/invest-rubric.md) |
 | **Scrum Master**: ceremonies, impediments, backlog readiness, status | Agile practices, open questions, the dashboard | Refinement notes, sprint plans, retro actions, the weekly status | [Agile practices](docs/agile-practices.md) · [Scrum Master skill](../skills/scrum-master/SKILL.md) |
 | **Lead Architect**: stack, architecture, standards | Decisions, architecture rules | ADRs, technical terms, conventions | [Decisions](docs/adr/README.md) · [Conventions](CLAUDE.md) |

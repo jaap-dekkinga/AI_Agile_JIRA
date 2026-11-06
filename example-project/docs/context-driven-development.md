@@ -126,7 +126,7 @@ Sets product direction and goals.
 ### Product Management
 Helps set product requirements, prioritises features, owns the delivery timeline, and
 answers domain questions. Also plays the part a Scrum Master plays elsewhere: keeps the
-backlog groomed, clears blockers and runs the sprint meetings, as
+backlog refined, clears blockers and runs the sprint meetings, as
 [Agile practices](agile-practices.md#the-pms-role) describes. Proposes each sprint's contents;
 Engineering decides them.
 - **Owns:** requirements, priority order of slices, the domain meaning behind rules, and the

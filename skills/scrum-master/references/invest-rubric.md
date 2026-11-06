@@ -6,11 +6,11 @@ Developers add the technical view (feasibility, testability); the Product Owner 
 
 ## The scale
 
-| Rating | Means | Jira label |
-|---|---|---|
-| **Good** | The story meets the criterion, and the text shows it. | `invest-good` |
-| **Low** | The story fails the criterion. It needs rework before it is Ready. | `invest-low` |
-| **TBD** | There is not enough information to judge yet. Name who will supply it. | `invest-tbd` |
+| Rating | Means |
+|---|---|
+| **Good** | The story meets the criterion, and the text shows it. |
+| **Low** | The story fails the criterion. It needs rework before it is Ready. |
+| **TBD** | There is not enough information to judge yet. Name who will supply it. |
 
 **Overall rating:** Low if any criterion is Low. TBD if none is Low but any is TBD. Good only if all
 six are Good. A missing estimate is TBD, not Low. Every TBD names an owner or an open question.
@@ -63,11 +63,11 @@ and replace "fast" with a number ("processes 1,000 due claims in under 10 minute
 
 ## Where the rating lives in Jira
 
-- **Label:** exactly one of `invest-good`, `invest-low`, `invest-tbd` on each story. JQL and the
-  dashboard count it without needing a Jira admin. Replace the old label when the rating changes.
-- **Detail:** an "INVEST" section at the end of the description, or a comment, with the six
-  ratings and reasons (`scripts/invest_check.py --format jira` produces it).
-- **Optional:** a custom field or checklist app, if your Jira admin prefers one.
+In the story's description, as an **INVEST** section at the end: a heading with the overall
+rating (`### INVEST: Good`) and a table of the six criteria with their rating and reason.
+`scripts/invest_check.py --format jira` produces it, and reads it back from an existing
+description, so a later check can show what changed. Update the table, rather than adding a
+second one, when the rating changes.
 
 ## How the check is run
 

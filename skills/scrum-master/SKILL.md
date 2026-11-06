@@ -1,8 +1,8 @@
 ---
 name: scrum-master
 description: >-
-  Scrum Master assistant for a team's backlog in Jira. Use when the user asks to groom or refine
-  the backlog, write or improve epics and user stories, check stories against INVEST (rated Low,
+  Scrum Master assistant for a team's backlog in Jira. Use when the user asks to refine
+  the backlog (also called grooming), write or improve epics and user stories, check stories against INVEST (rated Low,
   Good or TBD), prepare sprint planning or capacity, track sprints, velocity, blockers or
   milestones, run a retrospective, or update the team's status dashboard. Drafts and rates work,
   then writes to Jira only after the user approves a preview.
@@ -50,10 +50,10 @@ stories that meet INVEST. Every write to Jira waits for the user's approval.
    against `references/invest-rubric.md` and correct any the heuristic got wrong, saying why.
 4. Show the draft with its INVEST table. For Low criteria, propose the fix (often a split). For TBD,
    list the questions for the PO.
-5. On approval, create the issue in Jira with the `invest-<rating>` label and the INVEST section in
-   the description, linked to its epic. Leave story points empty for the team.
+5. On approval, create the issue in Jira with the INVEST table at the end of the description,
+   linked to its epic. Leave story points empty for the team.
 
-### Groom the backlog (refinement)
+### Refine the backlog
 
 1. Pull the top of the backlog (default 15 items, in rank order): through the MCP with JQL
    `project = KEY AND statusCategory != Done AND issuetype in (Story, Task, Bug) ORDER BY rank`,
@@ -61,7 +61,7 @@ stories that meet INVEST. Every write to Jira waits for the user's approval.
 2. Run `scripts/invest_check.py` on them (`--format json` keeps the detail).
 3. Report the mix (Good / TBD / Low) and the Ready points against one sprint of capacity. Then, per
    story: its rating, the weakest criteria, and a concrete rewrite, split or question.
-4. Offer to apply the label updates and description sections in one approved batch.
+4. Offer to add or update the INVEST table in each description, in one approved batch.
 
 ### Prepare sprint planning
 
@@ -87,8 +87,8 @@ stories that meet INVEST. Every write to Jira waits for the user's approval.
 
 Milestones are Jira labels (`MS1`, `MS2` …) on epics or stories; a label on an epic counts all its
 children. Define them in `tools/jira-dashboard/config.py` (`MILESTONES`) with their deliverable
-text. Report each milestone's % complete and flag one whose stories are mostly `invest-low` or
-`invest-tbd` as at risk.
+text. Report each milestone's % complete and flag one whose stories are mostly rated Low or
+TBD (read from the INVEST table in each description) as at risk.
 
 ### Weekly status and the dashboard
 

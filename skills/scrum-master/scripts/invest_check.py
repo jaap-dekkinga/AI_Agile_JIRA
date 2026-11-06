@@ -3,7 +3,7 @@
 
   python invest_check.py stories.json                 # text report
   python invest_check.py stories.json --format json   # machine-readable
-  python invest_check.py stories.json --format jira   # per story: the label + a Markdown INVEST section for Jira
+  python invest_check.py stories.json --format jira   # per story: a Markdown INVEST table for the Jira description
 
 Input is either a list of stories in the simple shape below, or a Jira search response
 ({"issues": [{"key", "fields": {...}}]}) as returned by /rest/api/3/search/jql or the
@@ -48,6 +48,7 @@ VAGUE_WORDS = re.compile(
     r"easy to use|seamless(?:ly)?|robust|as expected|nice|better)\b", re.I)
 HAS_NUMBER = re.compile(r"\d")
 SO_THAT = re.compile(r"\bso that\b\s+(.+)", re.I | re.S)
+PREVIOUS = re.compile(r"#*\s*INVEST:\s*(Good|TBD|Low)\b", re.I)
 GWT = re.compile(r"\bgiven\b.+\bwhen\b.+\bthen\b", re.I | re.S)
 
 
@@ -208,15 +209,23 @@ def overall(ratings):
     return "Good"
 
 
+def strip_invest_section(desc):
+    """The description minus an earlier INVEST table, so old ratings don't sway the new check."""
+    m = PREVIOUS.search(desc or "")
+    return (desc or "")[:m.start()] if m else (desc or "")
+
+
 def rate(story):
-    text = " ".join([story.get("summary") or "", story.get("description") or ""])
+    text = " ".join([story.get("summary") or "", strip_invest_section(story.get("description"))])
     results = {}
     for name, fn in zip(CRITERIA, CHECKS):
         r, why = fn(story, text)
         results[name] = {"rating": r, "reason": why}
     o = overall([v["rating"] for v in results.values()])
+    prev = PREVIOUS.search(story.get("description") or "")
     return {"key": story.get("key"), "summary": story.get("summary"), "overall": o,
-            "label": f"invest-{o.lower()}", "criteria": results}
+            "previous": prev.group(1).title().replace("Tbd", "TBD") if prev else None,
+            "criteria": results}
 
 
 # ---------------------------------------------------------------------------
@@ -237,7 +246,8 @@ def text_report(results):
     counts = {k: sum(1 for r in results if r["overall"] == k) for k in ("Good", "TBD", "Low")}
     out.append(f"INVEST check: {len(results)} stories · {counts['Good']} Good · {counts['TBD']} TBD · {counts['Low']} Low\n")
     for r in results:
-        out.append(f"{r['key'] or '(no key)'}  {r['summary']}\n  overall: {r['overall']}  (label {r['label']})")
+        was = f"  (was {r['previous']})" if r["previous"] and r["previous"] != r["overall"] else ""
+        out.append(f"{r['key'] or '(no key)'}  {r['summary']}\n  overall: {r['overall']}{was}")
         for c in CRITERIA:
             v = r["criteria"][c]
             mark = {"Good": "+", "TBD": "?", "Low": "!"}[v["rating"]]
@@ -269,7 +279,7 @@ def main(argv=None):
         print(json.dumps(results, indent=2, ensure_ascii=False))
     elif a.format == "jira":
         for r in results:
-            print(f"== {r['key']}  label: {r['label']}\n{jira_section(r)}\n")
+            print(f"== {r['key']}\n{jira_section(r)}\n")
     else:
         print(text_report(results))
 

@@ -119,3 +119,11 @@ def test_cli_on_sample_file_reports_all_three_ratings():
                          capture_output=True, text=True, check=True).stdout
     overall = {r["key"]: r["overall"] for r in json.loads(out)}
     assert overall == {"HCA-141": "Good", "HCA-153": "Low", "HCA-143": "TBD", "HCA-181": "Low"}
+
+
+def test_previous_table_is_read_back_but_does_not_sway_the_check():
+    desc = good_story()["description"] + "\n\n### INVEST: TBD\n\n| Criterion | Rating | Why |\n|---|---|---|\n| Negotiable | TBD | scope TBD |"
+    r = ic.rate(good_story(description=desc))
+    assert r["previous"] == "TBD"
+    assert r["overall"] == "Good"          # the old table's "TBD" text is not re-read as open scope
+    assert "label" not in r

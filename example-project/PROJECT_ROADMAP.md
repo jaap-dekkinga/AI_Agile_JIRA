@@ -23,7 +23,7 @@ work of its own: every item in it is a story here, and every gap in it is an ope
 
 Several people work from this file at once. A story is the unit of work: one story, one
 pull request, merged to `main` within a few days. There are no long-lived slice branches.
-Work is planned in two-week sprints, and a story enters a sprint only once it is groomed, at 8
+Work is planned in two-week sprints, and a story enters a sprint only once it is refined, at 8
 story points or fewer ([Definition of Ready](docs/agile-practices.md#definition-of-ready)).
 The sprint meetings and estimation are in [docs/agile-practices.md](docs/agile-practices.md).
 
