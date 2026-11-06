@@ -1,23 +1,51 @@
-# Decision log
+# AI · Agile · Jira
 
-Architecture Decision Records for the fictional Harbor Claims Assistant. Each ADR records one
-decision, the options considered and the consequences. An accepted ADR is never rewritten; when
-it is replaced, only its *Status* line changes.
+A working playbook for running software delivery with AI assistants, two-week Agile sprints
+and Jira, where **the repository is the source of truth and Jira follows it**.
 
-Only the index is included in this example. A full ADR is a short file,
-`docs/adr/NNNN-title.md`, with the sections *Status*, *Context*, *Decision*, *Consequences*.
+It has two parts:
 
-| ADR | Decision | Status |
+| Folder | What it is | Start with |
 |---|---|---|
-| 0001 | Product, not solution: one Core plus client packs, never a fork | Accepted |
-| 0002 | Deterministic Core: Capabilities are pure functions | Accepted |
-| 0003 | Recommend, never act: irreversible actions need an Operator | Accepted |
-| 0004 | Service shape; PostgreSQL only | Accepted |
-| 0005 | Every database object `dm_`-prefixed in a shared database | Accepted |
-| 0006 | Product vendors may be named in the Core; client vendors may not | Accepted |
-| 0007 | The canonical claim status model is X12-277-shaped | Accepted |
-| 0008 | Raw payer payloads are retained under a TTL | Accepted |
-| 0013 | The Reference UI is a demonstration surface, not the product UI | Accepted |
-| 0014 | Queued inquiries hold patient identity only as long as a send can use it | Proposed (S7-01) |
-| 0015 | The agent tool surface carries no PHI | Proposed (S9-01) |
-| 0017 | The canonical eligibility (271) model | Accepted |
+| [`example-project/`](example-project/) | A complete **Context Driven Development (CDD)** setup for a fictional product: the method, the sprint rhythm, a roadmap mirrored into Jira, an open-questions register, a decision log, a glossary, a spec area and the conventions file an AI coding assistant reads. Copy it as a template. | [START_HERE.md](example-project/START_HERE.md) |
+| [`tools/jira-dashboard/`](tools/jira-dashboard/) | A small Python tool that pulls epics and story points from Jira every week, freezes each week as a snapshot, and builds a self-contained HTML portfolio dashboard plus an executive briefing script. Runs offline on demo data. | [README.md](tools/jira-dashboard/README.md) |
+
+## The ideas in one minute
+
+- **The spec is the context.** What the project knows (direction, open questions, decisions,
+  vocabulary, rules) is written down in the repo *before* it is built, and changed only by
+  reviewed pull request. People and AI assistants work from the same context.
+  → [context-driven-development.md](example-project/docs/context-driven-development.md)
+- **The roadmap leads; Jira follows.** Stories are written in `PROJECT_ROADMAP.md` with
+  stable ids, then mirrored into Jira. Jira owns rank, points, sprint and assignee; the repo
+  owns the story's text and status.
+  → [PROJECT_ROADMAP.md#jira](example-project/PROJECT_ROADMAP.md#jira)
+- **A groomed story is one whose context is written.** The Definition of Ready reads like a
+  CDD checklist, and Engineering decides what enters a sprint, by consensus.
+  → [agile-practices.md](example-project/docs/agile-practices.md)
+- **Report from Jira, freeze every week.** Progress is story-point-weighted with partial
+  credit for work in flight, and each reporting week is locked so the trend can't drift.
+  → [tools/jira-dashboard](tools/jira-dashboard/)
+
+## Try the dashboard
+
+```bash
+cd tools/jira-dashboard
+python seed_demo_db.py
+JIRA_DEMO=1 python weekly.py 2026-11-06
+python -m http.server 8743   # → http://localhost:8743/automation_margin_tracker_dashboard.html
+```
+
+Python 3.9+, standard library only. A pre-built output is in
+[`tools/jira-dashboard/samples/`](tools/jira-dashboard/samples/).
+
+## About the content
+
+All products, companies, projects, objectives, people, Jira keys, dates and figures in this
+repository are **fictional**. Organisation-specific names have been replaced with
+`[placeholder]`. Real industry vocabulary (for example the X12 healthcare transactions in the
+example glossary) is used as-is.
+
+## License
+
+See [LICENSE](LICENSE).
