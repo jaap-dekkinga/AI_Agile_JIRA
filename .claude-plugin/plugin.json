@@ -1,0 +1,8 @@
+{
+  "name": "ai-agile-jira",
+  "version": "0.1.0",
+  "description": "Scrum Master skill: groom the backlog, write INVEST-rated epics and stories in Jira, plan sprints, track milestones, and publish a weekly status dashboard.",
+  "author": { "name": "Jaap Dekkinga" },
+  "license": "MIT",
+  "keywords": ["scrum", "agile", "jira", "invest", "backlog", "sprint", "dashboard"]
+}

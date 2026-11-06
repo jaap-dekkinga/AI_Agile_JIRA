@@ -21,7 +21,7 @@ Only the boards in config.ACTIVE_KEYS are pulled live; every other project carri
 its last locked week forward unchanged and is flagged 'stale' in the table.
 """
 import sqlite3, subprocess, sys, shutil, os
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 
 from config import ACTIVE_KEYS
 from pull_jira import EXIT_NO_EPICS
@@ -151,7 +151,7 @@ def main():
     prev = prev['week'] if prev else week
 
     def backup(tag):
-        bak = f"{DB}.bak-{date.today():%Y%m%d-%H%M}-{tag}"
+        bak = f"{DB}.bak-{datetime.now():%Y%m%d-%H%M%S}-{tag}"
         shutil.copyfile(DB, bak)
         print(f"backed up {DB} -> {bak}")
 

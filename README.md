@@ -1,14 +1,35 @@
 # AI · Agile · Jira
 
-A working playbook for running software delivery with AI assistants, two-week Agile sprints
-and Jira, where **the repository is the source of truth and Jira follows it**.
-
-It has two parts:
+A **Scrum Master skill** for Claude, plus the playbook and tooling behind it. It helps a Scrum
+Master run a team's backlog and sprints, and helps the Product Owner write epics and stories in
+Jira that meet the **INVEST** criteria, each rated **Low**, **Good** or **TBD**. It also tracks
+milestones and sprints and publishes a weekly status dashboard. Nothing is written to Jira
+without your approval of a preview.
 
 | Folder | What it is | Start with |
 |---|---|---|
-| [`example-project/`](example-project/) | A complete **Context Driven Development (CDD)** setup for a fictional product: the method, the sprint rhythm, a roadmap mirrored into Jira, an open-questions register, a decision log, a glossary, a spec area and the conventions file an AI coding assistant reads. Copy it as a template. | [START_HERE.md](example-project/START_HERE.md) |
-| [`tools/jira-dashboard/`](tools/jira-dashboard/) | A small Python tool that pulls epics and story points from Jira every week, freezes each week as a snapshot, and builds a self-contained HTML portfolio dashboard plus an executive briefing script. Runs offline on demo data. | [README.md](tools/jira-dashboard/README.md) |
+| [`skills/scrum-master/`](skills/scrum-master/) | The skill: workflows for refinement, story writing, sprint planning, retros, milestones and weekly status; the INVEST rubric and templates; an INVEST checker and sprint analytics scripts. | [SKILL.md](skills/scrum-master/SKILL.md) |
+| [`commands/`](commands/) | Slash commands: `/groom`, `/new-story`, `/plan-sprint`, `/retro`, `/weekly-status`. | — |
+| [`tools/jira-dashboard/`](tools/jira-dashboard/) | Weekly Jira pull, frozen weekly snapshots, the HTML status dashboard and an exec briefing. Runs offline on demo data. | [README.md](tools/jira-dashboard/README.md) |
+| [`example-project/`](example-project/) | A complete Context Driven Development example for a fictional product: the method, sprint practices, a roadmap mirrored into Jira, open questions, decisions and a glossary. | [START_HERE.md](example-project/START_HERE.md) |
+
+## Install
+
+The repository is a Claude plugin (`.claude-plugin/plugin.json`).
+
+- **Claude Code:** add this repository as a plugin, or copy `skills/scrum-master/` into your
+  `~/.claude/skills/` folder.
+- **Claude (desktop or web):** zip the repository and upload it as a plugin under Customize →
+  Plugins, or zip `skills/scrum-master/` on its own and upload it as a skill.
+- **Jira:** connect the Atlassian connector for reading and writing. Without it the skill reads
+  through the REST scripts with an API token, or runs on demo data.
+
+Rate the sample backlog to see the INVEST check:
+
+```bash
+python skills/scrum-master/scripts/invest_check.py skills/scrum-master/assets/sample_stories.json
+python -m pytest -q tests      # the test suite
+```
 
 ## The ideas in one minute
 

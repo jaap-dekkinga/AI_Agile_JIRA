@@ -50,6 +50,8 @@ today.
 |---|---|---|---|
 | **Leadership**: product direction and goals | Roadmap, blocking questions, decisions | Direction; answers to cross-team questions | [Roadmap](PROJECT_ROADMAP.md) · [Blocking now](docs/platform/open-questions.md#blocking-now) |
 | **Product Management**: requirements, priorities, timeline, domain answers, the backlog | Roadmap, open questions, glossary, rules | Clarified questions, slices, groomed stories, domain meaning of terms and rules | [Roadmap](PROJECT_ROADMAP.md) · [Open questions](docs/platform/open-questions.md) · [Glossary](spec/glossary.md) · [Agile practices](docs/agile-practices.md) |
+| **Product Owner**: epics, stories, priority, acceptance | Roadmap, glossary, INVEST rubric | Epics and stories with acceptance criteria; answers to TBD questions | [Story template](../skills/scrum-master/references/story-template.md) · [INVEST rubric](../skills/scrum-master/references/invest-rubric.md) |
+| **Scrum Master**: ceremonies, impediments, backlog readiness, status | Agile practices, open questions, the dashboard | Refinement notes, sprint plans, retro actions, the weekly status | [Agile practices](docs/agile-practices.md) · [Scrum Master skill](../skills/scrum-master/SKILL.md) |
 | **Lead Architect**: stack, architecture, standards | Decisions, architecture rules | ADRs, technical terms, conventions | [Decisions](docs/adr/README.md) · [Conventions](CLAUDE.md) |
 | **Software Developer**: building features | The spec area for your slice, conventions | Rules, tests, code; findings on open questions | [Spec index](spec/INDEX.md) · [Conventions](CLAUDE.md) |
 

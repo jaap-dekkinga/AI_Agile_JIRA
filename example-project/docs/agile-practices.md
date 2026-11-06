@@ -156,6 +156,11 @@ means all of the following:
    story's contract has. The roadmap allows work to start against a contract.
 5. **It is estimated at 8 points or fewer.** A bigger story is split before it is Ready. This
    keeps the roadmap's rule of one story, one pull request, merged within a few days.
+6. **Its INVEST rating is Good, or each TBD has an owner.** Each story is rated Low, Good or
+   TBD on Independent, Negotiable, Valuable, Estimable, Small and Testable, and carries the
+   matching `invest-good`, `invest-tbd` or `invest-low` label in Jira. A Low story is reworked or
+   split before it is Ready. The rubric is in
+   [skills/scrum-master/references/invest-rubric.md](../../skills/scrum-master/references/invest-rubric.md).
 
 ### Definition of Done
 
@@ -404,3 +409,10 @@ These terms describe how the team works. The process terms CDD uses are in
 | **Impediment**, **blocker** | Anything stopping someone from making progress. The PM makes sure it is cleared. |
 | **Follow-up huddle** | A short meeting to clear one blocker, where only the people needed are required. |
 | **Carry-over** | A story not Done when its sprint ends. It goes back to the backlog. |
+| **Product Owner (PO)** | Owns epics and stories, backlog order, value and acceptance. Where the team has a PO, the PM's backlog duties above sit with them. |
+| **Scrum Master (SM)** | Runs the ceremonies, clears impediments, keeps the backlog Ready and the dashboard current. Where the team has an SM, the PM's facilitation duties above sit with them. |
+| **Epic** | A body of work that delivers one outcome and is too big for a sprint; made of stories, usually tracked as one milestone. |
+| **INVEST** | The six qualities of a good story: Independent, Negotiable, Valuable, Estimable, Small, Testable. Each is rated Low, Good or TBD. |
+| **Milestone** | A dated delivery point, tracked in Jira by a label (`MS2`) on the epics and stories that deliver it. |
+| **Burndown** | The points remaining in a sprint, day by day, against the ideal line to zero. |
+| **Increment** | The sum of the Done stories at the end of a sprint: usable, and shown at the sprint demo. |
