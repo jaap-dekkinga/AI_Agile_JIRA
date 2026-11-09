@@ -1,20 +1,20 @@
-# Automation & Margin Dashboard — Executive Brief (example)
+# Automation & Margin Dashboard: Executive Brief (example)
 
-*Status as of 2 Nov 2026, from the Jira pull for the week ending 30 Oct.*
+*Status on 2 Nov 2026, from the Jira pull for the week ending 30 Oct.*
 
-> **Example content.** The projects, figures and decisions below are fictional and match the
-> demo data in `seed_demo_db.py`. Use this as a template for briefing leadership on the
-> dashboard itself: what it measures, how, and what you need from them.
+> Example content. The projects, figures and decisions on this page are fictional. They agree
+> with the demo data in `seed_demo_db.py`. Use this page as a template to brief leadership on
+> the dashboard itself: what it measures, how it measures, and what you need from them.
 
 ## In one paragraph
 
-The Automation & Margin dashboard now reads its numbers straight from Jira, with no manual
-data entry. Three changes make it a more reliable picture of where delivery stands.
-**Milestones are tracked by Jira label**, so each milestone has its own progress figure.
-**"% complete" now gives partial credit** for work that is under way, not only for finished
-work. **The "Steps to target" line** now names the work closest to done, or the team's own
-sprint goal. The pull is automated and can run every weekday. The shared dashboard still
-moves forward once a week, when that week's numbers are signed off.
+The Automation & Margin dashboard now reads its numbers directly from Jira, without manual data
+entry. Three changes make it a more reliable picture of the state of delivery. First, Jira
+labels track the milestones, so each milestone has its own progress figure. Second, "% complete"
+now gives partial credit for work in progress, not only for finished work. Third, the "Steps to
+target" line now names the work that is closest to done, or the sprint goal of the team. The
+pull is automatic and can run each weekday. The shared dashboard still moves forward once a
+week, when somebody signs off the numbers of that week.
 
 ---
 
@@ -26,63 +26,62 @@ moves forward once a week, when that week's numbers are signed off.
 | Payer Policy Search | 91.5% | +6.5 | +0.7 | On Track |
 | Data Platform Foundation | 47.2% | +2.2 | +3.7 | On Track |
 | Intake Document Classification | 53.4% | −6.6 | +3.0 | At Risk |
-| Operator Workbench | 35.5% | −19.5 | +2.1 | **Off Track** |
+| Operator Workbench | 35.5% | −19.5 | +2.1 | Off Track |
 
-- **Claims Follow-Up Automation** made the most progress this week.
-- **Operator Workbench** needs a decision. Two engineers were reassigned to incident work
-  and velocity is down for two sprints. Either the target date moves or the team is
-  backfilled.
-- The three **manually tracked projects** (Prior-Auth Assistant, Long-Term Care Onboarding,
-  Practice System Integrations) have no Jira board yet, so their figures are self-reported.
-- There are 6 open blockers across the portfolio.
+- Claims Follow-Up Automation made the most progress this week.
+- Operator Workbench needs a decision. Two engineers moved to incident work, and velocity is
+  lower for two sprints. Either the target date moves, or new people join the team.
+- The three projects that people track by hand (Prior-Auth Assistant, Long-Term Care
+  Onboarding, Practice System Integrations) have no Jira board yet. Their teams report their
+  own figures.
+- The portfolio has 6 open blockers.
 
 ---
 
 ## 2. Daily updates from Jira
 
-**How it works today.** A scheduled job reads every active Jira board and records the result
-in the dashboard's database. Nobody has to type anything in. The job only reads from Jira and
-never changes anything there.
+How it works today: a scheduled job reads each active Jira board and records the result in the
+database of the dashboard. Nobody must type anything. The job only reads from Jira. It never
+changes anything there.
 
 | Stage | What happens | Who sees it |
 |---|---|---|
-| **Draft** | The week's numbers are pulled from Jira and can be re-pulled any number of times. Each re-pull replaces the previous one. | Review copy only |
-| **Locked** | The week is signed off and frozen as a permanent snapshot. It is never recalculated afterwards. | Everyone, on the shared dashboard |
+| Draft | The job pulls the numbers of the week from Jira. It can pull them again as many times as necessary. Each new pull replaces the pull before it. | Review copy only |
+| Locked | Somebody signs off the week, and it is frozen as a permanent snapshot. Nothing calculates it again after that. | Everyone, on the shared dashboard |
 
-**Why the shared dashboard stays weekly.** Week-on-week change is the trend leaders act on. If
-published numbers moved every day, last week's figure would no longer be a fixed point to
-compare against. Daily pulls give the team fresh numbers to work from, and the weekly lock
-keeps the history honest.
+Why the shared dashboard stays weekly: leaders act on the change from week to week. For this
+comparison, the figure of last week must be a fixed point. If the published numbers move each
+day, it is not fixed. Daily pulls give the team new numbers to work from, and the weekly lock keeps the
+history true.
 
-**One prerequisite before wider sharing.** The dashboard is a single file that contains all
-project data and has no login of its own. Hosting it as a website needs an access-controlled
-host.
+One condition before more people see it: the dashboard is a single file that holds all project
+data and has no login of its own. To host it as a website, you need a host with access control.
 
 ---
 
 ## 3. Tracking milestones with Jira labels
 
-Each milestone is a Jira label (for Data Platform Foundation, `MS1`–`MS4`). Any work item
-carrying the label counts toward that milestone, and the dashboard shows a separate progress
-figure for each one, next to the plain-English deliverable it stands for. Labelling an **epic**
-brings in **every item underneath it**.
+Each milestone is a Jira label (for Data Platform Foundation, `MS1`–`MS4`). Each work item with
+the label counts toward that milestone. The dashboard shows a separate progress figure for each
+milestone, next to the plain-English deliverable that it stands for. When you put a label on an
+epic, all items under the epic count.
 
-Two design choices protect the reading:
+Two design choices keep the figures correct:
 
-- **"Not labelled yet" is not the same as "0%".** If no Jira item carries a milestone's label,
-  the dashboard says so instead of showing 0%.
-- **Milestones are measured the same way as the project**, from the same items and rules, so
-  the two can be compared directly.
+- "Not labelled yet" is not the same as "0%". If no Jira item has the label of a milestone, the
+  dashboard says so. It does not show 0%.
+- The dashboard measures milestones in the same way as the project, from the same items and
+  rules. Thus you can compare the two directly.
 
-**Recommendation.** Ask each team to label its next two or three milestones, for the same
-early-warning view across the portfolio.
+Recommendation: ask each team to put labels on its next two or three milestones. Then the
+portfolio has the same early warning for each team.
 
 ---
 
 ## 4. How "% complete" is calculated
 
-% complete is weighted by effort: each work item counts in proportion to its story points.
-Work under way earns part of its effort:
+% complete is weighted by effort. Each work item counts in proportion to its story points. Work
+in progress gets part of its effort:
 
 | Jira status | Credit |
 |---|---:|
@@ -91,23 +90,23 @@ Work under way earns part of its effort:
 | In Progress | 50% |
 | Not started, Blocked, In QA | 0% |
 
-Boards that don't estimate effort fall back to counting finished items, so they don't read 0%.
+Boards that do not estimate effort count the finished items. Thus they do not show 0%.
 
-Three things to keep in mind:
+Remember these three points:
 
-1. **Changing the rule creates a one-time step** in the trend. Earlier weeks are not restated,
-   because Jira does not keep the status history needed to recalculate them.
-2. **Statuses Jira classes as completed count as 100%**, which can include "Won't Do" or work
-   awaiting acceptance testing. Decide deliberately whether that is what you want.
-3. **The credit levels are a reporting convention, not a measurement.** They are kept coarse on
-   purpose and are not adjusted to improve any project's status.
+1. A change to the rule causes a single step in the trend. The dashboard does not calculate the
+   earlier weeks again, because Jira does not keep the status history that is necessary for
+   this.
+2. The statuses that Jira classes as completed count as 100%. This can include "Won't Do", or
+   work that waits for acceptance testing. Decide on purpose if this is what you want.
+3. The credit levels are a reporting convention, not a measurement. They are coarse on purpose.
+   Nobody changes them to make the status of a project look better.
 
 ---
 
 ## 5. Decisions requested
 
-1. **Operator Workbench.** Move the target date or backfill the team.
-2. **Milestone labels.** Ask every team to label its upcoming milestones in Jira.
-3. **Sprint goals.** Ask every team to fill in the sprint goal field. It feeds the dashboard
-   directly.
-4. **Hosting.** Choose an access-controlled host before the dashboard is published as a website.
+1. Operator Workbench: move the target date, or add people to the team.
+2. Milestone labels: ask each team to put labels on its next milestones in Jira.
+3. Sprint goals: ask each team to fill in the sprint goal field. The dashboard uses it directly.
+4. Hosting: choose a host with access control before the dashboard is published as a website.

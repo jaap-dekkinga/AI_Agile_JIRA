@@ -1,7 +1,7 @@
-# Automation & Margin Dashboard — Weekly Runbook
+# Automation & Margin Dashboard: Weekly Runbook
 
-The dashboard is a single self-contained HTML file generated from a SQLite database. This
-runbook is how you update and publish it.
+The dashboard is a single self-contained HTML file that the scripts make from a SQLite
+database. This runbook tells you how to update and publish it.
 
 ## Mental model
 
@@ -11,60 +11,68 @@ Jira boards ──pull──► tracker.db (source of truth) ──build──�
                template2.html + *.py scripts
 ```
 
-- `tracker.db` holds all data. The **HTML is a frozen export**: send it to anyone and they
+- `tracker.db` holds all data. The HTML is a frozen export. When you send it to a person, they
   see that snapshot. It shows a "Snapshot generated …" date.
-- The dashboard shows **only locked weeks.** Each locked week is a frozen reporting snapshot.
-- Run everything below **from this folder**.
+- The dashboard shows only locked weeks. Each locked week is a frozen reporting snapshot.
+- Run all the commands on this page from this folder.
 
 ## Critical safety rules
 
-Once you have locked weeks with historical data:
+When you have locked weeks with historical data, obey these rules:
 
-1. ✅ **Do** use `weekly.py` (or `advance_week.py <date>`) for weekly updates. It creates a
-   NEW week with fresh Jira data and never touches prior locked weeks.
-2. ❌ **Don't** use `apply_pull.py` on locked weeks. Use it only on DRAFT weeks or during
-   initial setup, and always pass `--week YYYY-MM-DD`.
-3. ✅ **Do** keep backups. `weekly.py` copies `tracker.db` to `tracker.db.bak-*` before it
-   changes anything.
-4. ❌ **Don't** hand-edit locked weeks with SQL. Changing past data breaks week-over-week
-   tracking. To fix an error: restore from a backup, correct it in a draft, then lock.
+1. Use `weekly.py` (or `advance_week.py <date>`) for weekly updates. It makes a new week with
+   new Jira data, and never touches the locked weeks before it.
+2. Do not use `apply_pull.py` on locked weeks. Use it only on draft weeks or during the first
+   setup. Always give `--week YYYY-MM-DD`.
+3. Keep backups. `weekly.py` copies `tracker.db` to `tracker.db.bak-*` before it changes
+   anything.
+4. Do not edit locked weeks by hand with SQL. If you change past data, the trend from week to
+   week is wrong. To correct an error, restore a backup, correct the error in a draft, and then
+   lock the draft.
 
-**Why this matters:** locked weeks are the history used for trend analysis and executive
-reporting. Overwriting them destroys the audit trail.
+The locked weeks are the history for trend analysis and executive reporting. If you overwrite
+them, you destroy the audit trail.
 
 ---
 
 ## One-time setup
 
-### Path A — pure Python pull (recommended)
-1. Create a Jira API token: https://id.atlassian.com/manage-profile/security/api-tokens
-2. Copy `jira_config.example.json` → `jira_config.json` and fill in email, token and site
-   (or set `JIRA_EMAIL`, `JIRA_API_TOKEN`, `JIRA_SITE`). Keep it private.
-3. Test: `python pull_jira.py <KEY>` should write `_jira_<KEY>.json`.
+### Path A: pure Python pull (recommended)
 
-### Path B — AI-assistant pull (Atlassian MCP; optional)
-1. Connect the Atlassian MCP server in your assistant and authenticate.
-2. Ask it to "refresh `<KEY>`". It pulls via MCP and produces the same `_jira_<KEY>.json`.
+1. Make a Jira API token: https://id.atlassian.com/manage-profile/security/api-tokens
+2. Copy `jira_config.example.json` to `jira_config.json`. Fill in the email, the token and the
+   site, or set `JIRA_EMAIL`, `JIRA_API_TOKEN` and `JIRA_SITE`. Keep the file private.
+3. Do a test: `python pull_jira.py <KEY>` must write `_jira_<KEY>.json`.
 
-Both paths produce identical JSON, so they are interchangeable.
+### Path B: AI-assistant pull (Atlassian MCP, optional)
 
-### Path C — offline demo
-`python seed_demo_db.py`, then prefix any command with `JIRA_DEMO=1`. No account needed.
+1. Connect the Atlassian MCP server in your assistant and sign in.
+2. Ask the assistant to "refresh `<KEY>`". It pulls through MCP and makes the same
+   `_jira_<KEY>.json`.
+
+The two paths make the same JSON, so you can use either one.
+
+### Path C: offline demo
+
+Run `python seed_demo_db.py`. Then put `JIRA_DEMO=1` before each command. You do not need an
+account.
 
 ---
 
-## Weekly update (use this every week)
+## Weekly update (use this each week)
 
 ```bash
 python weekly.py 2026-11-06     # the week-ending Friday; omit it for the most recent Friday
 ```
 
-This pulls every live board into a new week, carries the other projects forward, locks the
-week, rebuilds the dashboard, regenerates `exec-talk-script.md` and prints a summary table.
+This command pulls each live board into a new week and carries the other projects forward.
+Then it locks the week, makes the dashboard again, makes `exec-talk-script.md` again, and
+prints a summary table.
 
-Lines marked **(REVIEW)** in the talk script are judgment calls to confirm before presenting.
+The talk script marks some lines with (REVIEW). These lines are judgment calls. Make sure that
+they are correct before you present.
 
-Optionally curate that week's "Steps to target", then rebuild:
+If you want, select the "Steps to target" for that week, and then build again:
 
 ```bash
 python candidates.py --week 2026-11-06 --project 5   # numbered epic menu
@@ -72,10 +80,12 @@ python set_steps.py 5 2026-11-06 4 1 3                # pick, in priority order
 python build_dashboard.py
 ```
 
-> `set_steps.py` refuses to write to a locked week. To curate before publishing, stage the
-> week as a draft first (`python weekly.py --no-lock`), curate, then lock.
+> `set_steps.py` refuses to write to a locked week. To select the steps before you publish,
+> stage the week as a draft first (`python weekly.py --no-lock`). Then select the steps, and
+> lock the week.
 
-View locally: `python -m http.server 8743` → http://localhost:8743/automation_margin_tracker_dashboard.html
+To look at the dashboard on your computer, run `python -m http.server 8743`. Then open
+http://localhost:8743/automation_margin_tracker_dashboard.html
 
 ---
 
@@ -90,54 +100,57 @@ python lock_week.py 2026-11-06          # 4. finalize (freezes the week)
 python weekly.py 2026-11-06             # 5. rebuild the shareable outputs
 ```
 
-- Draft weeks are hidden from the normal build; `--preview` (which `--no-lock` uses) shows
-  them and writes `_preview_dashboard.html`, never the shared file.
-- Re-pulling a draft **preserves** steps set with `set_steps.py` and epic tags (for
-  example `Onboarding`). It only refreshes "auto" steps.
+- The normal build does not show draft weeks. `--preview` (which `--no-lock` uses) shows them,
+  and writes `_preview_dashboard.html`. It never writes the shared file.
+- When you pull a draft again, the pull keeps the steps that you set with `set_steps.py` and
+  the epic tags (for example `Onboarding`). It changes only the "auto" steps.
 
 ---
 
 ## Adding a new Jira project
 
-1. Add a row to `projects` with the board's key in `jira_key`, or set it on an existing
-   mock project: `UPDATE projects SET jira_key='<KEY>' WHERE id=<id>;`
+1. Add a row to `projects`, with the key of the board in `jira_key`. Or set the key on a mock
+   project: `UPDATE projects SET jira_key='<KEY>' WHERE id=<id>;`
 2. Add the key to `ACTIVE_KEYS` in `config.py`.
-3. From the next `weekly.py` run it is pulled automatically. A board with no epics yet is
-   skipped quietly until its first epic lands.
+3. The next `weekly.py` run pulls the board automatically. If a board has no epics yet, the job
+   skips it without a message until its first epic exists.
 
-To retire a project, set `projects.active=0`. Don't remove its key from `ACTIVE_KEYS`.
+To retire a project, set `projects.active=0`. Do not remove its key from `ACTIVE_KEYS`.
 
 ---
 
-## Dates & weeks — quick reference
+## Dates & weeks: quick reference
 
-A **reporting week** is a labelled weekly bucket used for all slicing; **calendar dates** are
-real timestamps shown for audit and freshness and mapped *into* a reporting week.
+A reporting week is a labeled weekly bucket that the dashboard uses for all slicing. Calendar
+dates are real timestamps. The dashboard shows them for audit and freshness, and maps them
+*into* a reporting week.
 
 | Term | What it is | Example |
 |---|---|---|
-| **Reporting week** (`weeks.week`) | The week-ending Friday that names a reporting period; what the dropdown selects. | "Week ending 2026-10-30" |
-| **Locked week** (`state='locked'`) | A finalized reporting week — frozen and shown on the dashboard. | 2026-10-23 |
-| **Draft week** (`state='draft'`) | A week being prepared — hidden until locked. | a week staged with `--no-lock` |
-| **Selected week** | The week chosen in the dropdown; every figure renders "as of" it. | switch to 16 Oct → all figures reflect 16 Oct |
-| **Locked date** (`locked_at`) | Calendar day the week was finalized. Audit only. | week 10-30 locked_at 2026-11-02 |
-| **Barrier raised / resolved week** | Reporting week a blocker appeared / was cleared. | raised wk 10-09 → shows from 10-09 on |
-| **Target GA** (`target_ga`) | Project go-live date; drives "Days to GA". | 2026-12-18 |
-| **Snapshot generated** | When the HTML was built (footer). | "06 Nov 2026, 15:36" |
+| Reporting week (`weeks.week`) | The week-ending Friday that names a reporting period. The dropdown selects it. | "Week ending 2026-10-30" |
+| Locked week (`state='locked'`) | A finalized reporting week. It is frozen, and the dashboard shows it. | 2026-10-23 |
+| Draft week (`state='draft'`) | A week in preparation. It stays hidden until you lock it. | A week staged with `--no-lock` |
+| Selected week | The week that you choose in the dropdown. Each figure shows the values "as of" that week. | Select 16 Oct, and all figures show 16 Oct |
+| Locked date (`locked_at`) | The calendar day on which the week was finalized. For audit only. | Week 10-30, locked_at 2026-11-02 |
+| Barrier raised / resolved week | The reporting week in which a blocker started, or was removed. | Raised in week 10-09, shown from 10-09 |
+| Target GA (`target_ga`) | The go-live date of the project. "Days to GA" comes from it. | 2026-12-18 |
+| Snapshot generated | The time when the HTML was built (in the footer). | "06 Nov 2026, 15:36" |
 
 ## Key concepts
 
-- **% complete** = story-point-weighted credit ÷ total across epic-linked children.
-  **Unpointed stories and orphan (no-epic) issues are invisible to it**: point and link them
-  in Jira to close that blind spot.
-- **Steps to target:** `steps_source` is 'auto' (regenerated each pull: the epics closest to
-  done, or the sprint goal) or 'manual' (your picks via `set_steps.py`).
-- **Barrier log:** tied to the selected week. A blocker shows once its raised week is
-  reached and flips to Resolved when its resolved week passes.
+- % complete = the credit, weighted by story points, divided by the total, across the children
+  that are linked to an epic. It does not see stories without points or issues without an
+  epic. Give them points and link them in Jira, so that the dashboard sees them.
+- Steps to target: `steps_source` is 'auto' or 'manual'. 'auto' is made again at each pull,
+  from the epics that are closest to done or from the sprint goal. 'manual' is your choice,
+  made with `set_steps.py`.
+- Barrier log: it follows the selected week. A blocker shows from its raised week. It changes
+  to Resolved after its resolved week.
 
 ## Housekeeping
 
-- To revert, copy a `tracker.db.bak-*` backup over `tracker.db` and rebuild.
-- Temporary `_jira_*.json` pull files are safe to delete after applying.
-- **Sharing:** the HTML embeds all data and has no access control. Share it through an
-  access-controlled location, and re-upload after each build.
+- To go back to an earlier state, copy a `tracker.db.bak-*` backup over `tracker.db` and build
+  again.
+- After you apply them, you can delete the temporary `_jira_*.json` pull files.
+- Sharing: the HTML holds all data and has no access control. Share it through a location with
+  access control, and upload it again after each build.

@@ -1,80 +1,91 @@
 ---
 name: continuous-improvement
-description: Keep the team's improvement register (docs/continuous-improvement.md). Use to add an improvement from a retrospective or a conversation, to review the register before a retrospective, to close an item as adopted or dropped, or to list what the team is trying now.
+description: Keep the improvement register of the team (docs/continuous-improvement.md). Use it to add, review, close or list CI-NNN improvement items, for example before or after a retrospective.
 ---
 
 # Continuous improvement
 
 The register is `docs/continuous-improvement.md`. Read it before you change it. It holds
-`CI-NNN` items: a row in **All items**, a row in **Trying now** while the item is Trying, and a
-section with the item's fields. It also holds the **Working agreements** table.
+`CI-NNN` items. Each item has a row in the All items table and a section with its fields. While
+an item is Trying, it also has a row in the Trying now table. The register also holds the
+Working agreements table.
 
-You keep the record. People decide. Never adopt, drop or start an item on your own judgment.
-Do it only when the person says the team decided it.
+You keep the record, and people decide. Never adopt, drop or start an item on your own
+judgment. Do it only when the person tells you that the team decided it.
 
-## Rules that always apply
+## Rules for each task
 
-- Ids are stable. Take the highest `CI-NNN` in the file and add one. Never renumber, reuse or
-  delete an item. A duplicate is dropped with "Duplicate of CI-NNN" as its result.
-- Every item has one named owner. If nobody is named, ask who owns it.
-- A Trying item has an experiment, a measure and a **Review by** sprint. A measure is a number
-  or a sign anyone can check. If the person gives a feeling ("standups feel better"), offer one
-  checkable measure and ask them to confirm it.
-- At most three items are Trying. If a fourth would start, say so and add it as Proposed.
-- Sprints are named by their start date (`sprint 2026-11-09`). Sprints are two weeks long.
-- No PHI, client names, secrets or Jira keys from other projects in the file.
+- Ids are stable. To get a new id, take the highest `CI-NNN` in the file and add one. Never
+  renumber, use again or delete an item. Drop a duplicate with the result "Duplicate of
+  CI-NNN".
+- Each item has one named owner. If the person names nobody, ask who owns it.
+- A Trying item has an experiment, a measure and a Review by sprint. A measure is a number or a
+  sign that anyone can examine. If the person gives a feeling ("standups feel better"), propose
+  one measure that anyone can examine. Ask the person to agree to it.
+- At most three items are Trying. If a fourth item is about to start, tell the person, and add
+  the item as Proposed.
+- Each sprint has the name of its start date (`sprint 2026-11-09`). A sprint is two weeks long.
+- Do not put PHI, client names, secrets or Jira keys from other projects in the file.
 - Leave your change in the working tree for the repository owner to review and commit. Never
-  commit or push.
-- Write plain, short sentences, in the style of the rest of the file.
+  commit and never push.
+- Write the text with the simple-english skill (`.claude/skills/simple-english/SKILL.md` at
+  the root of the repository). Use the style of the rest of the file.
+- Write a status as one word: Proposed, Trying, Adopted or Dropped. Add the date for Adopted
+  and Dropped: `Adopted (2026-11-20)`.
 
 ## Add an item
 
-Use when the person says "add an improvement", "log this for the retro", or gives retro notes.
+Do this task when the person says "add an improvement" or "log this for the retro", or gives
+you retrospective notes.
 
-1. From the notes, take one item per change the team agreed to try. Skip complaints with no
-   agreed change. List them back to the person in one line each, and ask which to add if the
-   notes are unclear.
-2. For each item, fill: improvement (one line), source (the retro, by sprint start date, or the
-   person and date), owner, experiment, measure, review by. A field nobody gave you is "not set
-   yet", and the item stays Proposed.
-3. Add the row to **All items**, the section after the last item, and a row to **Trying now**
-   if it is Trying.
-4. If the item needs build work, say it needs a roadmap story. If it needs a Jira setting
-   changed, say it needs a Jira Task in the CDD Framework epic. Do not create either unless
-   asked.
+1. From the notes, take one item for each change that the team agreed to try. Ignore
+   complaints without an agreed change. Give the items back to the person, one line each. If
+   the notes are not clear, ask which items to add.
+2. For each item, fill in these fields: the improvement (one line), the source, the owner, the
+   experiment, the measure and the Review by sprint. The source is the retrospective, by the
+   start date of its sprint, or the person and the date. If nobody gave you a field, write "not
+   set yet" and keep the item as Proposed.
+3. Add the row to the All items table. Add the section after the section of the last item. If
+   the item is Trying, add a row to the Trying now table.
+4. If the item needs build work, tell the person that it needs a roadmap story. If it needs a
+   change to a Jira setting, tell the person that it needs a Jira Task in the CDD Framework
+   epic. Do not make the story or the Task unless the person asks you to.
 
 ## Review before a retrospective
 
-Use when the person says "review the register", "what's due at the retro", or "prep the retro".
-Change nothing. Report, in this order:
+Do this task when the person says "review the register", "what is due at the retro" or "prep
+the retro". Do not change the file. Give a report in this order:
 
-1. **Due this retrospective:** each Trying item whose Review by is the current sprint or
-   earlier. Give its measure and anything the person told you about how it went. Ask them to
-   bring the evidence.
-2. **Overdue:** items past their Review by sprint. These should be decided first.
-3. **Missing a measure or an owner:** Trying items that can't be judged as they stand.
-4. **Waiting:** Proposed items, oldest first, and how many Trying slots are free (3 minus the
-   number Trying).
+1. Due at this retrospective: each Trying item whose Review by is the current sprint or an
+   earlier sprint. Give its measure, and what the person told you about the result. Ask the
+   person to bring the evidence.
+2. Overdue: items whose Review by sprint is in the past. The team decides these items first.
+3. No measure or no owner: Trying items that the team cannot judge in their current form.
+4. Waiting: Proposed items, the oldest first. Also give the number of free Trying places (3
+   minus the number of Trying items).
 
-Keep it short enough to read aloud at the start of the meeting.
+Keep the report short enough to read aloud at the start of the meeting.
 
 ## Close an item
 
-Use when the person says an item is adopted, dropped or extended.
+Do this task when the person says that the team adopted, dropped or extended an item.
 
-- **Adopted:** set the status to `✅ Adopted (YYYY-MM-DD)` in **All items**, remove it from
-  **Trying now**, and write the **Result**: what the measure showed. Then make the change it
-  adopts in the same working tree: a line in `docs/agile-practices.md`, a row in **Working
-  agreements**, or a line in `CLAUDE.md`. Ask which, if it isn't clear. The item's result names
-  where the change went.
-- **Dropped:** set `✖ Dropped (YYYY-MM-DD)`, remove it from **Trying now**, and write the result
-  and the reason. A dropped item is a lesson, so say what was learned.
-- **Extended:** move **Review by** one sprint later and add ", extended once". An item may be
-  extended only once. A second extension is a decision to adopt or drop, so ask for it.
-- **Started:** a Proposed item moves to Trying only with an experiment, a measure and a review
-  sprint, and only when fewer than three items are Trying.
+- Adopted: set the status to `Adopted (YYYY-MM-DD)` in the All items table. Remove the row
+  from the Trying now table. Write the Result: what the measure showed. Then make the change
+  that the item adopts, in the same working tree. This can be a line in
+  `docs/agile-practices.md`, a row in the Working agreements table, or a line in `CLAUDE.md`.
+  If the place is not clear, ask the person. The result of the item names the place of the
+  change.
+- Dropped: set the status to `Dropped (YYYY-MM-DD)`. Remove the row from the Trying now table.
+  Write the result and the reason. A dropped item is a lesson, so write what the team learned.
+- Extended: move the Review by sprint one sprint later and add ", extended once". The team can
+  extend an item only once. A second extension is a decision to adopt or to drop, so ask the
+  person for that decision.
+- Started: a Proposed item becomes Trying only when it has an experiment, a measure and a
+  Review by sprint. Fewer than three items must be Trying at that time.
 
-## Show what we are trying
+## Show what the team tries
 
-Use when the person asks "what are we trying", "status of improvements" or similar. List the
-Trying items: id, improvement, owner, review sprint. One line each. Change nothing.
+Do this task when the person asks "what are we trying" or "status of improvements". List the
+Trying items: id, improvement, owner and Review by sprint. Give one line for each item. Do not
+change the file.

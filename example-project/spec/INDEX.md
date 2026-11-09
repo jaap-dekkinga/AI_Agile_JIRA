@@ -1,8 +1,8 @@
 # Spec index
 
-Rules live one file per area, each rule with a stable `area-NNN` id that tests cite
-(`// SPEC: spec/eligibility.md#eligibility-006`). Ids are never renumbered; a retired rule leaves
-a one-line note.
+The rules are in one file for each area. Each rule has a stable `area-NNN` id that tests cite
+(`// SPEC: spec/eligibility.md#eligibility-006`). We never renumber ids. A retired rule leaves a
+note of one line.
 
 | Area | File | In this example |
 |---|---|---|
