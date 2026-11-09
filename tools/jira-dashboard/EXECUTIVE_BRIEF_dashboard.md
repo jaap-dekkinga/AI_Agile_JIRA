@@ -29,7 +29,7 @@ week, when somebody approves the numbers of that week.
 | Operator Workbench | 35.5% | −19.5 | +2.1 | Off Track |
 
 - Claims Follow-Up Automation made the most progress this week.
-- Operator Workbench needs a decision. Two engineers moved to incident work, and velocity is
+- Operator Workbench needs a decision. Two engineers moved to incident work, and throughput is
   lower for two sprints. Either the target date moves, or new people join the team.
 - The three projects that people track by hand (Prior-Auth Assistant, Long-Term Care
   Onboarding, Practice System Integrations) have no Jira board yet. Their teams report their
@@ -80,8 +80,8 @@ portfolio has the same early warning for each team.
 
 ## 4. How "% complete" is calculated
 
-% complete is weighted by effort. Each work item counts in proportion to its story points. Work
-in progress gets part of its effort:
+% complete counts work items. Our teams use #NoEstimates, so each item counts once. A board that
+records story points counts each item by its points. Work in progress gets part of its credit:
 
 | Jira status | Credit |
 |---|---:|
@@ -89,8 +89,6 @@ in progress gets part of its effort:
 | In Review | 75% |
 | In Progress | 50% |
 | Not started, Blocked, In QA | 0% |
-
-Boards that do not estimate effort count the finished items. Thus they do not show 0%.
 
 Remember these three points:
 

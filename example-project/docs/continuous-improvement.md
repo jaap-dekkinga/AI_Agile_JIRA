@@ -52,7 +52,7 @@ An item has one of four statuses: Proposed, Active, Adopted or Stopped.
 | Id | Improvement | Source | Owner | Status |
 |---|---|---|---|---|
 | [CI-001](#ci-001) | Demo from `main` only, never from a branch | Retro 2026-09-25 | Lead Architect | Adopted (2026-10-09) |
-| [CI-002](#ci-002) | Split stories of more than 5 points before refinement, not during refinement | Retro 2026-09-25 | PM lead | Stopped (2026-10-23) |
+| [CI-002](#ci-002) | Split stories that are too large for one sprint before refinement, not during refinement | Retro 2026-09-25 | PM lead | Stopped (2026-10-23) |
 | [CI-003](#ci-003) | Raise each proposed sprint change at the standup, not in a private chat | Retro 2026-10-09 | PM lead | Adopted (2026-10-23) |
 | [CI-004](#ci-004) | Refine to two sprints of Ready stories, not one | Retro 2026-10-23 | PM lead | Active |
 | [CI-005](#ci-005) | Post blockers in the team channel when they start | Retro 2026-10-23 | Engineering | Active |
@@ -75,12 +75,12 @@ Demo from `main` only, never from a branch. Status: Adopted.
 
 ### CI-002
 
-Split stories of more than 5 points before refinement, not during refinement. Status: Stopped.
+Split stories that are too large for one sprint before refinement, not during refinement. Status: Stopped.
 
 - Source: the retro of sprint 2026-09-14. Refinement used more than its hour two times.
 - Owner: PM lead
-- Experiment: before the session, the PM splits each story with an estimate of more than 5
-  points.
+- Experiment: before the session, the PM splits each story that looks too large for one
+  sprint.
 - Measure: refinement ends in its hour.
 - Review by: sprint 2026-10-12, extended once
 - Result: stopped. Splits that the PM made without the engineers were often wrong, and the team
@@ -107,7 +107,7 @@ Refine to two sprints of Ready stories, not one. Status: Active.
 
 - Source: the retro of sprint 2026-10-12. The team had no more Ready work on day 8.
 - Owner: PM lead
-- Experiment: keep Ready story points equal to two sprints of capacity. Examine the number at
+- Experiment: keep the number of Ready stories equal to two sprints of capacity. Examine the number at
   each refinement session.
 - Measure: for three sprints in a row, each engineer has Ready work until day 10.
 - Review by: sprint 2026-11-23

@@ -54,6 +54,8 @@ today.
 |---|---|---|---|
 | Leadership: product direction and goals | Roadmap, blocking questions, decisions | Direction, and answers to questions across teams | [Roadmap](PROJECT_ROADMAP.md) · [Blocking now](docs/platform/open-questions.md#blocking-now) |
 | Product Management: requirements, priorities, timeline, domain answers, the backlog | Roadmap, open questions, glossary, rules | Clear questions, slices, refined stories, the domain meaning of terms and rules | [Roadmap](PROJECT_ROADMAP.md) · [Open questions](docs/platform/open-questions.md) · [Glossary](spec/glossary.md) · [Agile practices](docs/agile-practices.md) |
+| Product Owner: epics, stories, priority, acceptance | Roadmap, glossary, the INVEST rubric | Epics and stories with acceptance criteria, and answers to TBD questions | [Story template](../skills/scrum-master/references/story-template.md) · [INVEST rubric](../skills/scrum-master/references/invest-rubric.md) |
+| Scrum Master: meetings, impediments, backlog readiness, status | Agile practices, open questions, the dashboard, the weekly report | Refinement notes, sprint plans, the improvement register, the weekly status | [Agile practices](docs/agile-practices.md) · [Scrum Master skill](../skills/scrum-master/SKILL.md) |
 | Lead Architect: stack, architecture, standards | Decisions, architecture rules | ADRs, technical terms, conventions | [Decisions](docs/adr/README.md) · [Conventions](CLAUDE.md) |
 | Software Developer: you build features | The spec area for your slice, conventions | Rules, tests, code, and findings on open questions | [Spec index](spec/INDEX.md) · [Conventions](CLAUDE.md) |
 

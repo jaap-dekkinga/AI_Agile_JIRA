@@ -9,7 +9,7 @@ The repository has three parts:
 | Folder | What it is | Start with |
 |---|---|---|
 | [`example-project/`](example-project/) | A full Context Driven Development (CDD) setup for a fictional product. It holds the method, the sprint rhythm, a roadmap that is mirrored into Jira, an open-questions register, a decision log, an improvement register, a glossary, a spec area and the conventions file that an AI coding assistant reads. Copy it as a template. | [START_HERE.md](example-project/START_HERE.md) |
-| [`tools/jira-dashboard/`](tools/jira-dashboard/) | A small Python tool. Each week, it gets epics and story points from Jira and freezes the week as a snapshot. Then it makes a self-contained HTML portfolio dashboard and a script for the executive briefing. It can operate offline on demo data. | [README.md](tools/jira-dashboard/README.md) |
+| [`tools/jira-dashboard/`](tools/jira-dashboard/) | A small Python tool. Each week, it gets epics and their stories from Jira and freezes the week as a snapshot. Then it makes a self-contained HTML portfolio dashboard and a script for the executive briefing. It can operate offline on demo data. | [README.md](tools/jira-dashboard/README.md) |
 | [`tools/ai-scrum-master/`](tools/ai-scrum-master/) | Four routines that an AI assistant operates for a team on a schedule: a weekly Scrum Master report (board hygiene, sprint burndown, metrics, improvements and blockers), a Definition of Ready check, retrospective follow-up and the weekly dashboard. Each routine reports or proposes, and a person approves. They operate as Claude Code scheduled tasks, or as [Conductor](https://github.com/shannonbay/Conductor) goals with a level of autonomy for each kind of action. | [README.md](tools/ai-scrum-master/README.md) |
 
 ## The ideas in one minute
@@ -19,15 +19,16 @@ The repository has three parts:
   pull request changes it. People and AI assistants use the same context.
   → [context-driven-development.md](example-project/docs/context-driven-development.md)
 - The roadmap leads, and Jira follows. The team writes stories in `PROJECT_ROADMAP.md` with
-  stable ids, then mirrors them into Jira. Jira owns rank, points, sprint and assignee. The
+  stable ids, then mirrors them into Jira. Jira owns rank, sprint and assignee. The
   repository owns the text and the status of each story.
   → [PROJECT_ROADMAP.md#jira](example-project/PROJECT_ROADMAP.md#jira)
 - A refined story meets the Definition of Ready: a clear title, explicit value for the user,
   detailed acceptance criteria, a size of one sprint or less, listed dependencies and no
   blockers. Engineering decides by consensus what a sprint includes.
   → [agile-practices.md](example-project/docs/agile-practices.md)
-- Report from Jira, and freeze every week. Progress is weighted by story points, with partial
-  credit for work in progress. Each reporting week is locked, so the trend cannot change later.
+- Report from Jira, and freeze every week. Progress counts the Done stories, with partial credit
+  for work in progress. The team uses #NoEstimates, so it does not use story points. Each
+  reporting week is locked, so the trend cannot change later.
   → [tools/jira-dashboard](tools/jira-dashboard/)
 - Close the loop on retrospectives. Each improvement that the team tries is a `CI-NNN` item with
   an owner, an experiment and a measure. The next retrospective decides if it was successful.

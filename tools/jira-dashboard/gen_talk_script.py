@@ -86,7 +86,7 @@ L.append("> A script makes this file from tracker.db. A `[SHOW: …]` cue tells 
 
 L.append("## 1 · Portfolio summary\n`[SHOW: Portfolio Overview]`")
 L.append(f"- {rag_ct['On Track']} On Track · {rag_ct['At Risk']} At Risk · {rag_ct['Off Track']} Off Track, across {len(P)} projects.")
-L.append(f"- {len(live)} projects get their data from Jira. Their average is {avg_live}% complete, weighted by story points.")
+L.append(f"- {len(live)} projects get their data from Jira. Their average is {avg_live}% complete.")
 if not movers:
     L.append("- This is the first locked baseline that you can trust. The change from last week shows 0. Real changes start next week.\n")
 else:
@@ -95,9 +95,9 @@ else:
 if movers:
     L.append("## 2 · Largest changes this week\n`[SHOW: trajectory chart]`")
     for x in gain:
-        L.append(f"- {x['name']}: {x['wow']:+} points, to {x['pct']}%.")
+        L.append(f"- {x['name']}: {x['wow']:+} percentage points, to {x['pct']}%.")
     for x in drop:
-        L.append(f"- {x['name']}: {x['wow']:+} points, to {x['pct']}%. *(REVIEW: say why.)*")
+        L.append(f"- {x['name']}: {x['wow']:+} percentage points, to {x['pct']}%. *(REVIEW: say why.)*")
     L.append("")
 
 L.append("## 3 · Status of each initiative\n`[SHOW: project table]`\n")
@@ -143,7 +143,7 @@ if asks:
         L.append(f"{i}. {a}")
 else:
     L.append("- _The script has no requests to propose. Add your own._")
-L.append("- Standing request: each team gives story points to its Jira stories. Without points, these numbers are not correct.\n")
+L.append("- Standing request: each team links each Jira story to its epic. These numbers do not include a story without an epic.\n")
 
 L.append("## 7 · How we make this report")
 L.append("> The data comes directly from Jira. We lock each week, so the history cannot change. "
@@ -151,8 +151,8 @@ L.append("> The data comes directly from Jira. We lock each week, so the history
 L.append("`[SHOW: KPI Glossary → Dates & reporting weeks]`\n")
 
 L.append("### Appendix: questions and answers")
-L.append("- Why can a number be lower than in an earlier week? The % does not include Jira stories without points. "
-         "When teams give points to their backlog, the % includes all the work. The number is more correct, and sometimes lower.")
+L.append("- Why can a number be lower than in an earlier week? The % includes only the Jira stories that are linked to an epic. "
+         "When a team adds stories to an epic, the % includes more work. The number is more correct, and sometimes lower.")
 L.append("- Why do some projects show no change from last week? " + ("This is the first baseline that you can trust. Changes start next week." if not movers else "Their numbers did not change this week, or their teams report them by hand. Section 2 gives the largest changes."))
 L.append("- Is it live? No. It is a weekly locked snapshot, not a live feed. Thus it is stable, and you can audit it. The footer shows when the file was made.")
 

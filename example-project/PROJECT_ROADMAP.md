@@ -28,7 +28,7 @@ pull request, merged to `main` in a few days. There are no slice branches that s
 long time. The team plans work in two-week sprints. A story can be in a sprint only after it is
 refined. It must meet the
 [Definition of Ready](docs/agile-practices.md#definition-of-ready). The sprint meetings and
-estimation are in [docs/agile-practices.md](docs/agile-practices.md).
+the story size are in [docs/agile-practices.md](docs/agile-practices.md).
 
 Story columns: a story that is not done has four columns in addition to its status:
 
@@ -103,8 +103,8 @@ them.
   stories has a Jira column, which holds the Task of the story.
 - Who owns what: this file owns the summary, the description, the epic, the labels, the
   *blocks* links (from Needs) and the status of a Task. The status only changes to a later status. ⬜, ⛔
-  and ⏸ are To Do, 🟡 is In Progress, and ✅ is Done. Jira owns the assignee, sprint, story
-  points, dates, priority, rank and comments, and the sync never writes them. Change the
+  and ⏸ are To Do, 🟡 is In Progress, and ✅ is Done. Jira owns the assignee, sprint,
+  dates, priority, rank and comments, and the sync never writes them. Change the
   description of a Task here, not in Jira, because the next sync overwrites it.
 - How to do the work of a story: take the Task on the board, and name the branch
   `HCA-123-s6-03-short-name`. Put both ids in the PR title (`… (S6-03, HCA-123)`), and the spec
