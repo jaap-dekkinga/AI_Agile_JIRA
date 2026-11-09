@@ -1,52 +1,39 @@
 # AI · Agile · Jira
 
-A **Scrum Master skill** for Claude, plus the playbook and tooling behind it. It helps a Scrum
-Master run a team's backlog and sprints, and helps the Product Owner write epics and stories in
-Jira that meet the **INVEST** criteria, each rated **Low**, **Good** or **TBD**. It also tracks
-milestones and sprints and publishes a weekly status dashboard. Nothing is written to Jira
-without your approval of a preview.
+This repository is a working playbook for software delivery with AI assistants, two-week Agile
+sprints and Jira. Its main rule is that the repository is the source of truth, and Jira follows
+it.
+
+The repository has three parts:
 
 | Folder | What it is | Start with |
 |---|---|---|
-| [`skills/scrum-master/`](skills/scrum-master/) | The skill: workflows for refinement, story writing, sprint planning, retros, milestones and weekly status; the INVEST rubric and templates; an INVEST checker and sprint analytics scripts. | [SKILL.md](skills/scrum-master/SKILL.md) |
-| [`commands/`](commands/) | Slash commands: `/refine`, `/new-story`, `/plan-sprint`, `/retro`, `/weekly-status`. | — |
-| [`tools/jira-dashboard/`](tools/jira-dashboard/) | Weekly Jira pull, frozen weekly snapshots, the HTML status dashboard and an exec briefing. Runs offline on demo data. | [README.md](tools/jira-dashboard/README.md) |
-| [`example-project/`](example-project/) | A complete Context Driven Development example for a fictional product: the method, sprint practices, a roadmap mirrored into Jira, open questions, decisions and a glossary. | [START_HERE.md](example-project/START_HERE.md) |
-
-## Install
-
-The repository is a Claude plugin (`.claude-plugin/plugin.json`).
-
-- **Claude Code:** add this repository as a plugin, or copy `skills/scrum-master/` into your
-  `~/.claude/skills/` folder.
-- **Claude (desktop or web):** zip the repository and upload it as a plugin under Customize →
-  Plugins, or zip `skills/scrum-master/` on its own and upload it as a skill.
-- **Jira:** connect the Atlassian connector for reading and writing. Without it the skill reads
-  through the REST scripts with an API token, or runs on demo data.
-
-Rate the sample backlog to see the INVEST check:
-
-```bash
-python skills/scrum-master/scripts/invest_check.py skills/scrum-master/assets/sample_stories.json
-python -m pytest -q tests      # the test suite
-```
+| [`example-project/`](example-project/) | A full Context Driven Development (CDD) setup for a fictional product. It holds the method, the sprint rhythm, a roadmap that is mirrored into Jira, an open-questions register, a decision log, an improvement register, a glossary, a spec area and the conventions file that an AI coding assistant reads. Copy it as a template. | [START_HERE.md](example-project/START_HERE.md) |
+| [`tools/jira-dashboard/`](tools/jira-dashboard/) | A small Python tool. Each week, it gets epics and story points from Jira and freezes the week as a snapshot. Then it makes a self-contained HTML portfolio dashboard and a script for the executive briefing. It can operate offline on demo data. | [README.md](tools/jira-dashboard/README.md) |
+| [`tools/ai-scrum-master/`](tools/ai-scrum-master/) | Four routines that an AI assistant operates for a team on a schedule: a weekly Scrum Master report (board hygiene, sprint burndown, metrics, improvements and blockers), a Definition of Ready check, retrospective follow-up and the weekly dashboard. Each routine reports or proposes, and a person approves. They operate as Claude Code scheduled tasks, or as [Conductor](https://github.com/shannonbay/Conductor) goals with a level of autonomy for each kind of action. | [README.md](tools/ai-scrum-master/README.md) |
 
 ## The ideas in one minute
 
-- **The spec is the context.** What the project knows (direction, open questions, decisions,
-  vocabulary, rules) is written down in the repo *before* it is built, and changed only by
-  reviewed pull request. People and AI assistants work from the same context.
+- The spec is the context. The project writes down what it knows (direction, open questions,
+  decisions, vocabulary, rules) in the repository before anyone builds it. Only a reviewed
+  pull request changes it. People and AI assistants use the same context.
   → [context-driven-development.md](example-project/docs/context-driven-development.md)
-- **The roadmap leads; Jira follows.** Stories are written in `PROJECT_ROADMAP.md` with
-  stable ids, then mirrored into Jira. Jira owns rank, points, sprint and assignee; the repo
-  owns the story's text and status.
+- The roadmap leads, and Jira follows. The team writes stories in `PROJECT_ROADMAP.md` with
+  stable ids, then mirrors them into Jira. Jira owns rank, points, sprint and assignee. The
+  repository owns the text and the status of each story.
   → [PROJECT_ROADMAP.md#jira](example-project/PROJECT_ROADMAP.md#jira)
-- **A refined story is one whose context is written.** The Definition of Ready reads like a
-  CDD checklist, and Engineering decides what enters a sprint, by consensus.
+- A refined story meets the Definition of Ready: a clear title, explicit value for the user,
+  detailed acceptance criteria, a size of one sprint or less, listed dependencies and no
+  blockers. Engineering decides by consensus what a sprint includes.
   → [agile-practices.md](example-project/docs/agile-practices.md)
-- **Report from Jira, freeze every week.** Progress is story-point-weighted with partial
-  credit for work in flight, and each reporting week is locked so the trend can't drift.
+- Report from Jira, and freeze every week. Progress is weighted by story points, with partial
+  credit for work in progress. Each reporting week is locked, so the trend cannot change later.
   → [tools/jira-dashboard](tools/jira-dashboard/)
+- Close the loop on retrospectives. Each improvement that the team tries is a `CI-NNN` item with
+  an owner, an experiment and a measure. The next retrospective decides if it was successful.
+  At this time, the Scrum Master keeps the register in a local file. The repository gives its
+  format.
+  → [continuous-improvement.md](example-project/docs/continuous-improvement.md)
 
 ## Try the dashboard
 
@@ -57,15 +44,22 @@ JIRA_DEMO=1 python weekly.py 2026-11-06
 python -m http.server 8743   # → http://localhost:8743/automation_margin_tracker_dashboard.html
 ```
 
-Python 3.9+, standard library only. A pre-built output is in
+You need Python 3.9 or later, with the standard library only. A pre-built output is in
 [`tools/jira-dashboard/samples/`](tools/jira-dashboard/samples/).
+
+## Writing style
+
+All documentation, READMEs and skills in this repository obey the Strict mode of the
+[simple-english skill](.claude/skills/simple-english/SKILL.md). The rules of this skill come from
+ASD-STE100 Simplified Technical English. If you write or change a document here, apply the skill
+before you open the pull request. [CLAUDE.md](CLAUDE.md) gives the same rule to AI assistants.
 
 ## About the content
 
 All products, companies, projects, objectives, people, Jira keys, dates and figures in this
-repository are **fictional**. Organisation-specific names have been replaced with
-`[placeholder]`. Real industry vocabulary (for example the X12 healthcare transactions in the
-example glossary) is used as-is.
+repository are fictional. We replaced the names that belong to a real organization with
+`[placeholder]`. We use real industry vocabulary as it is, for example the X12 healthcare
+transactions in the example glossary.
 
 ## License
 

@@ -1,28 +1,29 @@
-# CLAUDE.md — Harbor Claims Assistant (example)
+# CLAUDE.md: Harbor Claims Assistant (example)
 
-Guidance for AI coding assistants working in this repository.
+Instructions for AI coding assistants that do work in this repository.
 
-> **Example content.** This is the assistant-conventions file of the fictional product
-> described in [START_HERE.md](START_HERE.md). It shows what a CDD project tells an AI
-> assistant: where the context lives, which conventions are enforced by tests, and how work
-> is tied back to roadmap stories and Jira. Module paths and commands are illustrative.
+> Example content. This file gives the assistant conventions of the fictional product that
+> [START_HERE.md](START_HERE.md) describes. It shows what a CDD project tells an AI assistant:
+> where the context is, which conventions the tests enforce, and how each change connects to
+> roadmap stories and Jira. The module paths and the commands are examples only.
 
 ## What this is
 
-A **product**, not a client solution: deterministic claim-status and denial recommendations
-(engines and industry standards in the Core) configured per client through a **client pack**
-(`clients/<client>/`). `spec/glossary.md` fixes the vocabulary (Claim, Payer, PMS, Client Pack,
-Recommendation, Evidence, Confidence). `PROJECT_ROADMAP.md` says which slice is in progress.
+Harbor Claims Assistant is a product, not a solution for one client. It gives deterministic
+recommendations for claim status and denials. The engines and the industry standards are in
+the Core. A client pack (`clients/<client>/`) holds the configuration for each client.
+`spec/glossary.md` sets the vocabulary (Claim, Payer, PMS, Client Pack, Recommendation,
+Evidence, Confidence). `PROJECT_ROADMAP.md` shows which slice is in progress.
 
-The repository follows **Context Driven Development**
-(`docs/context-driven-development.md`): questions, decisions, terms and rules are written
-down before code, and code and tests cite them. `START_HERE.md` maps every document.
+The repository uses Context Driven Development (`docs/context-driven-development.md`). The team
+writes down questions, decisions, terms and rules before the code. Then the code and the tests
+cite them. `START_HERE.md` gives a map of all documents.
 
 ## Tech stack
 
-- Go (version pinned in `go.mod`), module `github.com/[placeholder]/harbor-claims-assistant`
+- Go (the version is pinned in `go.mod`), module `github.com/[placeholder]/harbor-claims-assistant`
 - `github.com/go-chi/chi/v5`, `github.com/spf13/cobra`, `github.com/lib/pq` (PostgreSQL only)
-- Tests: stdlib `testing` + `pkg/testutil`. **No testify.**
+- Tests: stdlib `testing` + `pkg/testutil`. Do not use testify.
 - Reference UI: Vite + React + TypeScript + Tailwind
 
 ## Commands
@@ -33,50 +34,70 @@ make test     # go test -race ./... (DB tests skip without TEST_DATABASE_URL)
 make check    # fmt-check + vet + test — run before handing work over
 ```
 
+Start `make check` before you give your work to the owner.
+
 ## Conventions
 
-- **No client identifiers in the Core** (`cmd/`, `pkg/`, `spec/`, `docs/`, `frontend/`): no client
-  names, systems, screens, SOP section numbers or payer codes. `TestNoClientIdentifiersInCore`
-  fails the build otherwise. Product vocabulary everywhere; client words only in packs.
-- **Spec first.** A behaviour change edits or adds a rule in `spec/<area>.md` (stable
-  `area-NNN` id, never renumbered) and the test cites it: `// SPEC: spec/eligibility.md#eligibility-006`.
-- Engines and capability packages are pure: no I/O except through injected sources, **no
-  `time.Now()`** — callers pass the clock. Every capability output carries Evidence + Confidence.
-- **Transport is not a capability.** Clearinghouse adapters may do network I/O and read the
-  clock; they are ports. Interpreting a status is a capability and must not.
-- **Never conflate a rejected inquiry with a denied claim.**
-- Raw payer payloads are PHI: never a log line, a span attribute, an API response or a
-  committed fixture.
-- Precision over recall: no rule ⇒ no recommendation, never a guess.
-- Fixtures are synthetic (`PAYER-A`, `CLM-0001`, `LASTA`/`FIRSTA`, no DOB);
-  `TestNoPHIInTestdata` enforces the patterns.
-- **Secrets never enter git, a log or a transcript.** API keys live in the environment or
-  git-ignored files. Never `cat` a file that may hold a key.
+- Do not put client identifiers in the Core (`cmd/`, `pkg/`, `spec/`, `docs/`, `frontend/`). This
+  includes client names, systems, screens, SOP section numbers and payer codes.
+  `TestNoClientIdentifiersInCore` stops the build if it finds one. Use product vocabulary
+  everywhere. Client words go only in client packs.
+- Write the spec first. A change in behavior adds or changes a rule in `spec/<area>.md`, with a
+  stable `area-NNN` id that is never renumbered. The test cites the rule:
+  `// SPEC: spec/eligibility.md#eligibility-006`.
+- Engines and capability packages are pure. They do no I/O, except through sources that the
+  caller injects. They do not call `time.Now()`, because the caller gives the clock. Each
+  capability output has Evidence and Confidence.
+- Transport is not a capability. Clearinghouse adapters are ports, so they can do network I/O
+  and read the clock. To interpret a status is a capability, so that code must not do these
+  things.
+- A rejected inquiry is not a denied claim. Do not mix the two.
+- Raw payer payloads are PHI. Never put them in a log line, a span attribute, an API response
+  or a committed fixture.
+- Precision is more important than recall. If no rule applies, give no recommendation. Never
+  guess.
+- Fixtures are synthetic (`PAYER-A`, `CLM-0001`, `LASTA`/`FIRSTA`, no DOB).
+  `TestNoPHIInTestdata` enforces these patterns.
+- Never put secrets in git, a log or a transcript. API keys are in the environment or in files
+  that git ignores. Never `cat` a file that can hold a key.
+
+## Writing
+
+All documents, READMEs and skills use the Strict mode of simple-english, based on ASD-STE100. Before you write or
+change a Markdown file, read the
+[simple-english skill](../.claude/skills/simple-english/SKILL.md). Write with its rules for the
+document, in Strict mode, and do its self-check before you give the change to the owner. Do not change code, ids, paths
+or headings that other files link to.
 
 ## Adding things
 
-- **A spec area**: `spec/<area>.md`, add it to `spec/INDEX.md`.
-- **A decision**: `docs/adr/NNNN-title.md`, add it to `docs/adr/README.md`.
-- **An open question**: next `Q-NNN` in `docs/platform/open-questions.md` — a table row plus a
-  section carrying owner, what it blocks, options, what would settle it, and what we assume in
-  its absence. Ids are stable; a duplicate is closed, never deleted. Add it to "Blocking now"
-  only if it stops work today.
-- **Anything client-specific**: it goes in a client pack, not here.
+- A spec area: add `spec/<area>.md`, and add it to `spec/INDEX.md`.
+- A decision: add `docs/adr/NNNN-title.md`, and add it to `docs/adr/README.md`.
+- An open question: take the next `Q-NNN` in `docs/platform/open-questions.md`. Add a table row
+  and a section. The section gives the owner, what the question blocks, the options, what can
+  settle it, and what we assume until then. Ids are stable. Close a duplicate, but never delete
+  it. Add the question to "Blocking now" only if it stops work today.
+- An improvement: take the next `CI-NNN` in `docs/continuous-improvement.local.md`, the local
+  register of the PM. Git ignores this file. `docs/continuous-improvement.md` gives its format.
+  Add a table row and a section with the source, owner, experiment, measure and review sprint. At most three
+  items are Active. The `continuous-improvement` skill (`.claude/skills/`) adds, reviews and
+  closes items.
+- Put each thing that is specific to one client in a client pack, not here.
 
 ## Commit and PR conventions
 
-- The repository owner commits; assistants leave changes in the working tree for review.
-- Commit subject in imperative mood; body explains what and why; reference spec rule IDs and
-  roadmap slice IDs.
-- **Jira issue keys use the `HCA` prefix** (`HCA-123`). Each open roadmap story has one Task,
-  under its operating-model station's epic. Its key is in the story's **Jira** column
+- The repository owner commits. Assistants leave their changes in the working tree for review.
+- Write the commit subject in the imperative mood. In the body, say what changed and why. Give
+  the spec rule ids and the roadmap slice ids.
+- Jira issue keys use the `HCA` prefix (`HCA-123`). Each open roadmap story has one Task, under
+  the epic of its station in the operating model. The key is in the Jira column of the story
   (`PROJECT_ROADMAP.md#jira`).
-  - Name the branch `HCA-123-s6-03-short-name`, and put both ids in the PR title
+  - Name the branch `HCA-123-s6-03-short-name`. Put both ids in the PR title
     (`… (S6-03, HCA-123)`).
-  - Cite the key in the commit body and the PR description, alongside the spec rule and slice
-    IDs.
-  - Never cite it in `cmd/`, `pkg/`, `spec/`, `docs/` or `frontend/`, where
-    `TestNoClientIdentifiersInCore` runs.
-  - Change a story in the roadmap, never in Jira; the lead mirrors the roadmap into Jira after
-    roadmap changes merge.
-- PR body: `## What?` / `## Why?` / `## Details`.
+  - Give the key in the commit body and in the PR description, with the spec rule ids and the
+    slice ids.
+  - Never put the key in `cmd/`, `pkg/`, `spec/`, `docs/` or `frontend/`, because
+    `TestNoClientIdentifiersInCore` operates there.
+  - Change a story in the roadmap, never in Jira. After the roadmap changes merge, the lead
+    mirrors the roadmap into Jira.
+- Use these headings in the PR body: `## What?` / `## Why?` / `## Details`.
