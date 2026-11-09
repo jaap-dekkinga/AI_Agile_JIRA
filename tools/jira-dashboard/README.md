@@ -112,5 +112,5 @@ An AI assistant with an Atlassian MCP connection can also do the pull. It gets t
 and children, and writes the same `_jira_<KEY>.json`, which `apply_pull.py` accepts. The two
 paths make the same JSON, so you can use either one.
 
-To let an AI assistant start this job each week and propose to lock the week, see routine 5 in
+To let an AI assistant start this job each week and propose to lock the week, see routine 4 in
 [`tools/ai-scrum-master/`](../ai-scrum-master/README.md).

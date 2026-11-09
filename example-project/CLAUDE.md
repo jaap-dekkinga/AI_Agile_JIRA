@@ -77,8 +77,9 @@ or headings that other files link to.
   and a section. The section gives the owner, what the question blocks, the options, what can
   settle it, and what we assume until then. Ids are stable. Close a duplicate, but never delete
   it. Add the question to "Blocking now" only if it stops work today.
-- An improvement: take the next `CI-NNN` in `docs/continuous-improvement.md`. Add a table row
-  and a section with the source, owner, experiment, measure and review sprint. At most three
+- An improvement: take the next `CI-NNN` in `docs/continuous-improvement.local.md`, the local
+  register of the PM. Git ignores this file. `docs/continuous-improvement.md` gives its format.
+  Add a table row and a section with the source, owner, experiment, measure and review sprint. At most three
   items are Active. The `continuous-improvement` skill (`.claude/skills/`) adds, reviews and
   closes items.
 - Put each thing that is specific to one client in a client pack, not here.

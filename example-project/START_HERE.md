@@ -39,8 +39,8 @@ context better with a pull request. Most useful changes do not include code.
 [docs/context-driven-development.md](docs/context-driven-development.md) gives the full
 process, the roles, and how the roles overlap.
 
-We plan and deliver in two-week sprints. Each sprint has a daily standup, backlog grooming,
-sprint planning, a sprint demo and a retrospective. PMs keep the backlog groomed and remove
+We plan and deliver in two-week sprints. Each sprint has a daily standup, backlog refinement,
+sprint planning, a sprint demo and a retrospective. PMs keep the backlog refined and remove
 blockers. Engineering decides what each sprint includes.
 [docs/agile-practices.md](docs/agile-practices.md) describes the meetings, and when a story is
 ready to build.
@@ -53,7 +53,7 @@ today.
 | If you are… | You mostly read | You mostly write | Start with |
 |---|---|---|---|
 | Leadership: product direction and goals | Roadmap, blocking questions, decisions | Direction, and answers to questions across teams | [Roadmap](PROJECT_ROADMAP.md) · [Blocking now](docs/platform/open-questions.md#blocking-now) |
-| Product Management: requirements, priorities, timeline, domain answers, the backlog | Roadmap, open questions, glossary, rules | Clear questions, slices, groomed stories, the domain meaning of terms and rules | [Roadmap](PROJECT_ROADMAP.md) · [Open questions](docs/platform/open-questions.md) · [Glossary](spec/glossary.md) · [Agile practices](docs/agile-practices.md) |
+| Product Management: requirements, priorities, timeline, domain answers, the backlog | Roadmap, open questions, glossary, rules | Clear questions, slices, refined stories, the domain meaning of terms and rules | [Roadmap](PROJECT_ROADMAP.md) · [Open questions](docs/platform/open-questions.md) · [Glossary](spec/glossary.md) · [Agile practices](docs/agile-practices.md) |
 | Lead Architect: stack, architecture, standards | Decisions, architecture rules | ADRs, technical terms, conventions | [Decisions](docs/adr/README.md) · [Conventions](CLAUDE.md) |
 | Software Developer: you build features | The spec area for your slice, conventions | Rules, tests, code, and findings on open questions | [Spec index](spec/INDEX.md) · [Conventions](CLAUDE.md) |
 
@@ -70,7 +70,7 @@ This table gives each kind of context, the question that it answers, and where i
 | What is not decided yet, and who decides? | Open questions (`Q-NNN`) | [docs/platform/open-questions.md](docs/platform/open-questions.md), starting with [Blocking now](docs/platform/open-questions.md#blocking-now) |
 | Why is it built this way? | Decisions (ADRs) | [docs/adr/README.md](docs/adr/README.md) |
 | What exactly must the system do? | Rules (`eligibility-006`) | [spec/INDEX.md](spec/INDEX.md) |
-| What do we try in how we do our work, and what did we learn? | Improvement items (`CI-NNN`) and working agreements | [docs/continuous-improvement.md](docs/continuous-improvement.md) |
+| What do we try in how we do our work, and what did we learn? | Improvement items (`CI-NNN`) and working agreements, in the local register of the PM | Format: [docs/continuous-improvement.md](docs/continuous-improvement.md) |
 | What are the coding conventions? | Conventions (AI assistants read them too) | [CLAUDE.md](CLAUDE.md) |
 
 ## Your first hour

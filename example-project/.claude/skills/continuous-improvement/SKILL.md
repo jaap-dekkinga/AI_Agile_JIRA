@@ -1,11 +1,14 @@
 ---
 name: continuous-improvement
-description: Keep the improvement register of the team (docs/continuous-improvement.md). Use it to add, review, close or list CI-NNN improvement items, for example before or after a retrospective.
+description: Keep the local improvement register of the Scrum Master (docs/continuous-improvement.local.md). Use it to add, review, close or list CI-NNN improvement items, for example before or after a retrospective.
 ---
 
 # Continuous improvement
 
-The register is `docs/continuous-improvement.md`. Read it before you change it. It holds
+The register is the local file `docs/continuous-improvement.local.md` on the computer of the
+Scrum Master. Git ignores it. If the file does not exist, tell the person. Offer to make it as a
+copy of the template `docs/continuous-improvement.md`, without the example items. Read the
+register before you change it. It holds
 `CI-NNN` items. Each item has a row in the All items table and a section with its fields. While
 an item is Active, it also has a row in the Active items table. The register also holds the
 Working agreements table.
@@ -26,8 +29,9 @@ judgment. Do it only when the person tells you that the team decided it.
   the item as Proposed.
 - Each sprint has the name of its start date (`sprint 2026-11-09`). A sprint is two weeks long.
 - Do not put PHI, client names, secrets or Jira keys from other projects in the file.
-- Leave your change in the working tree for the repository owner to review and commit. Never
-  commit and never push.
+- Change only the local register, unless an adopted item changes the method. Leave a change to
+  a file in the repository in the working tree for the owner to review and commit. Never commit
+  and never push. Never copy the local register into the repository.
 - Write the text with the simple-english skill (`.claude/skills/simple-english/SKILL.md` at
   the root of the repository). Use the style of the rest of the file.
 - Write a status as one word: Proposed, Active, Adopted or Stopped. Add the date for Adopted
@@ -47,9 +51,10 @@ you retrospective notes.
    set yet" and keep the item as Proposed.
 3. Add the row to the All items table. Add the section after the section of the last item. If
    the item is Active, add a row to the Active items table.
-4. If the item needs build work, tell the person that it needs a roadmap story. If it needs a
-   change to a Jira setting, tell the person that it needs a Jira Task in the CDD Framework
-   epic. Do not make the story or the Task unless the person asks you to.
+4. If the item needs work, its action is to write that work as a user story on the backlog.
+   Work in the repository is a roadmap story. Other work, for example a change to a Jira
+   setting, is a Jira Task in the CDD Framework epic. Tell the person which one it is. Do not
+   make the story or the Task unless the person asks you to.
 
 ## Review before a retrospective
 
@@ -73,7 +78,8 @@ Do this task when the person says that the team adopted, stopped or extended an 
 - Adopted: set the status to `Adopted (YYYY-MM-DD)` in the All items table. Remove the row
   from the Active items table. Write the Result: what the measure showed. Then make the change
   that the item adopts, in the same working tree. This can be a line in
-  `docs/agile-practices.md`, a row in the Working agreements table, or a line in `CLAUDE.md`.
+  `docs/agile-practices.md` or a line in `CLAUDE.md`, and a row in the Working agreements table
+  of the register.
   If the place is not clear, ask the person. The result of the item names the place of the
   change.
 - Stopped: set the status to `Stopped (YYYY-MM-DD)`. Remove the row from the Active items table.

@@ -52,7 +52,7 @@ an idea passes through them.
 | Open question | What do we not know yet, who owns the answer, and what do we assume until then? | [docs/platform/open-questions.md](platform/open-questions.md) | `Q-022` |
 | Decision | What did we choose, what else did we think about, and why? | [docs/adr/](adr/README.md) (Architecture Decision Records) | `ADR 0003` |
 | Defined Term | What exactly does this word mean here? | [spec/glossary.md](../spec/glossary.md) | The term, with a capital letter |
-| Improvement | What do we try in how we do our work, and was it successful? | [docs/continuous-improvement.md](continuous-improvement.md) | `CI-004` |
+| Improvement | What do we try in how we do our work, and was it successful? | The local register of the PM. Format: [docs/continuous-improvement.md](continuous-improvement.md) | `CI-004` |
 | Rule | What must the system do, or never do, for whom and when? | [spec/](../spec/INDEX.md), one file for each area | `eligibility-006` |
 | Test | Does the system obey the rule? | Next to the code. Each test cites its rule: `// SPEC: spec/eligibility.md#eligibility-006` | The rule that it cites |
 | Code | How does the system do it? | `cmd/`, `pkg/` | — |
@@ -130,7 +130,7 @@ Leadership sets the product direction and the goals.
 
 Product Management helps to set the product requirements, sets the priority of features, owns the
 delivery timeline, and answers domain questions. It also does the work that a Scrum Master
-does in other teams. It keeps the backlog groomed, removes blockers and leads the sprint
+does in other teams. It keeps the backlog refined, removes blockers and leads the sprint
 meetings, as [Agile practices](agile-practices.md#the-pms-role) describes. It proposes the
 contents of each sprint, and Engineering decides them.
 

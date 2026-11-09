@@ -26,8 +26,8 @@ of its own. Each item in it is a story here, and each gap in it is an open quest
 Many people use this file at the same time. A story is the unit of work: one story, one
 pull request, merged to `main` in a few days. There are no slice branches that stay open for a
 long time. The team plans work in two-week sprints. A story can be in a sprint only after it is
-groomed, at 8 story points or less
-([Definition of Ready](docs/agile-practices.md#definition-of-ready)). The sprint meetings and
+refined. It must meet the
+[Definition of Ready](docs/agile-practices.md#definition-of-ready). The sprint meetings and
 estimation are in [docs/agile-practices.md](docs/agile-practices.md).
 
 Story columns: a story that is not done has four columns in addition to its status:
@@ -58,7 +58,7 @@ cause conflicts.
 
 | Files | Rule |
 |---|---|
-| `PROJECT_ROADMAP.md`, `spec/INDEX.md`, `spec/glossary.md`, `docs/adr/README.md`, `docs/platform/open-questions.md`, `docs/continuous-improvement.md`, `START_HERE.md`, `CLAUDE.md` | Change them in the PR that needs the change, with its spec, ADR and question files. Thus the rule is still written before the code. Change only the rows that the story owns. |
+| `PROJECT_ROADMAP.md`, `spec/INDEX.md`, `spec/glossary.md`, `docs/adr/README.md`, `docs/platform/open-questions.md`, `START_HERE.md`, `CLAUDE.md` | Change them in the PR that needs the change, with its spec, ADR and question files. Thus the rule is still written before the code. Change only the rows that the story owns. |
 | `pkg/server/server.go`, `frontend/src/App.tsx`, `frontend/src/components/layout.tsx` | These files are registration seams. Each feature adds one line, and keeps its code in its own file. |
 | `pkg/database/migrations/sql/` | The numbers come from [Reservations](#reservations). |
 
@@ -314,4 +314,4 @@ The full list is in the [decision log](docs/adr/README.md).
 | 2026-10-01 | `Q-001` resolved, misframed: the claims database moves to a managed PostgreSQL, and its schema does not change. S4 marked ⛔ on `Q-030`. |
 | 2026-10-13 | Added S6 (re-status) and S7 (async submission) from the second pass of the operating model. |
 | 2026-10-27 | Added S9 (agent tools). Defined Release 1. |
-| 2026-11-09 | Added `docs/continuous-improvement.md` to the shared files. Added S5-07 (coordination of benefits), and reserved `eligibility-016`–`019` for it. |
+| 2026-11-09 | Added S5-07 (coordination of benefits), and reserved `eligibility-016`–`019` for it. |
