@@ -37,6 +37,7 @@ it reaches the place it belongs. Each meeting below says what it leaves behind, 
 | Open questions, each with its owner and assumption | [open-questions.md](platform/open-questions.md) | A pull request |
 | Decisions | [ADRs](adr/README.md) | A pull request |
 | How we work: CDD, and these practices | [context-driven-development.md](context-driven-development.md) and this page | A pull request, often after a retrospective |
+| Improvements we are trying, and what we learned from each | [continuous-improvement.md](continuous-improvement.md) | A pull request, usually during or after a retrospective |
 | Who demos what at the sprint demo | The demo sign-up sheet | The presenters |
 
 ## The PM's role
@@ -343,14 +344,19 @@ story can only be shown on real data, describe it instead.
 **The sprint's last day, after the demo. One hour at most.** PMs and Engineering attend.
 
 The retrospective improves how the team works.
-1. **Review the last retrospective's actions**: done, in progress or dropped, and why.
+1. **Review the [improvement register](continuous-improvement.md)** first. Each item whose
+   **Review by** is this sprint is adopted, extended once or dropped, against its measure, and
+   its result is written in.
 2. **Go around the room.** Everyone answers:
    - What went well?
    - What needs improvement?
    - What should we try next sprint?
-3. **Agree the improvements** worth making, and give each one an owner.
+3. **Agree the improvements** worth trying, and give each one an owner, an experiment and a
+   measure. At most three are being tried at once.
 
-**Each improvement becomes a backlog item**, added by the PMs and the team during the meeting.
+**Each improvement is written in the [register](continuous-improvement.md) first**, as a
+`CI-NNN` item, by the PMs and the team during the meeting. The register remembers what we are
+trying and whether it worked. When an item needs work done, that work is also a backlog item.
 Where it goes depends on what it changes:
 - **The repository**, such as a convention, CI, tooling, this page or the CDD guide: a roadmap
   story, or a pull request for a small documentation change. A change in how we work is context
@@ -403,4 +409,6 @@ These terms describe how the team works. The process terms CDD uses are in
 | **Unplanned work** | Work that arrives during a sprint: urgent bugs, outages, out-of-band client requests. Labelled `unplanned` in Jira. |
 | **Impediment**, **blocker** | Anything stopping someone from making progress. The PM makes sure it is cleared. |
 | **Follow-up huddle** | A short meeting to clear one blocker, where only the people needed are required. |
+| **Improvement item** | A change the team is trying in how it works, with an owner, an experiment and a measure. A `CI-NNN` row in the [register](continuous-improvement.md). |
+| **Working agreement** | A habit the team has adopted from an improvement item. Listed in the [register](continuous-improvement.md#working-agreements). |
 | **Carry-over** | A story not Done when its sprint ends. It goes back to the backlog. |

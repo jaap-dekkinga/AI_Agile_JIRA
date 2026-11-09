@@ -7,8 +7,9 @@ It has two parts:
 
 | Folder | What it is | Start with |
 |---|---|---|
-| [`example-project/`](example-project/) | A complete **Context Driven Development (CDD)** setup for a fictional product: the method, the sprint rhythm, a roadmap mirrored into Jira, an open-questions register, a decision log, a glossary, a spec area and the conventions file an AI coding assistant reads. Copy it as a template. | [START_HERE.md](example-project/START_HERE.md) |
+| [`example-project/`](example-project/) | A complete **Context Driven Development (CDD)** setup for a fictional product: the method, the sprint rhythm, a roadmap mirrored into Jira, an open-questions register, a decision log, an improvement register, a glossary, a spec area and the conventions file an AI coding assistant reads. Copy it as a template. | [START_HERE.md](example-project/START_HERE.md) |
 | [`tools/jira-dashboard/`](tools/jira-dashboard/) | A small Python tool that pulls epics and story points from Jira every week, freezes each week as a snapshot, and builds a self-contained HTML portfolio dashboard plus an executive briefing script. Runs offline on demo data. | [README.md](tools/jira-dashboard/README.md) |
+| [`tools/ai-scrum-master/`](tools/ai-scrum-master/) | Five scheduled routines an AI assistant can run for a team: board hygiene, a Definition of Ready check, blocker ageing, retrospective follow-up and the weekly dashboard. Each one proposes and a person approves. They run as Claude Code scheduled tasks, or as [Conductor](https://github.com/shannonbay/Conductor) goals with per-action autonomy. | [README.md](tools/ai-scrum-master/README.md) |
 
 ## The ideas in one minute
 
@@ -26,6 +27,9 @@ It has two parts:
 - **Report from Jira, freeze every week.** Progress is story-point-weighted with partial
   credit for work in flight, and each reporting week is locked so the trend can't drift.
   → [tools/jira-dashboard](tools/jira-dashboard/)
+- **Close the loop on retrospectives.** Every improvement the team tries is a `CI-NNN` item with
+  an owner, an experiment and a measure, and the next retrospective decides whether it worked.
+  → [continuous-improvement.md](example-project/docs/continuous-improvement.md)
 
 ## Try the dashboard
 

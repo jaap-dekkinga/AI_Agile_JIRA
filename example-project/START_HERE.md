@@ -66,6 +66,7 @@ Every kind of context, what it answers, and where it lives.
 | What's still undecided, and who decides? | Open questions (`Q-NNN`) | [docs/platform/open-questions.md](docs/platform/open-questions.md), starting with [Blocking now](docs/platform/open-questions.md#blocking-now) |
 | Why is it built this way? | Decisions (ADRs) | [docs/adr/README.md](docs/adr/README.md) |
 | What exactly must the system do? | Rules (`eligibility-006`) | [spec/INDEX.md](spec/INDEX.md) |
+| What are we trying in how we work, and what did we learn? | Improvement items (`CI-NNN`) and working agreements | [docs/continuous-improvement.md](docs/continuous-improvement.md) |
 | What are the coding conventions? | Conventions (also what AI assistants read) | [CLAUDE.md](CLAUDE.md) |
 
 ## Your first hour

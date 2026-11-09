@@ -61,6 +61,9 @@ make check    # fmt-check + vet + test — run before handing work over
   section carrying owner, what it blocks, options, what would settle it, and what we assume in
   its absence. Ids are stable; a duplicate is closed, never deleted. Add it to "Blocking now"
   only if it stops work today.
+- **An improvement**: next `CI-NNN` in `docs/continuous-improvement.md`, a table row plus a
+  section with source, owner, experiment, measure and review sprint. At most three are Trying.
+  The `continuous-improvement` skill (`.claude/skills/`) adds, reviews and closes items.
 - **Anything client-specific**: it goes in a client pack, not here.
 
 ## Commit and PR conventions

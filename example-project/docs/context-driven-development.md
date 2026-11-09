@@ -51,12 +51,13 @@ moves through them.
 | **Open question** | What don't we know yet, who owns the answer, and what are we assuming meanwhile? | [docs/platform/open-questions.md](platform/open-questions.md) | `Q-022` |
 | **Decision** | What did we choose, what else did we consider, and why? | [docs/adr/](adr/README.md) (Architecture Decision Records) | `ADR 0003` |
 | **Defined Term** | What exactly does this word mean here? | [spec/glossary.md](../spec/glossary.md) | The term, capitalised |
+| **Improvement** | What are we trying in how we work, and did it work? | [docs/continuous-improvement.md](continuous-improvement.md) | `CI-004` |
 | **Rule** | What must the system do, or never do, for whom and when? | [spec/](../spec/INDEX.md), one file per area | `eligibility-006` |
 | **Test** | Does the system actually follow the rule? | Next to the code; each one cites its rule: `// SPEC: spec/eligibility.md#eligibility-006` | The rule it cites |
 | **Code** | How does it do it? | `cmd/`, `pkg/` | — |
 | **Client pack** | What differs for one particular client? | `clients/<client>/` | The pack's name and version |
 
-**Stable IDs hold it together.** Every question, decision, rule and slice has an id that is
+**Stable IDs hold it together.** Every question, decision, rule, improvement and slice has an id that is
 never renumbered and never reused. That's why a commit message, a test, a roadmap row and a
 meeting note can all say `Q-030` and mean the same thing years apart. It's also why you
 will see closed and retired entries left in place: deleting one would break every reference
