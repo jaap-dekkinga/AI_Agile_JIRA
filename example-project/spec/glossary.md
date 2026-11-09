@@ -7,12 +7,12 @@ last_updated: 2026-11-09
 
 A Defined Term has the meaning on this page when it has a capital letter, in `spec/`, in code
 comments and in documentation. The product uses this vocabulary. The pack of a client maps the
-words of that client to it (see *Client word* in the table). Client words never get into the
+words of that client to it (see *Client word* in the table). Client words never get to the
 Core.
 
 The last part of this page lists the industry vocabulary: the X12 transactions and code sets
 that the Core implements. These are not Defined Terms. They are the names that the industry
-already uses. We repeat them here, so that nobody must leave the repository to read a rule.
+already uses. We give them here again, so that nobody must leave the repository to read a rule.
 
 > This glossary belongs to Harbor Claims Assistant, the fictional example product in
 > `example-project/`. The healthcare terms are real industry vocabulary. The product, its
@@ -34,15 +34,15 @@ already uses. We repeat them here, so that nobody must leave the repository to r
 | Bucket | The classification of a Status that operators see: an id, a label and a tone. Unlike a Disposition, it uses the status code (508) first, because the same outcome comes to us under different category letters from different Payers. The id is Core vocabulary. The label is pack data. |
 | Outcome Code | The code of a Client for the state in which a worked Claim was left, with the follow-up window that it carries. It names the action taken or the state found, for example a resubmission, an escalation, a write-off, a patient balance, or a hold to monitor. Clients often call these *disposition codes* or *action status codes*, but they are not a Disposition. A Disposition is the closed reading of a Status by the Core. An Outcome Code is Client vocabulary. It depends on what was done and on what the Payer said, and it is in the Client Pack. A Recommendation can name one. |
 | Capability | A deterministic function of the Core that is available as a tool, for example CARC interpretation or the calculation of timely filing. Capabilities take their rule data from the Client Pack. |
-| Playbook | The steps that an Operator follows to work a path: numbered steps, the branches that each step can take on what the Operator finds, and notes. It is Client Pack data (`client-packs-013`). The label of a branch is not an Outcome Code. |
+| Playbook | The steps that an Operator obeys to work a path: numbered steps, the branches that each step can use, from what the Operator finds, and notes. It is Client Pack data (`client-packs-013`). The label of a branch is not an Outcome Code. |
 | SOP | The standard operating procedure document of a Client. The Client Pack carries it section by section, and a table row cites it by section (`client-packs-012`). |
 | Recommendation | The next action that a Capability proposes for a Claim, with a path or playbook, a *why* sentence, Evidence and Confidence. The system never acts on a Recommendation. |
 | Evidence | The list of `{source, ref, detail}` records that explain a Recommendation: which rule, which segment, which pack file. Each Capability output carries Evidence. |
 | Confidence | A number in [0, 1] that each Capability output carries. Precision is more important than recall. If no rule matches, the result is *no* Recommendation. It is never a guess with low confidence that looks like a Recommendation. |
 | Audit Record | The append-only record of one Capability call: actor, tool, inputs and outputs with PHI redacted, Evidence, Confidence and time. |
 | Operator | A human user of the Client who reviews Recommendations. |
-| Demo Mode | The service runs without OAuth. Each request acts as the synthetic Demo User `demo@example.com`. |
-| Trusted-network mode | The service runs without a login, on a private network that only one trusted caller can get to. Each request acts as that caller. When the caller names a user in `X-Acting-User`, the service records the user as asserted, never as verified (`service-011`). Unlike Demo Mode, this mode can serve Client data. |
+| Demo Mode | The service operates without OAuth. Each request acts as the synthetic Demo User `demo@example.com`. |
+| Trusted-network mode | The service operates without a login, on a private network that only one trusted caller can get to. Each request acts as that caller. When the caller names a user in `X-Acting-User`, the service records the user as asserted, never as proved (`service-011`). Unlike Demo Mode, this mode can serve Client data. |
 | Demo Scenario | A synthetic inquiry that the in-memory fake clearinghouse answers with a scripted result (paid, denied, pending, rejected), when no vendor is configured. A reserved payer identifier selects it. It exists so that we can demonstrate the product. It is never the answer of a payer. |
 | Reference UI | The demonstration and developer UI in `frontend/`. The binary serves it, and it is built only on the public API. It is not the product UI, which is built in Workbench. It is not a surface for Operators. |
 | Workbench | The operator application of the fictional company, where the product UI is. It is a system next to this product, not a part of it. |
@@ -55,15 +55,15 @@ already uses. We repeat them here, so that nobody must leave the repository to r
 | Plan | The insurance of the member, as a Payer reports it in a 271: plan name and group, insurance type, coverage level and the dates of the plan. We never call it "coverage", because that word means vendor reachability (see Coverage). |
 | Plan Status | `ACTIVE`, `INACTIVE` or `UNKNOWN`, read from the benefit code of a 271 for the requested service types (`eligibility-005`). A rejected eligibility inquiry has no Plan Status. |
 | Enrollment | The authorization of a Payer for a specific Transaction Type through a specific Clearinghouse. It is the knowledge of the product. An Operator records it, and a Coverage sync never clears it. |
-| Re-status | A claim status inquiry that the product sends on its own schedule, without a request from a person. It gets the status of a Claim again after the follow-up window of the Claim is past. A job sends it, not a Capability, because it reads the clock and spends billable calls. The job sends it only for a Payer that is turned on for it, one Payer at a time, separately from Coverage and Enrollment (`restatus-001`). An inquiry that a person makes is not a Re-status, also when it gets the status of a Claim again. |
+| Re-status | A claim status inquiry that the product sends on its own schedule, without a request from a person. It gets the status of a Claim again after the follow-up window of the Claim is past. A job sends it, not a Capability, because it reads the clock and spends billable calls. The job sends it only for a Payer that is enabled for it, one Payer at a time, separately from Coverage and Enrollment (`restatus-001`). An inquiry that a person makes is not a Re-status, also when it gets the status of a Claim again. |
 | Transport Outcome | The vendor-neutral classification of what happened on the wire. It does not depend on what the Payer said about a Claim. It answers whether the product can retry a call. A Status cannot answer this. |
-| Batch | Many inquiries of one transaction, given at the same time and answered later. Workbench gives them through the API, an Operator from a file, or the re-status job. A Batch is how calls travel, not how Claims are worked. Claim status fans out through the router. Eligibility goes in the native batch of a vendor, if the vendor has one (`spec/batch.md`). |
+| Batch | Many inquiries of one transaction, given at the same time and answered later. Workbench gives them through the API, an Operator from a file, or the re-status job. A Batch is how calls travel, not how Claims are worked. Claim status fans out through the router. Eligibility uses the native batch of a vendor, if the vendor has one (`spec/batch.md`). |
 | Batch Item | One inquiry in a Batch. It holds the identity of the patient only while a later send can use it (`batch-006`). |
-| Vendor Batch | One native submission to a vendor. It holds Batch Items of one or more Batches, under a name that the vendor refuses to run two times (`batch-015`). |
+| Vendor Batch | One native submission to a vendor. It holds Batch Items of one or more Batches, under a name that the vendor refuses to operate two times (`batch-015`). |
 | Unresolved | A Batch Item that the product possibly sent, and whose answer is not known. The product never sends it again, because a second send can be billed two times. It is not a failure, because the Payer possibly answered (`batch-007`). |
 | Tool | A Capability that is available to an external caller through the tool surface, with a stable name, a versioned schema and the standard envelope. A Tool output carries no PHI. |
 | Agent | An autonomous caller of Tools, driven by a language model. An Agent calls Capabilities. It never spends a billable transaction and never acts on a Recommendation. |
-| Audit Ref | The opaque identifier of an Audit Record or a clearinghouse transaction. Each Tool output carries it, so that an Operator can follow a result back to the identified record behind it. It is the only connection from the reasoning of an Agent to PHI, and it resolves only inside the service. |
+| Audit Ref | The opaque identifier of an Audit Record or a clearinghouse transaction. Each Tool output carries it, so that an Operator can trace a result back to the identified record behind it. It is the only connection from the reasoning of an Agent to PHI, and it resolves only inside the service. |
 
 ## Industry standards
 
@@ -113,7 +113,7 @@ maps the codes of that client onto them.
 | Term | Meaning |
 |---|---|
 | CLP | The 835 loop that carries the payment of one claim: our claim id, a status code, the totals for charged, paid and patient responsibility, and the ICN of the payer. |
-| CAS | The 835 adjustment segment: repeating triples of (group code, CARC, amount). This segment decides where the money goes. |
+| CAS | The 835 adjustment segment: triples of (group code, CARC, amount) that repeat. This segment decides where the money goes. |
 | STC | The 277 status segment. It carries the CSCC/CSC pair, the entity that it concerns, and free text. |
 | TRN | Trace number. It connects a response to the request that caused it. On an 835, it connects the advice again with the payment that came with it. |
 | REF | A qualified reference identifier. The qualifier tells which kind, for example `EJ` our claim reference, `1K` the ICN of the payer, or `FJ` a line item control number. There are many more. |

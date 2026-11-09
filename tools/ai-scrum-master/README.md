@@ -1,6 +1,6 @@
 # AI scrum master routines
 
-This page gives five routines that an AI assistant can run for a team on a schedule. A person
+This page gives five routines that an AI assistant can operate for a team on a schedule. A person
 stays in charge of each one. Each routine reads Jira and the repository, and then proposes. It
 never changes Jira or merges anything alone, unless the team permits that kind of action.
 
@@ -9,8 +9,8 @@ The routines do the record-keeping part of the work of a Scrum Master, as
 
 - Keep the board current.
 - Keep stories that are not ready out of planning.
-- Follow up on impediments.
-- Follow up on retrospectives.
+- Do the follow-up of impediments.
+- Do the follow-up of retrospectives.
 - Report.
 
 People keep the facilitation, the coaching and the reading of the room.
@@ -19,14 +19,14 @@ People keep the facilitation, the coaching and the reading of the room.
 > [`example-project/`](../../example-project/). The Jira project `HCA`, the story ids and the
 > paths refer to it.
 
-## Two ways to run them
+## Two ways to operate them
 
 | | Claude Code scheduled task (`/schedule`) | Conductor goal |
 |---|---|---|
-| Where it runs | In the cloud of Anthropic, with your laptop open or closed | In your Claude Code session, while it is open |
+| Where it operates | In the cloud of Anthropic, with your laptop open or closed | In your Claude Code session, while it is open |
 | How you approve | You read its report and act yourself | You approve or reject each proposal in the Goals pane, or from your phone |
 | What enforces "propose only" | The prompt | The prompt, and the guard plugin, which blocks tool calls that the goal does not permit |
-| Memory between runs | Only what it reads | Memory for each goal. Your reasons for a rejection become rules that it obeys |
+| Memory from one run to the next | Only what it reads | Memory for each goal. Your reasons for a rejection become rules that it obeys |
 | Best for | Reports that only read | Routines that propose changes, which you approve one at a time |
 
 Start with scheduled tasks. Each routine on this page is a full prompt, so you can use it as a
@@ -47,7 +47,7 @@ Jira follows the agreement of the team, and never gets ahead of it.
 | `jira.comment` | propose | A comment gets to people. Change it to auto after the team trusts the routine |
 | `jira.label` | propose | Labels control the roadmap sync (`hca-roadmap`, `not-hca`) |
 | `jira.edit` | off | The roadmap owns the text of a Task. The next sync overwrites the edit |
-| `jira.transition` | off | The status follows the roadmap. Sprint changes need the consensus of Engineering |
+| `jira.transition` | off | The status comes from the roadmap. Sprint changes need the consensus of Engineering |
 | `jira.sprint` | off | Only the PM changes a sprint, after Engineering agrees |
 | `repo.edit` | propose | Edits stay in the working tree for the owner to commit |
 | `repo.commit` | off | The repository owner commits |
@@ -125,7 +125,7 @@ or the lock of a dashboard week. The instructions and `CLAUDE.md` hold them.
   Use the `continuous-improvement` skill to review
   `example-project/docs/continuous-improvement.md`. Report the items that are due at this
   retrospective, with their measures. Also report the overdue items, the items without a
-  measure or an owner, and the free Trying places. If you can read a measure from Jira (for
+  measure or an owner, and the free Active places. If you can read a measure from Jira (for
   example "each engineer has Ready work until day 10"), read it and give the number. Do not
   change the file.
 - Health number: the number of items after their Review by sprint.
@@ -135,10 +135,10 @@ or the lock of a dashboard week. The instructions and `CLAUDE.md` hold them.
 - Schedule: Fridays at 15:00.
 - Objective: a frozen weekly snapshot and an executive talk script, ready for review.
 - Instructions:
-  In `tools/jira-dashboard`, run `python weekly.py --no-lock`. This command stages the week as
+  In `tools/jira-dashboard`, start `python weekly.py --no-lock`. This command stages the week as
   a draft and makes the preview. Report the summary table, each project with the mark stale,
   and the lines with the mark (REVIEW) in the talk script. Propose to lock the week. Lock it
-  only after approval: run `python lock_week.py <date>`, and then `python weekly.py <date>`.
+  only after approval: start `python lock_week.py <date>`, and then `python weekly.py <date>`.
   See [the runbook](../jira-dashboard/WEEKLY_RUNBOOK.md).
 - Health number: `0` when this week is locked, and `1` when it is not.
 

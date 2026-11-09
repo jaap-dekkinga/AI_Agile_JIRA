@@ -8,7 +8,7 @@ rhythm: when the work happens, and the meetings that keep it in motion.
 ## The idea: the spec is the context
 
 Context Driven Development (CDD) has one main rule. The project writes down what it knows in
-the repository, before anyone builds it. This includes the items that follow:
+the repository, before anyone builds it. The context includes these items:
 
 - The direction of the project.
 - What is not decided yet, and who decides it.
@@ -16,26 +16,26 @@ the repository, before anyone builds it. This includes the items that follow:
 - What words mean.
 - What the system must do.
 
-Together, these items are the context. Everyone works from the same context:
+Together, these items are the context. Everyone uses the same context:
 
 - Leadership, when it sets goals.
 - A product manager, when they answer a domain question.
 - An architect, when they choose a pattern.
 - A developer, when they write a test.
-- An AI assistant, when it helps any of these people.
+- An AI assistant, when it helps one of these people.
 
 Everyone changes the context in the same way, with a reviewed pull request.
 
-Some results come from this rule:
+This rule has these results:
 
 - If something is not written down, the next person does not know it. A decision in a meeting
-  or a chat thread does not exist until it gets into the context. To write it down is part of
+  or a chat thread does not exist until somebody adds it to the context. To write it down is part of
   the decision.
 - The context comes before the code. It does not only describe the code. A change in behavior
-  starts as a change in the context. Then the code follows, and tests prove that it follows.
+  starts as a change in the context. Then the code changes, and tests prove that the code agrees with the context.
 - Nothing is lost. A newer item replaces an older item, but the older item stays. Answered
   questions, replaced decisions and retired rules stay in the record, with the item that
-  replaced them. It is as useful to know why something changed as to know what it is now.
+  replaced them. It is as useful to know why something changed as to know its current state.
 
 Some people call this spec-driven development. CDD is the same discipline with a wider view.
 The binding rules (the spec) are only one part of the context. Open questions, decisions and
@@ -43,8 +43,8 @@ vocabulary have the same status, because most of the real thinking happens there
 
 ## The artifacts
 
-Each kind of context answers one question. The table gives them in about the order that an
-idea goes through them.
+Each kind of context answers one question. The table gives them in about the order in which
+an idea passes through them.
 
 | Artifact | Answers | Where | Identified by |
 |---|---|---|---|
@@ -52,7 +52,7 @@ idea goes through them.
 | Open question | What do we not know yet, who owns the answer, and what do we assume until then? | [docs/platform/open-questions.md](platform/open-questions.md) | `Q-022` |
 | Decision | What did we choose, what else did we think about, and why? | [docs/adr/](adr/README.md) (Architecture Decision Records) | `ADR 0003` |
 | Defined Term | What exactly does this word mean here? | [spec/glossary.md](../spec/glossary.md) | The term, with a capital letter |
-| Improvement | What do we try in how we work, and did it work? | [docs/continuous-improvement.md](continuous-improvement.md) | `CI-004` |
+| Improvement | What do we try in how we do our work, and was it successful? | [docs/continuous-improvement.md](continuous-improvement.md) | `CI-004` |
 | Rule | What must the system do, or never do, for whom and when? | [spec/](../spec/INDEX.md), one file for each area | `eligibility-006` |
 | Test | Does the system obey the rule? | Next to the code. Each test cites its rule: `// SPEC: spec/eligibility.md#eligibility-006` | The rule that it cites |
 | Code | How does the system do it? | `cmd/`, `pkg/` | — |
@@ -65,8 +65,8 @@ and retired entries stay in place. If you delete one, each reference to it break
 
 ## The lifecycle of a change
 
-Most changes do not go through the full path. A typo fix goes directly to a pull request. A new
-rule can need no ADR. But when something new comes in, it follows this path:
+Most changes do not use the full path. A typo fix goes directly to a pull request. A new
+rule can need no ADR. But when something new comes to the team, it uses this path:
 
 ```mermaid
 flowchart TD
@@ -89,11 +89,11 @@ flowchart TD
 
 Two points about the diagram:
 
-- Work does not stop for an open question. Each question records the assumption that we work
-  on until it gets an answer. Work continues on that assumption. When the answer comes, we can
+- Work does not stop for an open question. Each question records the assumption for our work,
+  until it gets an answer. Work continues on that assumption. When the answer comes, we can
   see exactly what it changes.
-- The dotted line is important. When we build something, we often find a new question. The
-  question goes back into the register, not into the head of one person.
+- The dotted line is important. When we build something, we often find a new question. We
+  put the question back into the register, not into the head of one person.
 
 ### Two examples
 
@@ -128,9 +128,9 @@ Leadership sets the product direction and the goals.
 
 ### Product Management
 
-Product Management helps set the product requirements, sets the priority of features, owns the
+Product Management helps to set the product requirements, sets the priority of features, owns the
 delivery timeline, and answers domain questions. It also does the work that a Scrum Master
-does in other teams. It keeps the backlog groomed, removes blockers and runs the sprint
+does in other teams. It keeps the backlog groomed, removes blockers and leads the sprint
 meetings, as [Agile practices](agile-practices.md#the-pms-role) describes. It proposes the
 contents of each sprint, and Engineering decides them.
 
@@ -190,18 +190,18 @@ sprint commitment has two owners, and this is also intentional. Engineering (the
 the Lead Architect) decides it by consensus
 ([Agile practices](agile-practices.md#engineering-decides-the-sprint)).
 
-## Contributing without writing code
+## How to change the context without code
 
 All of the context is Markdown in this repository. You change it in the same way that a
 developer changes code: open a pull request, get a review, and merge it. A PR that changes only
 one open question or one glossary row is normal, and we want it. The process depends on this
-kind of change more than on any other.
+kind of change more than on all other kinds.
 
 These conventions apply also if you never touch code:
 
 - Never renumber an id or use it again. New questions, rules and ADRs take the next number.
 - Do not delete. Replace. A resolved question keeps its section and records what resolved it.
-  A duplicate is closed and points to the original. When a newer ADR replaces an accepted ADR,
+  A duplicate is closed and gives the id of the original. When a newer ADR replaces an accepted ADR,
   only the *Status* line of the old ADR changes. A retired rule leaves a note of one line.
 - Change in place, with a date. When you learn something that changes a question or an
   analysis, add a paragraph with a date ("Amended 2026-09-23: …"). Do not write the history
@@ -210,7 +210,7 @@ These conventions apply also if you never touch code:
   without an assumption is dangerous.
 - Use product words, not the words of a client. The Core (`cmd/`, `pkg/`, `spec/`, `docs/`)
   never names a client, its systems or its screens. If it does, an automatic test stops the
-  build. The vocabulary of a client goes in the pack of that client, under
+  build. Put the vocabulary of a client in the pack of that client, under
   `clients/<client>/`.
 - Pull requests use the template in `.github/PULL_REQUEST_TEMPLATE.md`: *What?*, *Why?* and
   *Details*, with the ids that the change touches.
@@ -225,7 +225,7 @@ Anyone can review anything. As a guide, ask these people for a review:
 
 We review a rule change and the tests that cite it together, in the same PR.
 
-## Working with AI assistants
+## AI assistants
 
 AI coding assistants use the same context. [CLAUDE.md](../CLAUDE.md) is their start point. It
 sends them to the same specs, decisions and questions that a person reads. This is one reason
@@ -250,6 +250,6 @@ These terms describe the process. Product vocabulary is in
 | ADR | Architecture Decision Record. It records one decision, with its context and its results. It does not change after it is accepted. |
 | Defined Term | A word with one exact meaning in this product. It has a capital letter when it has that meaning. |
 | Rule | A binding statement of behavior in `spec/`, with a stable id (`area-NNN`) that tests cite. |
-| Stable ID | An identifier that we never renumber or use again. Thus anything can cite it, at any time. |
+| Stable ID | An identifier that we never renumber or use again. Thus each document can cite it, at all times. |
 | Client pack | The configuration of a client. It is outside the Core, in `clients/<client>/`. |
-| Improvement | A change that the team tries in how it works, with an owner, an experiment and a measure (`CI-NNN`). |
+| Improvement | A change that the team tries in how it does its work, with an owner, an experiment and a measure (`CI-NNN`). |

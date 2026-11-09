@@ -23,9 +23,9 @@ of its own. Each item in it is a story here, and each gap in it is an open quest
 
 ### Working in parallel
 
-Many people work from this file at the same time. A story is the unit of work: one story, one
+Many people use this file at the same time. A story is the unit of work: one story, one
 pull request, merged to `main` in a few days. There are no slice branches that stay open for a
-long time. The team plans work in two-week sprints. A story goes into a sprint only after it is
+long time. The team plans work in two-week sprints. A story can be in a sprint only after it is
 groomed, at 8 story points or less
 ([Definition of Ready](docs/agile-practices.md#definition-of-ready)). The sprint meetings and
 estimation are in [docs/agile-practices.md](docs/agile-practices.md).
@@ -101,11 +101,11 @@ them.
 - Where the key is: each slice names its epic on a `**Jira epic:**` line. Each table of open
   stories has a Jira column, which holds the Task of the story.
 - Who owns what: this file owns the summary, the description, the epic, the labels, the
-  *blocks* links (from Needs) and the status of a Task. The status only moves forward. ⬜, ⛔
+  *blocks* links (from Needs) and the status of a Task. The status only changes to a later status. ⬜, ⛔
   and ⏸ are To Do, 🟡 is In Progress, and ✅ is Done. Jira owns the assignee, sprint, story
   points, dates, priority, rank and comments, and the sync never writes them. Change the
   description of a Task here, not in Jira, because the next sync overwrites it.
-- How to work on a story: take the Task on the board, and name the branch
+- How to do the work of a story: take the Task on the board, and name the branch
   `HCA-123-s6-03-short-name`. Put both ids in the PR title (`… (S6-03, HCA-123)`), and the spec
   rules in its body. Never put a Jira key in `cmd/`, `pkg/`, `spec/`, `docs/` or `frontend/`.
 - Work that starts in Jira: the next sync reports each Task under a station epic that has
@@ -119,7 +119,7 @@ them.
 
 **Jira epic:** HCA-2 (Setup & Design)
 
-Goal: a running service with health checks, migrations, login, tracing and the repository
+Goal: a service that operates, with health checks, migrations, login, tracing and the repository
 guards. Thus each later slice only adds a feature.
 
 | ID | Story | Status | Notes |
@@ -153,7 +153,7 @@ answer as a Disposition, with Evidence.
 | ID | Story | Status | Notes |
 |---|---|---|---|
 | S3-01 | Clearinghouse port and canonical 277 model | ✅ | ADR 0007 |
-| S3-02 | First vendor adapter: claim status | ✅ | Verified against production on 2026-09-30 |
+| S3-02 | First vendor adapter: claim status | ✅ | Proved against production on 2026-09-30 |
 | S3-03 | Disposition and Bucket from a Status | ✅ | `disposition-001`…`006` |
 | S3-04 | Reference UI: the claim status screen and its Demo Scenarios | ✅ | |
 
@@ -264,7 +264,7 @@ output has PHI, and each output has an Audit Ref to the record behind it.
 **Jira epic:** HCA-2 (Setup & Design)
 
 Goal: a demonstration screen for each service over the public API. Thus each sprint demo can
-run live on synthetic data. This is not the product UI, which is in Workbench.
+operate live on synthetic data. This is not the product UI, which is in Workbench.
 
 | ID | Jira | Story | Owns | Needs | Demo | Status |
 |---|---|---|---|---|---|---|
@@ -282,7 +282,7 @@ Two-week targets (fictional):
 | Sprint | Goal |
 |---|---|
 | 2026-10-26 → 11-06 | The rollout dial and the Batch model land. Eligibility test mode is shown at the demo |
-| 2026-11-09 → 11-20 | The re-status job runs under its ceiling on two payers |
+| 2026-11-09 → 11-20 | The re-status job operates under its ceiling on two payers |
 | 2026-11-23 → 12-04 | Release 1 sign-off |
 
 ---

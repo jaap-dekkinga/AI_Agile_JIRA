@@ -1,6 +1,6 @@
 # CLAUDE.md: Harbor Claims Assistant (example)
 
-Instructions for AI coding assistants that work in this repository.
+Instructions for AI coding assistants that do work in this repository.
 
 > Example content. This file gives the assistant conventions of the fictional product that
 > [START_HERE.md](START_HERE.md) describes. It shows what a CDD project tells an AI assistant:
@@ -34,7 +34,7 @@ make test     # go test -race ./... (DB tests skip without TEST_DATABASE_URL)
 make check    # fmt-check + vet + test — run before handing work over
 ```
 
-Run `make check` before you hand over your work.
+Start `make check` before you give your work to the owner.
 
 ## Conventions
 
@@ -58,15 +58,15 @@ Run `make check` before you hand over your work.
   guess.
 - Fixtures are synthetic (`PAYER-A`, `CLM-0001`, `LASTA`/`FIRSTA`, no DOB).
   `TestNoPHIInTestdata` enforces these patterns.
-- Secrets never go into git, a log or a transcript. API keys are in the environment or in files
+- Never put secrets in git, a log or a transcript. API keys are in the environment or in files
   that git ignores. Never `cat` a file that can hold a key.
 
 ## Writing
 
-All documents, READMEs and skills use Plain English, based on ASD-STE100. Before you write or
+All documents, READMEs and skills use the Strict mode of simple-english, based on ASD-STE100. Before you write or
 change a Markdown file, read the
 [simple-english skill](../.claude/skills/simple-english/SKILL.md). Write with its rules for the
-document, and do its self-check before you hand over the change. Do not change code, ids, paths
+document, in Strict mode, and do its self-check before you give the change to the owner. Do not change code, ids, paths
 or headings that other files link to.
 
 ## Adding things
@@ -79,9 +79,9 @@ or headings that other files link to.
   it. Add the question to "Blocking now" only if it stops work today.
 - An improvement: take the next `CI-NNN` in `docs/continuous-improvement.md`. Add a table row
   and a section with the source, owner, experiment, measure and review sprint. At most three
-  items are Trying. The `continuous-improvement` skill (`.claude/skills/`) adds, reviews and
+  items are Active. The `continuous-improvement` skill (`.claude/skills/`) adds, reviews and
   closes items.
-- Anything that is specific to one client goes in a client pack, not here.
+- Put each thing that is specific to one client in a client pack, not here.
 
 ## Commit and PR conventions
 
@@ -96,7 +96,7 @@ or headings that other files link to.
   - Give the key in the commit body and in the PR description, with the spec rule ids and the
     slice ids.
   - Never put the key in `cmd/`, `pkg/`, `spec/`, `docs/` or `frontend/`, because
-    `TestNoClientIdentifiersInCore` runs there.
+    `TestNoClientIdentifiersInCore` operates there.
   - Change a story in the roadmap, never in Jira. After the roadmap changes merge, the lead
     mirrors the roadmap into Jira.
 - Use these headings in the PR body: `## What?` / `## Why?` / `## Details`.

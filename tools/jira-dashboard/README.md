@@ -30,7 +30,7 @@ Jira boards ──pull──► tracker.db (SQLite) ──build──► automat
 
 - `tracker.db` is the source of truth.
 - The HTML is a frozen export, with the data in the file. You do not need a server or a
-  database to look at it.
+  database to see it.
 - The dashboard shows the locked weeks as its history. Draft weeks stay hidden until you lock
   them.
 
@@ -49,7 +49,7 @@ full weekly job operates offline. A pre-built sample of the outputs is in
 
 ## Use it with your Jira
 
-You need Python 3.9 or later and the standard library only. You do not need to `pip install`
+You need Python 3.9 or later and the standard library only. It is not necessary to `pip install`
 anything.
 
 1. Make a Jira API token at https://id.atlassian.com/manage-profile/security/api-tokens.
@@ -59,8 +59,8 @@ anything.
    in `PARENT_TYPES`, and the milestone labels in `MILESTONES`.
 4. Make sure that `SP_FIELD` in `pull_jira.py` is the story-point field of your site.
    `customfield_10016` is the story-point field on most Jira Cloud sites, but not on all of them.
-5. Add your projects to `tracker.db`. Start from `seed_demo_db.py`, or insert rows into
-   `projects` with the `jira_key` of each project. Then run the weekly job.
+5. Add your projects to `tracker.db`. Start from `seed_demo_db.py`, or add rows to
+   `projects` with the `jira_key` of each project. Then start the weekly job.
 
 ## Weekly workflow
 
@@ -69,7 +69,7 @@ python weekly.py              # week ending the most recent Friday: pull → loc
 python weekly.py --no-lock    # stage as a draft and build a preview instead
 ```
 
-`weekly.py` runs `advance_week.py`, `build_dashboard.py` and `gen_talk_script.py` in this
+`weekly.py` starts `advance_week.py`, `build_dashboard.py` and `gen_talk_script.py` in this
 order. Then it prints a summary table. [WEEKLY_RUNBOOK.md](WEEKLY_RUNBOOK.md) gives the step-by-step
 flow and the draft flow.
 
@@ -77,8 +77,8 @@ flow and the draft flow.
 
 | Script | Purpose |
 |---|---|
-| `weekly.py [date] [--no-lock] [--only K,K] [--all]` | ⭐ The full weekly job in one command |
-| `advance_week.py <date>` | Adds one new frozen week. It pulls the live boards, carries the other projects forward, and locks the week |
+| `weekly.py [date] [--no-lock] [--only K,K] [--all]` | The full weekly job in one command |
+| `advance_week.py <date>` | Adds one new frozen week. It pulls the live boards, copies the last week of the other projects into it, and locks the week |
 | `build_dashboard.py [--preview] [--out f]` | Makes the HTML. It uses only locked weeks, unless you give `--preview` |
 | `gen_talk_script.py [out.md]` | Makes the executive briefing from the latest locked week |
 | `pull_jira.py <KEY> [out.json]` | Pulls one board through the Jira REST API, or from the demo with `JIRA_DEMO=1` |
@@ -95,8 +95,8 @@ flow and the draft flow.
   gives partial credit for each status (`config.STATUS_CREDIT`: In Progress 50%, In Review
   75%). It does not see issues without points or issues without a parent. If no issue in an
   epic has points, it uses issue counts.
-- Live and stale: the job pulls only the boards in `ACTIVE_KEYS`. All other projects carry their
-  last locked week forward, and the weekly summary marks them `stale`.
+- Live and stale: the job pulls only the boards in `ACTIVE_KEYS`. All other projects copy their
+  last locked week into the new week, and the weekly summary marks them `stale`.
 - Steps to target is `auto` (made again at each pull) or `manual` (set with `set_steps.py`,
   never overwritten).
 - Milestones are Jira labels. The dashboard reports "Not yet labelled" separately from 0%.
@@ -112,5 +112,5 @@ An AI assistant with an Atlassian MCP connection can also do the pull. It gets t
 and children, and writes the same `_jira_<KEY>.json`, which `apply_pull.py` accepts. The two
 paths make the same JSON, so you can use either one.
 
-To let an AI assistant run this job each week and propose to lock the week, see routine 5 in
+To let an AI assistant start this job each week and propose to lock the week, see routine 5 in
 [`tools/ai-scrum-master/`](../ai-scrum-master/README.md).

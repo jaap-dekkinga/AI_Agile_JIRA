@@ -6,14 +6,14 @@ and how that knowledge changes. This page tells you when the work happens, who k
 motion, and what each meeting is for. Read the two pages together. CDD is the method, and this
 page is the rhythm.
 
-> If you are a PM who usually runs work from Jira, two points here can be new to you:
+> If you are a PM who usually manages work from Jira, two points here can be new to you:
 >
 > - The roadmap leads, and Jira follows. You write a story in
 >   [PROJECT_ROADMAP.md](../PROJECT_ROADMAP.md) first, with its spec first. Then the story is
 >   mirrored into Jira. You change the text of a story in the roadmap, with a pull request. The
 >   next sync overwrites an edit that you make in Jira. In Jira, you rank the backlog, record
->   story points, run the sprint, assign work and flag blockers.
-> - Engineering decides what goes into a sprint. You propose. Engineering agrees by consensus,
+>   story points, manage the sprint, assign work and flag blockers.
+> - Engineering decides what a sprint includes. You propose. Engineering agrees by consensus,
 >   before the sprint starts and before each change to it.
 
 ## How Agile and CDD fit together
@@ -39,7 +39,7 @@ behind, and where.
 | Backlog order (rank), story points, sprint, assignee, blocker flags | Jira | The team, in Jira, usually during a meeting. The sync never writes these fields |
 | Open questions, each with its owner and assumption | [open-questions.md](platform/open-questions.md) | A pull request |
 | Decisions | [ADRs](adr/README.md) | A pull request |
-| How we work: CDD, and the practices on this page | [context-driven-development.md](context-driven-development.md) and this page | A pull request, often after a retrospective |
+| How we do our work: CDD, and the practices on this page | [context-driven-development.md](context-driven-development.md) and this page | A pull request, often after a retrospective |
 | Improvements that we try, and what we learned from each | [continuous-improvement.md](continuous-improvement.md) | A pull request, usually during or after a retrospective |
 | Who shows what at the sprint demo | The demo sign-up sheet | The presenters |
 
@@ -62,8 +62,8 @@ The PM does these tasks:
   Leadership.
 - Writes and improves stories in the roadmap, with pull requests. The Lead Architect helps with
   technical readiness, and the engineers help with size.
-- Runs the meetings and keeps them in their time boxes. The PM schedules the meetings and their
-  follow-ups, runs the demo sign-up, and records the improvements from the retrospective.
+- Leads the meetings and keeps them in their time boxes. The PM schedules the meetings and their
+  follow-ups, manages the demo sign-up sheet, and records the improvements from the retrospective.
 - Proposes the contents of each sprint. The PM brings each proposed change to a sprint to
   Engineering.
 
@@ -75,8 +75,8 @@ The PM does not do these tasks:
 
 ## Engineering decides the sprint
 
-PMs propose what goes into a sprint. Engineering decides, by consensus. Here, Engineering means
-the engineers who work in the sprint, and the Lead Architect.
+PMs propose what a sprint includes. Engineering decides, by consensus. Here, Engineering means
+the engineers who do the work of the sprint, and the Lead Architect.
 
 - At [sprint planning](#sprint-planning), Engineering agrees on the commitment of the sprint.
 - After the sprint starts, each change needs the consensus of Engineering first. This includes
@@ -108,9 +108,9 @@ A usual sprint has this rhythm:
 - Before day 1: sprint planning.
 - Each day: the standup.
 - At about day 5: backlog grooming, and again each time that the Ready backlog gets low.
-- Day 10: the sprint demo, then the retrospective. Planning for the next sprint comes after, on
-  the same afternoon or the next morning, before work starts. Thus the lessons of the
-  retrospective go into the plan at once.
+- Day 10: the sprint demo, then the retrospective. Planning for the next sprint is next, on
+  the same afternoon or the next morning, before work starts. Thus the plan uses the lessons of
+  the retrospective at once.
 
 This diagram shows the path of a story through the backlog and the sprint:
 
@@ -135,11 +135,11 @@ flowchart TD
 ## The backlog
 
 The backlog holds each item that the team must do at some time. This includes roadmap stories
-that are not done, slices that are not split into stories yet, bugs, and work that comes from
+that are not done, slices that are not split into stories yet, bugs, and work for
 improvement items. The PMs rank the backlog in Jira, the most important item first. The
 priorities of the roadmap and the Needs of each story guide the rank.
 
-Not each item is ready to build, and this is normal. An item goes into a sprint only after it
+Not each item is ready to build, and this is normal. An item can be in a sprint only after it
 is groomed, which means that it meets the Definition of Ready. Grooming gets it there.
 
 Keep Ready story points for at least one more sprint than the current sprint holds. When the
@@ -152,7 +152,7 @@ question to anyone. The engineers decide this, not the PM. In this repository, a
 when all of these conditions are true:
 
 1. It is written in the roadmap, on `main`. It has a stable id and a description that an
-   engineer can build from. Its Jira, Owns, Needs and Demo columns are filled in
+   engineer can build from. Its Jira, Owns, Needs and Demo columns have values
    ([Working in parallel](../PROJECT_ROADMAP.md#working-in-parallel)).
 2. Its rules are named. The story names the spec rules that it adds or changes, with their
    numbers from [Reservations](../PROJECT_ROADMAP.md#reservations). Or it is a contract story,
@@ -175,7 +175,7 @@ A story is Done when all of these conditions are true:
 2. Its tests cite the rules that they prove, and `make check` passes.
 3. Its roadmap row is ✅. The [shared files](../PROJECT_ROADMAP.md#shared-files) that it needed
    changed in the same pull request.
-4. If it has a Demo, the demo runs on `main` against the Demo Scenarios, not only on a branch.
+4. If it has a Demo, the demo operates on `main` against the Demo Scenarios, not only on a branch.
 5. Each new thing that it found is written down: a question in the register, or a follow-up
    story in the roadmap.
 6. Its Jira Task is Done. The sync moves it to Done when the roadmap shows ✅.
@@ -188,10 +188,10 @@ than 30. Engineering and a PM attend. Other PMs can attend.
 Each person answers three questions:
 
 - What did I finish yesterday?
-- What will I work on today?
+- What will I do today?
 - What blocks me, or will block me soon?
 
-The standup is for problems to come out, not to solve them. When a discussion starts, the PM
+The standup is to find problems, not to solve them. When a discussion starts, the PM
 stops it and moves it to a follow-up huddle. People also propose changes to the sprint at the
 standup (see [Engineering decides the sprint](#engineering-decides-the-sprint)).
 
@@ -210,8 +210,8 @@ there at the next standup, the PM raises it again.
 ### Follow-up huddles
 
 A huddle removes one blocker. Only the necessary people are required: the blocked person and
-the person who can remove the blocker. All other people are optional, so they can go back to
-work. The PM schedules the huddle, directly after the standup or later on the same day.
+the person who can remove the blocker. All other people are optional, so they can return to
+their work. The PM schedules the huddle, directly after the standup or later on the same day.
 
 The PM also makes sure that the result is written down where it belongs. This can be an answer
 added to the question in the register, a decision in an ADR, or a changed story in the roadmap.
@@ -227,13 +227,13 @@ time that the Ready backlog gets lower than one sprint of points.
 
 For each item at the top of the backlog:
 
-1. The PM presents it: what it is for, and why now.
+1. The PM shows it: what it is for, and why the team must do it next.
 2. The group compares it with the [Definition of Ready](#definition-of-ready). Each missing part
    becomes an action with an owner: write the rule, open the question, reserve the number, or
    split the story.
 3. When no part is missing, Engineering estimates it.
 
-If one hour is not enough, the PM schedules a follow-up. The session does not go over its time.
+If one hour is not enough, the PM schedules a follow-up. The session does not use more than its time.
 
 Grooming leaves behind:
 
@@ -280,7 +280,7 @@ Engineering decides.
      judgment.
    - Scale it by the part of the team days that are available in this sprint. Remove vacations,
      public holidays, on-call duty and all other work that takes people away.
-   - Keep back the capacity buffer for work that nobody can plan: urgent bugs, outages and
+   - Keep the capacity buffer for work that nobody can plan: urgent bugs, outages and
      client requests outside the plan. The buffer starts at 20%. The team can change it at each
      planning meeting, usually because of the amount of unplanned work in recent sprints.
    - The remainder is the capacity of the sprint. The team agrees on the number.
@@ -301,7 +301,7 @@ agreed capacity and buffer, and its committed stories with their owners.
 
 ## During the sprint
 
-### Running out of work
+### When you have no more work
 
 When your committed work is done, propose the Ready story with the highest rank. It must not own
 a path that another story in progress owns. Propose it at the standup. If the standup is a
@@ -313,20 +313,20 @@ to the sprint in Jira. The PM makes sure that such a story always exists.
 Urgent bugs, outages and client requests outside the plan will come. The capacity buffer is for
 this work.
 
-- The PM brings the item to Engineering. Engineering agrees how the sprint takes it in, and
+- The PM brings the item to Engineering. Engineering agrees how the sprint includes it, and
   gives it points at that time.
-- The item gets the label `unplanned` in Jira, and its points come out of the buffer. Thus the
+- The item gets the label `unplanned` in Jira, and its points are subtracted from the buffer. Thus the
   next planning meeting can see how much of the buffer the sprint used.
 - The item can start in Jira. Then the roadmap is updated, as its
   [Jira section](../PROJECT_ROADMAP.md#jira) describes for work that starts in Jira. Its pull
   request still changes the rule before the code.
 - When unplanned work is more than the buffer, another item leaves the sprint. The PM can
-  propose which item, and Engineering decides by consensus. A sprint never takes on more work
+  propose which item, and Engineering decides by consensus. A sprint never gets more work
   without a decision.
 
 ### Unfinished work
 
-A story that is not Done when its sprint ends is carry-over. It goes back to the backlog. At
+A story that is not Done when its sprint ends is carry-over. It returns to the backlog. At
 planning, it is proposed again like each other story. Its points count only in the sprint where
 it is Done. The retrospective asks why it did not finish.
 
@@ -341,14 +341,14 @@ demonstration, or a person who tells the room what is done and why it is importa
 business reason is more important than the polish. The Reference UI and its Demo Scenarios
 (ADR 0013 in the [decision log](adr/README.md)) make most stories easy to show live.
 
-To present, sign up on the demo sign-up sheet. At this time, the sheet is a shared document. The
+To show your work, write your name on the demo sign-up sheet. At this time, the sheet is a shared document. The
 meeting invitation links to it, and a PM keeps it. Each entry gives:
 
 - The name of the presenter.
 - The title of the demo.
 - A description of why the feature is important to the business.
 
-Sign up before the end of the day before the demo. The PM sets the agenda and keeps the time.
+Write your name on the sheet before the end of the day before the demo. The PM sets the agenda and keeps the time.
 
 Do not show PHI in a demo, because demos are recorded. Show only the Demo Scenarios and
 synthetic data. Never show a production claim, a real patient, a raw payer payload, or a key or
@@ -363,23 +363,23 @@ The retrospective makes the work of the team better:
 
 1. Review the [improvement register](continuous-improvement.md) first. For each item whose
    Review by is this sprint, compare the result with its measure. Then adopt it, extend it
-   once, or drop it, and write in its result.
+   once, or stop it, and write its result.
 2. Go around the room. Each person answers these questions:
    - What went well?
    - What needs improvement?
    - What do we try next sprint?
 3. Agree on the improvements to try. Give each one an owner, an experiment and a measure. At
-   most three items are Trying at the same time.
+   most three items are Active at the same time.
 
 The PMs and the team write each improvement in the [register](continuous-improvement.md)
 first, as a `CI-NNN` item, during the meeting. The register remembers what we try and if it
-worked. When an item needs work, that work is also a backlog item. Its place depends on what it
+was successful. When an item needs work, that work is also a backlog item. Its place depends on what it
 changes:
 
 - The repository, for example a convention, CI, tooling, this page or the CDD guide: a roadmap
-  story, or a pull request for a small change to the documentation. A change in how we work is
-  context too. It gets into the repository in the same way as all other context.
-- Anything else, for example the format of a meeting, a Jira setting, or how we work with
+  story, or a pull request for a small change to the documentation. A change in how we do our work
+  is context too. It gets to the repository in the same way as all other context.
+- Anything else, for example the format of a meeting, a Jira setting, or how we do work with
   another team: a Jira Task in the CDD Framework epic.
 
 If a topic needs more than one hour, the PM schedules a follow-up. Only the key stakeholders
@@ -390,13 +390,13 @@ are required. All other people are optional.
 These rules apply to each meeting on this page:
 
 - Time boxes are fixed. When the time is finished, stop and schedule a follow-up. The sprint
-  demo is the only exception. It can go over its time, because it is recorded.
+  demo is the only exception. It can use more than its time, because it is recorded.
 - Follow-ups invite few people. Only the people who must decide or remove the problem are
-  required. All other people are optional, so they can go back to work.
+  required. All other people are optional, so they can return to their work.
 - The consensus of Engineering comes first. A sprint never changes without it. Jira follows
   the agreement, and never the opposite.
 - A meeting decides, and the context remembers. Each decision that changes what the project
-  knows gets into the repository with a pull request. This includes a new or answered question,
+  knows gets to the repository with a pull request. This includes a new or answered question,
   a changed story, a decision and a changed practice. The team changes what Jira owns (rank,
   points, sprint, assignee) in Jira during the meeting.
 - Do not put PHI in meeting notes, chat, slides or recordings. When you need an example, use the
@@ -404,29 +404,29 @@ These rules apply to each meeting on this page:
 
 ## Vocabulary
 
-These terms describe how the team works. The process terms of CDD are in
+These terms describe how the team does its work. The process terms of CDD are in
 [CDD vocabulary](context-driven-development.md#cdd-vocabulary). Product terms are in
 [spec/glossary.md](../spec/glossary.md).
 
 | Term | Meaning |
 |---|---|
 | PM | A Product Manager or a Project Manager. The PM does the work that a Scrum Master does in other teams: removes impediments and keeps the backlog groomed. |
-| Engineering | The engineers who work in the sprint, and the Lead Architect. |
+| Engineering | The engineers who do the work of the sprint, and the Lead Architect. |
 | Engineering consensus | An agreement in Engineering that nobody objects to. If discussion does not resolve an objection, nothing changes. |
 | Sprint | A fixed two-week time box in which the team delivers an agreed set of stories. It has the name of its dates. It is not a release. |
 | Sprint goal | One sentence, agreed at planning, that says what a sprint is for. |
 | Sprint commitment | The stories that Engineering agreed to deliver in a sprint. It changes only with the consensus of Engineering. |
 | Backlog | All items that the team must do at some time, ranked in Jira by the PMs. |
-| Groomed, Ready | A backlog item that meets the Definition of Ready. An engineer can start it without a question to anyone. Only Ready stories go into a sprint. |
+| Groomed, Ready | A backlog item that meets the Definition of Ready. An engineer can start it without a question to anyone. Only Ready stories can be in a sprint. |
 | Definition of Ready | The checklist that a story must pass to be Ready. |
 | Definition of Done | The checklist that a story must pass to be Done. |
 | Story points | A relative estimate of the size of a story, on the Fibonacci scale from 1 to 8. Recorded in Jira. |
 | Velocity | Story points Done in each sprint, with unplanned work included, as an average of the last three sprints. |
 | Capacity | The story points that a sprint is planned to hold: velocity, scaled for availability, minus the buffer. |
-| Capacity buffer | The part of a sprint that the team keeps back for unplanned work. It starts at 20%. |
+| Capacity buffer | The part of a sprint that the team keeps for unplanned work. It starts at 20%. |
 | Unplanned work | Work that comes during a sprint: urgent bugs, outages, client requests outside the plan. It has the label `unplanned` in Jira. |
 | Impediment, blocker | Anything that stops a person from making progress. The PM makes sure that it is removed. |
 | Follow-up huddle | A short meeting to remove one blocker. Only the necessary people are required. |
-| Improvement item | A change that the team tries in how it works, with an owner, an experiment and a measure. A `CI-NNN` row in the [register](continuous-improvement.md). |
+| Improvement item | A change that the team tries in how it does its work, with an owner, an experiment and a measure. A `CI-NNN` row in the [register](continuous-improvement.md). |
 | Working agreement | A habit that the team adopted from an improvement item. It is in the list in the [register](continuous-improvement.md#working-agreements). |
-| Carry-over | A story that is not Done when its sprint ends. It goes back to the backlog. |
+| Carry-over | A story that is not Done when its sprint ends. It returns to the backlog. |

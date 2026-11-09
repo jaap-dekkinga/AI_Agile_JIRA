@@ -2,7 +2,7 @@
 
 This page is the register of what the project does not know yet. Each question has a stable id,
 an owner, what it blocks, the options, what can settle it, and the assumption. The assumption is
-the basis for work until the question gets an answer. We never renumber ids. A resolved or
+the basis for the work until the question gets an answer. We never renumber ids. A resolved or
 duplicate question keeps its section.
 
 > Example content. These questions belong to the fictional Harbor Claims Assistant.
@@ -52,7 +52,7 @@ that this answer unblocked.
 - Question: Who can approve an action that cannot be undone, such as a write-off?
 - Owner: Leadership.
 - Blocks: each write-off gate.
-- Assumption: the product only recommends. The system never executes a write-off (ADR 0003).
+- Assumption: the product only recommends. The system never does a write-off (ADR 0003).
 
 ### Q-030
 

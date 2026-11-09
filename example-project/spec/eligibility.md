@@ -30,13 +30,13 @@ neither has a spec yet:
 
 - *Insurance discovery* looks for the plans of a member from demographics, when the payer is not
   known. It answers with candidates, each with a confidence, not with facts. It cannot say which
-  payer is primary. It works best with an address and a Social Security number, and the product
+  payer is primary. It gives the best results with an address and a Social Security number, and the product
   does not accept these ([`Q-047`](../docs/platform/open-questions.md#q-047)). Roadmap S8-08.
 - *Coordination of benefits* starts from one known active plan. It finds the other plans of the
   member, and which plan is primary when this is possible to find. Roadmap S8-13.
 
 The first Product Vendor offers both checks, but its test mode supports neither. Thus we can
-make sure that they work only against production, with real patient data.
+make sure that they are correct only against production, with real patient data.
 
 ## Rules
 
@@ -100,7 +100,7 @@ the payer.
 
 **Forbidden:**
 - Reading a missing amount as zero.
-- Dropping benefit rows in the adapter because no current surface shows them.
+- Removing benefit rows in the adapter because no current surface shows them.
 - Reading a missing quantity as zero.
 - Presenting the benefit rows as the payer's complete statement of benefits.
 
@@ -113,7 +113,7 @@ status is `UNKNOWN`. When they give both codes, the status is `UNKNOWN`, with a 
 names the conflict.
 
 **Forbidden:**
-- Reporting `ACTIVE` because a plan is present or no row said otherwise.
+- Reporting `ACTIVE` because the result has a plan or because no row said otherwise.
 - Resolving a conflict by taking the first row.
 
 ### eligibility-006: A rejected inquiry is never reported as an inactive plan
@@ -136,7 +136,7 @@ id.
 
 The canonical result carries no name, date of birth, gender, address, member id or other
 identifier of the subscriber or the dependent. This includes all identifiers that the payer sends
-back. The adapter does not read them. As a result, they cannot get into an API response, a log
+back. The adapter does not read them. As a result, they cannot get to an API response, a log
 line, a span or a tool output. The raw payload carries them. The product keeps it only in the
 transaction record, under its TTL (`clearinghouse-013`).
 
@@ -156,12 +156,12 @@ optional service types. It returns the canonical result, the transport metadata,
 the id of the journaled transaction. It reports invalid inquiries, no Coverage, enrollment gaps
 and vendor failures in the same way as the claim status route (`clearinghouse-016`, `-017`).
 
-Amended 2026-10-15: as on the claim status route, the answer gets to the caller, however long the
-vendor takes to give it, up to the timeout of the vendor. A vendor can keep a real-time
+Amended 2026-10-15: as on the claim status route, the answer gets to the caller, also when the
+vendor takes a long time to give it, up to the timeout of the vendor. A vendor can keep a real-time
 eligibility check open for two minutes.
 
 Amended 2026-10-15: as on the claim status route, after the vendor answers, the answer gets the
-full write deadline of the service, however long the call took. This includes a fallback to a
+full write deadline of the service, also when the call took a long time. This includes a fallback to a
 second vendor after a timeout of the first vendor.
 
 ### eligibility-010: Without a vendor, the fake answers eligibility Demo Scenarios in Demo Mode only
@@ -195,7 +195,7 @@ A benefit row carries these elements:
 Related entities are the payers and providers that a row names. The row carries an organization
 with its role, its name and its identifier. It carries a person only in a provider role (a
 provider, a primary care provider, another physician, a contracted service provider), by NPI and
-without a name. It does not carry a person in any other role, for example the insured or a legal
+without a name. It does not carry a person in another role, for example the insured or a legal
 representative.
 
 The row carries an identifier only when it identifies an organization or a provider. Permitted
@@ -228,7 +228,7 @@ Thus a surface shows a message only with the rest of the result, never alone.
 ### eligibility-020: In a vendor's test mode, the vendor's test requests are offered by name
 
 The test mode of a vendor answers only the published mock requests of that vendor. It refuses
-each other identity. When eligibility runs against a vendor in test mode, its adapter lists those
+each other identity. When eligibility operates against a vendor in test mode, its adapter lists those
 requests. Each request is complete and valid under `eligibility-002`, and has the Plan status that
 the test mode answers with. `GET /api/v1/eligibility/samples` returns them in the request shape of
 `eligibility-009`, in the same way as the Demo Scenarios (`eligibility-010`). The route exists only

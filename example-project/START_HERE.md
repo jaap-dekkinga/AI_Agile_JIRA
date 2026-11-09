@@ -1,7 +1,7 @@
 # Start here
 
 This page is the start point into the project for all readers: leadership, product,
-architecture and engineering. It tells you what the project is, how we work, and where to find
+architecture and engineering. It tells you what the project is, how we do our work, and where to find
 each document. It takes about five minutes to read.
 
 > Example content. Harbor Claims Assistant is a fictional product. It shows a full Context
@@ -10,7 +10,7 @@ each document. It takes about five minutes to read.
 
 ## What this is
 
-Harbor Claims Assistant helps healthcare billing teams decide the next action on a claim. It
+Harbor Claims Assistant helps healthcare billing teams to decide the next action on a claim. It
 gets the status of a claim from the insurer and interprets it. Then it recommends the next
 action, with the evidence for the recommendation.
 
@@ -21,7 +21,7 @@ action, with the evidence for the recommendation.
 - It recommends, and people act. No action that cannot be undone happens without a decision
   by a person.
 
-## How we work
+## How we do our work
 
 We use Context Driven Development (CDD). Its main idea is that the spec is the context. Before
 we build something, we write down what we know in this repository. We review it like code. The
@@ -33,7 +33,7 @@ context includes these items:
 - The meaning of our words.
 - The rules that the system must obey.
 
-Tests cite the rules that they prove, and the code comes after the tests. Anyone can make the
+Tests cite the rules that they prove. We write the code after the tests. Anyone can make the
 context better with a pull request. Most useful changes do not include code.
 
 [docs/context-driven-development.md](docs/context-driven-development.md) gives the full
@@ -41,7 +41,7 @@ process, the roles, and how the roles overlap.
 
 We plan and deliver in two-week sprints. Each sprint has a daily standup, backlog grooming,
 sprint planning, a sprint demo and a retrospective. PMs keep the backlog groomed and remove
-blockers. Engineering decides what goes into each sprint.
+blockers. Engineering decides what each sprint includes.
 [docs/agile-practices.md](docs/agile-practices.md) describes the meetings, and when a story is
 ready to build.
 
@@ -64,26 +64,26 @@ This table gives each kind of context, the question that it answers, and where i
 | You want to know… | The answer is in | Where |
 |---|---|---|
 | What do we build next, and what is done? | The roadmap, in slices (`S6`) | [PROJECT_ROADMAP.md](PROJECT_ROADMAP.md) |
-| How does the roadmap get into Jira? | The Jira section of the roadmap | [PROJECT_ROADMAP.md#jira](PROJECT_ROADMAP.md#jira) |
+| How does the roadmap get to Jira? | The Jira section of the roadmap | [PROJECT_ROADMAP.md#jira](PROJECT_ROADMAP.md#jira) |
 | When does the work happen, and what is each meeting for? | Two-week sprints, their meetings, and the Definitions of Ready and Done | [docs/agile-practices.md](docs/agile-practices.md) |
 | What does this word mean? | The glossary, and the X12 and billing reference | [spec/glossary.md](spec/glossary.md) · [CDD vocabulary](docs/context-driven-development.md#cdd-vocabulary) |
 | What is not decided yet, and who decides? | Open questions (`Q-NNN`) | [docs/platform/open-questions.md](docs/platform/open-questions.md), starting with [Blocking now](docs/platform/open-questions.md#blocking-now) |
 | Why is it built this way? | Decisions (ADRs) | [docs/adr/README.md](docs/adr/README.md) |
 | What exactly must the system do? | Rules (`eligibility-006`) | [spec/INDEX.md](spec/INDEX.md) |
-| What do we try in how we work, and what did we learn? | Improvement items (`CI-NNN`) and working agreements | [docs/continuous-improvement.md](docs/continuous-improvement.md) |
+| What do we try in how we do our work, and what did we learn? | Improvement items (`CI-NNN`) and working agreements | [docs/continuous-improvement.md](docs/continuous-improvement.md) |
 | What are the coding conventions? | Conventions (AI assistants read them too) | [CLAUDE.md](CLAUDE.md) |
 
 ## Your first hour
 
 1. Read this page.
-2. Read [How we work](docs/context-driven-development.md): the idea, the lifecycle diagram, and
+2. Read [How we do our work](docs/context-driven-development.md): the idea, the lifecycle diagram, and
    your role.
-3. Read the [Defined Terms](spec/glossary.md#defined-terms) in the glossary. Most confusion
-   comes from words that have an exact meaning here.
+3. Read the [Defined Terms](spec/glossary.md#defined-terms) in the glossary. Words that have
+   an exact meaning here cause most confusion.
 4. Read [Blocking now](docs/platform/open-questions.md#blocking-now): the questions that stop
    work today, and who owns them.
 5. Open the [roadmap](PROJECT_ROADMAP.md). Find a slice with the mark 🟡 (in progress) and read
    its goal.
 
 Then choose one thing that you know about: an open question, a term or a rule. Open a pull
-request that makes it clearer. This is how CDD works.
+request that makes it clearer. This is the method of CDD.

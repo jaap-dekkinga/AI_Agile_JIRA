@@ -14,7 +14,7 @@ Jira boards ──pull──► tracker.db (source of truth) ──build──�
 - `tracker.db` holds all data. The HTML is a frozen export. When you send it to a person, they
   see that snapshot. It shows a "Snapshot generated …" date.
 - The dashboard shows only locked weeks. Each locked week is a frozen reporting snapshot.
-- Run all the commands on this page from this folder.
+- Start all the commands on this page from this folder.
 
 ## Critical safety rules
 
@@ -31,7 +31,7 @@ When you have locked weeks with historical data, obey these rules:
    lock the draft.
 
 The locked weeks are the history for trend analysis and executive reporting. If you overwrite
-them, you destroy the audit trail.
+them, you erase the audit trail.
 
 ---
 
@@ -40,13 +40,13 @@ them, you destroy the audit trail.
 ### Path A: pure Python pull (recommended)
 
 1. Make a Jira API token: https://id.atlassian.com/manage-profile/security/api-tokens
-2. Copy `jira_config.example.json` to `jira_config.json`. Fill in the email, the token and the
-   site, or set `JIRA_EMAIL`, `JIRA_API_TOKEN` and `JIRA_SITE`. Keep the file private.
-3. Do a test: `python pull_jira.py <KEY>` must write `_jira_<KEY>.json`.
+2. Copy `jira_config.example.json` to `jira_config.json`. Write the email, the token and the
+   site in it, or set `JIRA_EMAIL`, `JIRA_API_TOKEN` and `JIRA_SITE`. Keep the file private.
+3. Do a test. The command `python pull_jira.py <KEY>` must write `_jira_<KEY>.json`.
 
 ### Path B: AI-assistant pull (Atlassian MCP, optional)
 
-1. Connect the Atlassian MCP server in your assistant and sign in.
+1. Connect the Atlassian MCP server in your assistant, and log in.
 2. Ask the assistant to "refresh `<KEY>`". It pulls through MCP and makes the same
    `_jira_<KEY>.json`.
 
@@ -54,7 +54,7 @@ The two paths make the same JSON, so you can use either one.
 
 ### Path C: offline demo
 
-Run `python seed_demo_db.py`. Then put `JIRA_DEMO=1` before each command. You do not need an
+Start `python seed_demo_db.py`. Then put `JIRA_DEMO=1` before each command. You do not need an
 account.
 
 ---
@@ -65,12 +65,13 @@ account.
 python weekly.py 2026-11-06     # the week-ending Friday; omit it for the most recent Friday
 ```
 
-This command pulls each live board into a new week and carries the other projects forward.
+This command pulls each live board into a new week. It copies the last week of the other
+projects into the new week.
 Then it locks the week, makes the dashboard again, makes `exec-talk-script.md` again, and
 prints a summary table.
 
 The talk script marks some lines with (REVIEW). These lines are judgment calls. Make sure that
-they are correct before you present.
+they are correct before you give the briefing.
 
 If you want, select the "Steps to target" for that week, and then build again:
 
@@ -84,7 +85,7 @@ python build_dashboard.py
 > stage the week as a draft first (`python weekly.py --no-lock`). Then select the steps, and
 > lock the week.
 
-To look at the dashboard on your computer, run `python -m http.server 8743`. Then open
+To see the dashboard on your computer, start `python -m http.server 8743`. Then open
 http://localhost:8743/automation_margin_tracker_dashboard.html
 
 ---
@@ -112,7 +113,7 @@ python weekly.py 2026-11-06             # 5. rebuild the shareable outputs
 1. Add a row to `projects`, with the key of the board in `jira_key`. Or set the key on a mock
    project: `UPDATE projects SET jira_key='<KEY>' WHERE id=<id>;`
 2. Add the key to `ACTIVE_KEYS` in `config.py`.
-3. The next `weekly.py` run pulls the board automatically. If a board has no epics yet, the job
+3. The next operation of `weekly.py` pulls the board automatically. If a board has no epics yet, the job
    skips it without a message until its first epic exists.
 
 To retire a project, set `projects.active=0`. Do not remove its key from `ACTIVE_KEYS`.
@@ -133,7 +134,7 @@ dates are real timestamps. The dashboard shows them for audit and freshness, and
 | Selected week | The week that you choose in the dropdown. Each figure shows the values "as of" that week. | Select 16 Oct, and all figures show 16 Oct |
 | Locked date (`locked_at`) | The calendar day on which the week was finalized. For audit only. | Week 10-30, locked_at 2026-11-02 |
 | Barrier raised / resolved week | The reporting week in which a blocker started, or was removed. | Raised in week 10-09, shown from 10-09 |
-| Target GA (`target_ga`) | The go-live date of the project. "Days to GA" comes from it. | 2026-12-18 |
+| Target GA (`target_ga`) | The go-live date of the project. The dashboard calculates "Days to GA" from it. | 2026-12-18 |
 | Snapshot generated | The time when the HTML was built (in the footer). | "06 Nov 2026, 15:36" |
 
 ## Key concepts
@@ -144,12 +145,12 @@ dates are real timestamps. The dashboard shows them for audit and freshness, and
 - Steps to target: `steps_source` is 'auto' or 'manual'. 'auto' is made again at each pull,
   from the epics that are closest to done or from the sprint goal. 'manual' is your choice,
   made with `set_steps.py`.
-- Barrier log: it follows the selected week. A blocker shows from its raised week. It changes
+- Barrier log: it agrees with the selected week. A blocker shows from its raised week. It changes
   to Resolved after its resolved week.
 
 ## Housekeeping
 
-- To go back to an earlier state, copy a `tracker.db.bak-*` backup over `tracker.db` and build
+- To return to an earlier state, copy a `tracker.db.bak-*` backup over `tracker.db` and build
   again.
 - After you apply them, you can delete the temporary `_jira_*.json` pull files.
 - Sharing: the HTML holds all data and has no access control. Share it through a location with

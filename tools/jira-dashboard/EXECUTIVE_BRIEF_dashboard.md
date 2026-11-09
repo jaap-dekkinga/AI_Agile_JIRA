@@ -8,13 +8,13 @@
 
 ## In one paragraph
 
-The Automation & Margin dashboard now reads its numbers directly from Jira, without manual data
+The Automation & Margin dashboard reads its numbers directly from Jira, without manual data
 entry. Three changes make it a more reliable picture of the state of delivery. First, Jira
 labels track the milestones, so each milestone has its own progress figure. Second, "% complete"
-now gives partial credit for work in progress, not only for finished work. Third, the "Steps to
-target" line now names the work that is closest to done, or the sprint goal of the team. The
-pull is automatic and can run each weekday. The shared dashboard still moves forward once a
-week, when somebody signs off the numbers of that week.
+gives partial credit for work in progress, not only for finished work. Third, the "Steps to
+target" line names the work that is closest to done, or the sprint goal of the team. The
+pull is automatic and can operate each weekday. The shared dashboard still changes once a
+week, when somebody approves the numbers of that week.
 
 ---
 
@@ -40,18 +40,18 @@ week, when somebody signs off the numbers of that week.
 
 ## 2. Daily updates from Jira
 
-How it works today: a scheduled job reads each active Jira board and records the result in the
+How the dashboard gets its data: a scheduled job reads each active Jira board and records the result in the
 database of the dashboard. Nobody must type anything. The job only reads from Jira. It never
 changes anything there.
 
 | Stage | What happens | Who sees it |
 |---|---|---|
 | Draft | The job pulls the numbers of the week from Jira. It can pull them again as many times as necessary. Each new pull replaces the pull before it. | Review copy only |
-| Locked | Somebody signs off the week, and it is frozen as a permanent snapshot. Nothing calculates it again after that. | Everyone, on the shared dashboard |
+| Locked | Somebody approves the week, and it is frozen as a permanent snapshot. Nothing calculates it again after that. | Everyone, on the shared dashboard |
 
 Why the shared dashboard stays weekly: leaders act on the change from week to week. For this
 comparison, the figure of last week must be a fixed point. If the published numbers move each
-day, it is not fixed. Daily pulls give the team new numbers to work from, and the weekly lock keeps the
+day, it is not fixed. Daily pulls give the team new numbers for its work, and the weekly lock keeps the
 history true.
 
 One condition before more people see it: the dashboard is a single file that holds all project
@@ -108,5 +108,5 @@ Remember these three points:
 
 1. Operator Workbench: move the target date, or add people to the team.
 2. Milestone labels: ask each team to put labels on its next milestones in Jira.
-3. Sprint goals: ask each team to fill in the sprint goal field. The dashboard uses it directly.
+3. Sprint goals: ask each team to write the sprint goal in its field. The dashboard uses it directly.
 4. Hosting: choose a host with access control before the dashboard is published as a website.
