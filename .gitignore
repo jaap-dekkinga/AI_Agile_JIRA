@@ -5,3 +5,7 @@ Thumbs.db
 .vscode/
 .idea/
 .env
+
+# Local files of the Scrum Master: the real improvement register, and the weekly reports
+*.local.md
+sm-reports/

@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
-"""Generate a fresh exec talk script from tracker.db for the latest locked week.
+"""Make a new executive talk script from tracker.db for the latest locked week.
 
   python gen_talk_script.py [output.md]     # default: exec-talk-script.md
 
-Reads the current locked reporting week (and the prior locked week for week-over-week)
-and writes a speaker script with LIVE numbers, movers, a risks/mitigations table built
-from the barrier log, and suggested asks. Facts are auto-filled from the data; lines
-marked (REVIEW) are judgment calls to confirm before presenting.
+The script reads the current locked reporting week, and the locked week before it for the
+change from week to week. It writes a speaker script with the current numbers, the largest
+changes, a table of risks and mitigations from the barrier log, and proposed requests. The
+data gives the facts. Lines with the mark (REVIEW) are judgment calls. Make sure that they are
+correct before you give the briefing.
 
-Re-run each week after: advance_week.py <date> -> build_dashboard.py -> gen_talk_script.py
-(weekly.py runs all three.)
+Start it again each week, after: advance_week.py <date> -> build_dashboard.py
+(weekly.py starts all three scripts.)
 """
 import sqlite3, sys
 from datetime import datetime
@@ -51,7 +52,6 @@ for p in cx.execute("SELECT id,name,jira_key,planned_pct,target_ga FROM projects
 live = [x for x in P if x['live']]
 rag_ct = {k: sum(1 for x in P if x['rag'] == k) for k in ['On Track', 'At Risk', 'Off Track']}
 avg_live = round(sum(x['pct'] for x in live) / len(live), 1) if live else 0
-emoji = {'On Track': '🟢', 'At Risk': '🟡', 'Off Track': '🔴'}
 
 # movers (only if we have a prior week with real movement)
 movers = [x for x in P if x['wow'] is not None and abs(x['wow']) >= 0.1]
@@ -69,91 +69,92 @@ risks.sort(key=lambda r: SEVRANK.get(r[1]['severity'], 3))
 asks = []
 for name, b in risks:
     if SEVRANK.get(b['severity'], 3) == 0:
-        asks.append(f"**{name}:** assign an owner to unblock “{b['barrier']}” ({b['severity']}).")
+        asks.append(f"{name}: give an owner to the blocker “{b['barrier']}” ({b['severity']}), so that the owner removes it.")
 for x in live:
     if x['rag'] == 'Off Track' and x['pct'] == 0:
-        asks.append(f"**{x['name']}:** confirm scope, target % and go-live date — it's newly launched and measured against a placeholder target.")
+        asks.append(f"{x['name']}: agree on the scope, the target % and the go-live date. The project is new, and the dashboard measures it against a placeholder target.")
     elif x['rag'] in ('At Risk', 'Off Track'):
-        asks.append(f"**{x['name']}:** {x['rag']} at {x['pct']}% ({x['var']:+} vs plan) — agree resourcing/priority to get it back on track.")
+        asks.append(f"{x['name']}: {x['rag']} at {x['pct']}% ({x['var']:+} against the plan). Agree on people and priority, so that it returns to On Track.")
 seen = set(); asks = [a for a in asks if not (a in seen or seen.add(a))][:6]
 
 L = []
-L.append("# Exec Briefing — Automation & Margin Dashboard")
-L.append(f"**Reporting week ending {fdate(CUR)}** · generated {datetime.now().strftime('%d %b %Y %H:%M')} · ~10 min + Q&A\n")
-L.append("> Auto-generated from tracker.db. `[SHOW: …]` cues = where to be in the dashboard. "
-         "Numbers are live; lines marked **(REVIEW)** are judgment calls to confirm before presenting.\n")
+L.append("# Executive briefing: Automation & Margin Dashboard")
+L.append(f"Reporting week ending {fdate(CUR)} · generated {datetime.now().strftime('%d %b %Y %H:%M')} · about 10 minutes, then questions\n")
+L.append("> A script makes this file from tracker.db. A `[SHOW: …]` cue tells you which part of the dashboard to show. "
+         "The numbers come from the data. Lines with the mark (REVIEW) are judgment calls. "
+         "Make sure that they are correct before you give the briefing.\n")
 
-L.append("## 1 · Portfolio at a glance\n`[SHOW: Portfolio Overview]`")
-L.append(f"- **{rag_ct['On Track']} On Track · {rag_ct['At Risk']} At Risk · {rag_ct['Off Track']} Off Track** across {len(P)} projects.")
-L.append(f"- **{len(live)} live from Jira**, averaging **{avg_live}% complete** (story-point-weighted).")
+L.append("## 1 · Portfolio summary\n`[SHOW: Portfolio Overview]`")
+L.append(f"- {rag_ct['On Track']} On Track · {rag_ct['At Risk']} At Risk · {rag_ct['Off Track']} Off Track, across {len(P)} projects.")
+L.append(f"- {len(live)} projects get their data from Jira. Their average is {avg_live}% complete, weighted by story points.")
 if not movers:
-    L.append("- This is the first trustworthy locked baseline — week-over-week reads flat; real deltas begin next week.\n")
+    L.append("- This is the first locked baseline that you can trust. The change from last week shows 0. Real changes start next week.\n")
 else:
     L.append("")
 
 if movers:
-    L.append("## 2 · This week's movers\n`[SHOW: trajectory chart]`")
+    L.append("## 2 · Largest changes this week\n`[SHOW: trajectory chart]`")
     for x in gain:
-        L.append(f"- 📈 **{x['name']}** {x['wow']:+} pts → {x['pct']}%.")
+        L.append(f"- {x['name']}: {x['wow']:+} points, to {x['pct']}%.")
     for x in drop:
-        L.append(f"- 📉 **{x['name']}** {x['wow']:+} pts → {x['pct']}%. *(REVIEW: explain why)*")
+        L.append(f"- {x['name']}: {x['wow']:+} points, to {x['pct']}%. *(REVIEW: say why.)*")
     L.append("")
 
-L.append("## 3 · Where each initiative stands\n`[SHOW: project table]`\n")
-L.append("| Project | Source | % | WoW | Status | vs Plan | Top open risk |")
+L.append("## 3 · Status of each initiative\n`[SHOW: project table]`\n")
+L.append("| Project | Source | % | Change from last week | Status | Against plan | Largest open risk |")
 L.append("|---|---|---|---|---|---|---|")
 for x in P:
     wow = '—' if x['wow'] is None else f"{x['wow']:+}"
     top = x['openb'][0]['barrier'][:42] if x['openb'] else '—'
     src = x['key'] if x['live'] else 'mock'
-    L.append(f"| {x['name']} | {src} | {x['pct']}% | {wow} | {emoji.get(x['rag'],'')} {x['rag']} | {x['var']:+} | {top} |")
+    L.append(f"| {x['name']} | {src} | {x['pct']}% | {wow} | {x['rag']} | {x['var']:+} | {top} |")
 L.append("")
 
 # spotlight: leaders and watch items
 leaders = sorted([x for x in live if x['rag'] == 'On Track'], key=lambda x: -x['pct'])[:2]
 watch = [x for x in live if x['rag'] in ('At Risk', 'Off Track')]
-L.append("## 4 · Spotlight (talking points)")
+L.append("## 4 · Points to talk about")
 for x in leaders:
-    line = f"- 🟢 **{x['name']} — {x['pct']}%, On Track** ({x['var']:+} vs plan)."
+    line = f"- {x['name']}: {x['pct']}%, On Track ({x['var']:+} against the plan)."
     if x['onbpct'] is not None:
-        line += f" Onboarding tracked separately at **{x['onbpct']}%**."
+        line += f" The dashboard tracks onboarding separately, at {x['onbpct']}%."
     L.append(line)
 for x in watch:
-    tb = f" Top blocker: “{x['openb'][0]['barrier']}” ({x['openb'][0]['severity']})." if x['openb'] else ""
+    tb = f" Largest blocker: “{x['openb'][0]['barrier']}” ({x['openb'][0]['severity']})." if x['openb'] else ""
     if x['pct'] == 0:
-        L.append(f"- 🔴 **{x['name']} — just launched (0%).** Red is vs a placeholder target, not a slip. *(REVIEW: confirm plan/GA.)*{tb}")
+        L.append(f"- {x['name']}: new project (0%). The status is Off Track against a placeholder target, not because of a delay. *(REVIEW: make sure that the plan and the GA date are correct.)*{tb}")
     else:
-        L.append(f"- {emoji[x['rag']]} **{x['name']} — {x['pct']}%, {x['rag']}.**{tb} *(REVIEW: mitigation + owner.)*")
+        L.append(f"- {x['name']}: {x['pct']}%, {x['rag']}.{tb} *(REVIEW: give the mitigation and its owner.)*")
 L.append("")
 
-L.append("## 5 · Risks & mitigations\n`[SHOW: a project's Barrier log]`\n")
+L.append("## 5 · Risks and mitigations\n`[SHOW: a project's Barrier log]`\n")
 if risks:
     L.append("| Project | Risk | Severity | Owner | Status |")
     L.append("|---|---|---|---|---|")
     for name, b in risks[:8]:
         L.append(f"| {name} | {b['barrier'][:48]} | {b['severity']} | {b['owner'] or '—'} | {b['status']} |")
-    L.append("\n*(REVIEW: confirm each mitigation and the specific help needed.)*\n")
+    L.append("\n*(REVIEW: make sure that each mitigation is correct, and say what the team needs.)*\n")
 else:
-    L.append("_No open blockers logged this week._\n")
+    L.append("_The log has no open blockers this week._\n")
 
-L.append("## 6 · Asks (REVIEW — tailor to the room)")
+L.append("## 6 · Requests (REVIEW: change them for the audience)")
 if asks:
     for i, a in enumerate(asks, 1):
         L.append(f"{i}. {a}")
 else:
-    L.append("- _No auto-suggested asks; add your own._")
-L.append("- **Standing ask:** every team points its Jira stories — that's what keeps these numbers honest.\n")
+    L.append("- _The script has no requests to propose. Add your own._")
+L.append("- Standing request: each team gives story points to its Jira stories. Without points, these numbers are not correct.\n")
 
-L.append("## 7 · How we run this (build trust)")
-L.append("> Generated straight from Jira, **locked each week** so history can't drift, stamped with a "
-         "generation date, with a built-in glossary for every metric and date.")
+L.append("## 7 · How we make this report")
+L.append("> The data comes directly from Jira. We lock each week, so the history cannot change. "
+         "Each file shows the date on which it was made, and has a glossary for each metric and date.")
 L.append("`[SHOW: KPI Glossary → Dates & reporting weeks]`\n")
 
-L.append("### Appendix — Q&A")
-L.append("- **Why can a number be lower than a past story?** Unpointed Jira stories are invisible to the %; "
-         "as teams point their backlog the % reflects *all* the work (truer, sometimes lower).")
-L.append("- **Why is WoW flat?** " + ("First trustworthy baseline; deltas start next week." if not movers else "See movers above."))
-L.append("- **Is it live?** A weekly locked **snapshot**, not a live feed — stable and auditable. Footer shows the build time.")
+L.append("### Appendix: questions and answers")
+L.append("- Why can a number be lower than in an earlier week? The % does not include Jira stories without points. "
+         "When teams give points to their backlog, the % includes all the work. The number is more correct, and sometimes lower.")
+L.append("- Why do some projects show no change from last week? " + ("This is the first baseline that you can trust. Changes start next week." if not movers else "Their numbers did not change this week, or their teams report them by hand. Section 2 gives the largest changes."))
+L.append("- Is it live? No. It is a weekly locked snapshot, not a live feed. Thus it is stable, and you can audit it. The footer shows when the file was made.")
 
 open(OUT, 'w', encoding='utf-8').write("\n".join(L) + "\n")
 con.close()
