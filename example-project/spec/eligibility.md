@@ -31,9 +31,9 @@ neither has a spec yet:
 - *Insurance discovery* looks for the plans of a member from demographics, when the payer is not
   known. It answers with candidates, each with a confidence, not with facts. It cannot say which
   payer is primary. It gives the best results with an address and a Social Security number, and the product
-  does not accept these ([`Q-047`](../docs/platform/open-questions.md#q-047)). Roadmap S8-08.
+  does not accept these ([`Q-047`](../docs/platform/open-questions.md#q-047)). Roadmap S5-06.
 - *Coordination of benefits* starts from one known active plan. It finds the other plans of the
-  member, and which plan is primary when this is possible to find. Roadmap S8-13.
+  member, and which plan is primary when this is possible to find. Roadmap S5-07.
 
 The first Product Vendor offers both checks, but its test mode supports neither. Thus we can
 make sure that they are correct only against production, with real patient data.

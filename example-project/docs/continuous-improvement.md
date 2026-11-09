@@ -25,8 +25,8 @@ one person, the team usually forgets it before the next sprint.
 5. An adopted item changes the method in the same pull request. This can be a line in
    [agile-practices.md](agile-practices.md), a row in the [working agreements](#working-agreements)
    on this page, or a line in [CLAUDE.md](../CLAUDE.md). After that, the change is how we do our work.
-6. If an item needs build work, it becomes a roadmap story. The item names the story id
-   (`S10-03`), and the story does the work. If an item needs a change to a Jira setting, it
+6. If an item needs build work, it becomes a new roadmap story, for example `S10-03`. The item
+   names the story id, and the story does the work. If an item needs a change to a Jira setting, it
    becomes a Jira Task in the CDD Framework epic, and the item names its key.
 
 An item has one of four statuses: Proposed, Active, Adopted or Stopped.

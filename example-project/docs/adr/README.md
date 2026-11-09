@@ -18,7 +18,12 @@ has the sections *Status*, *Context*, *Decision* and *Consequences*.
 | 0006 | The Core can name product vendors, but not client vendors | Accepted |
 | 0007 | The canonical claim status model is X12-277-shaped | Accepted |
 | 0008 | Raw payer payloads are retained under a TTL | Accepted |
+| 0009 | Each Capability output carries Evidence and Confidence | Accepted |
+| 0010 | The service validates a client pack as a whole at startup | Accepted |
+| 0011 | Precision over recall: no rule, no Recommendation | Accepted |
+| 0012 | Clearinghouse transport is a Port, not a Capability | Accepted |
 | 0013 | The Reference UI is a demonstration surface, not the product UI | Accepted |
 | 0014 | Queued inquiries hold patient identity only as long as a send can use it | Proposed (S7-01) |
 | 0015 | The agent tool surface carries no PHI | Proposed (S9-01) |
+| 0016 | Coverage is declared for each payer and transaction type | Accepted |
 | 0017 | The canonical eligibility (271) model | Accepted |

@@ -75,6 +75,7 @@ here in the PR that needs it, before you use the number.
 | ADR | `0015` | S9-01: the agent tool surface carries no PHI |
 | Spec area | `spec/restatus.md` (`restatus-001`…`008`) | S6-01 writes `001`–`006`, and S6-03 writes `007`–`008` |
 | Spec rules | `eligibility-012`–`015` | S5-06 (insurance discovery) |
+| Spec rules | `eligibility-016`–`019` | S5-07 (coordination of benefits) |
 | Question | `Q-056` · `Q-057` | S7-03 · S9-02 |
 
 ### Jira
@@ -192,6 +193,7 @@ keep the identity of the member ([`spec/eligibility.md`](spec/eligibility.md)).
 | S5-04 | HCA-141 | Vendor test mode: the vendor's mock requests offered by name | `eligibility-020`, `frontend/src/pages/eligibility.tsx` | S5-01 | Eligibility | 🟡 |
 | S5-05 | HCA-142 | Batch eligibility through the vendor's native batch | `pkg/clearinghouse/eligibility_batch.go` | S7-01 | — | ⬜ |
 | S5-06 | HCA-143 | Insurance discovery from demographics | `eligibility-012`…`015` | S5-02 | Eligibility | ⛔ `Q-047` |
+| S5-07 | HCA-144 | Coordination of benefits: the other plans of a member, and which plan is primary | `eligibility-016`…`019` | S5-02 | Eligibility | ⬜ |
 
 ---
 
@@ -312,4 +314,4 @@ The full list is in the [decision log](docs/adr/README.md).
 | 2026-10-01 | `Q-001` resolved, misframed: the claims database moves to a managed PostgreSQL, and its schema does not change. S4 marked ⛔ on `Q-030`. |
 | 2026-10-13 | Added S6 (re-status) and S7 (async submission) from the second pass of the operating model. |
 | 2026-10-27 | Added S9 (agent tools). Defined Release 1. |
-| 2026-11-09 | Added `docs/continuous-improvement.md` to the shared files. |
+| 2026-11-09 | Added `docs/continuous-improvement.md` to the shared files. Added S5-07 (coordination of benefits), and reserved `eligibility-016`–`019` for it. |
