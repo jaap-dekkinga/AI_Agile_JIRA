@@ -1,16 +1,16 @@
 # Epic template
 
-An epic is a body of work that delivers one outcome and is too big for a sprint. It is made of
-stories, and usually maps to one milestone.
+An epic is a body of work that gives one result and is too large for one sprint. It has
+stories, and usually has one milestone.
 
 ```markdown
-**Title:** <the outcome — "Automated re-status on connected payers">
+**Title:** <the result — "Automated re-status on connected payers">
 
 ### Goal
 One sentence: what is true for users when this epic is done.
 
 ### Why now
-The business reason and who asked for it.
+The business reason, and who asked for it.
 
 ### Scope
 - In: <capabilities included>
@@ -24,8 +24,8 @@ by 2026-12-04").
 The Jira label that tracks it on the dashboard (`MS2`), its target date and its owner.
 
 ### Stories
-The first stories, each one line. Each is written with the story template and rated on INVEST
-before it enters a sprint.
+The first stories, one line each. Each is written with the story template and gets an INVEST
+score in refinement.
 
 ### Risks and open questions
 Each with an owner and the assumption we work on meanwhile.
@@ -35,14 +35,14 @@ Each with an owner and the assumption we work on meanwhile.
 
 | Field | Value |
 |---|---|
-| Issue type | Epic (or the board's parent type, such as Workstream) |
+| Issue type | Epic (or the parent type of the board, for example Workstream) |
 | Summary | The title |
-| Description | Everything above |
-| Labels | The milestone label (`MS2`) so the dashboard counts its stories |
-| Due date | The milestone's target date |
+| Description | All the text of the template |
+| Labels | The milestone label (`MS2`), so that the dashboard counts its stories |
+| Due date | The target date of the milestone |
 
 ## Epic health check
 
-An epic is ready to break into stories when it has a goal, a success measure, a scope with an
-explicit "out" list, and an owner. The skill flags an epic whose stories are mostly rated Low
-or TBD on INVEST as at risk for its milestone.
+An epic is ready to split into stories when it has a goal, a success measure, a scope with an
+explicit "out" list, and an owner. If most stories of an epic have a low INVEST score, the skill
+tells the user that the milestone of the epic is at risk.

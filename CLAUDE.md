@@ -17,6 +17,10 @@ simple-english skill, based on ASD-STE100 Simplified Technical English.
 This rule applies to new documents and to each change to an existing document. It also applies
 to commit messages and pull request descriptions.
 
+Third-party files keep their original text. These are the files that
+`skills/scrum-master/scripts/analytics/NOTICE.md` names, and
+`.claude/skills/simple-english/SKILL.md`. Do not rewrite them.
+
 ## The example project
 
 `example-project/` has its own [CLAUDE.md](example-project/CLAUDE.md). That file gives the

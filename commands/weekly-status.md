@@ -1,5 +1,5 @@
 ---
-description: Run the weekly Jira pull, rebuild the status dashboard and exec briefing, and summarise what moved
+description: Start the weekly Jira pull, make the dashboard and the executive briefing again, and give a summary
 argument-hint: "[week-ending date YYYY-MM-DD] [--no-lock] [--demo]"
 ---
-Use the scrum-master skill's "Weekly status and the dashboard" workflow for $ARGUMENTS. Run `tools/jira-dashboard/weekly.py` (with `JIRA_DEMO=1` if I said --demo), then summarise movers, At Risk and Off Track projects, milestones and open blockers. Ask before publishing the HTML, and publish only to the location I name.
+Use the "Weekly status and the dashboard" workflow of the scrum-master skill for $ARGUMENTS. Start `tools/jira-dashboard/weekly.py` (with `JIRA_DEMO=1` if I said --demo). Then give a summary of the largest changes, the projects that are At Risk or Off Track, the milestones and the open blockers. Ask before you publish the HTML, and publish it only to the place that I name.

@@ -20,7 +20,6 @@ def good_story(**over):
             "Given a catalogue page, When I set a max price of 50, Then only items at or under 50 are shown",
             "Given a filter is set, When I clear it, Then all items are shown again",
         ],
-        "story_points": 3,
     }
     s.update(over)
     return ic.normalise(s)
@@ -28,30 +27,43 @@ def good_story(**over):
 
 def ratings(story):
     r = ic.rate(story)
-    return r["overall"], {c: v["rating"] for c, v in r["criteria"].items()}
+    return r["score"], {c: v["rating"] for c, v in r["criteria"].items()}
 
 
 def test_good_story_is_good_on_all_six():
-    overall, per = ratings(good_story())
-    assert overall == "Good"
+    score, per = ratings(good_story())
+    assert score == "6/6"
     assert set(per.values()) == {"Good"}
 
 
-def test_overall_rule_low_beats_tbd():
-    assert ic.overall(["Good", "TBD", "Low"]) == "Low"
-    assert ic.overall(["Good", "TBD"]) == "TBD"
-    assert ic.overall(["Good"] * 6) == "Good"
+def test_score_counts_good_criteria_and_has_no_failing_grade():
+    assert ic.score(["Good", "TBD", "Low", "Good", "Good", "Good"]) == "4/6"
+    assert ic.score(["Low"] * 6) == "0/6"
+    assert not hasattr(ic, "overall")
 
 
-def test_unestimated_story_is_tbd_not_low():
-    overall, per = ratings(good_story(story_points=None))
-    assert per["Estimable"] == "TBD" and per["Small"] == "TBD"
-    assert overall == "TBD"
+def test_story_points_are_ignored():
+    assert ratings(good_story(story_points=13)) == ratings(good_story(story_points=None))
 
 
-def test_over_eight_points_is_low_on_small():
-    _, per = ratings(good_story(story_points=13))
+def test_too_big_label_or_sprint_spanning_text_is_low_on_small():
+    _, per = ratings(good_story(labels=["too-big"]))
     assert per["Small"] == "Low"
+    _, per = ratings(good_story(description=good_story()["description"] + " This takes several sprints."))
+    assert per["Small"] == "Low"
+
+
+def test_many_criteria_is_tbd_on_small():
+    many = [f"Given case {i}, When I filter, Then result {i} shows" for i in range(7)]
+    _, per = ratings(good_story(acceptance_criteria=many))
+    assert per["Small"] == "TBD"
+
+
+def test_spike_label_is_low_and_open_question_is_tbd_on_estimable():
+    _, per = ratings(good_story(labels=["spike-needed"]))
+    assert per["Estimable"] == "Low"
+    _, per = ratings(good_story(open_questions=["Q-047"]))
+    assert per["Estimable"] == "TBD"
 
 
 def test_unresolved_dependency_is_low_on_independent():
@@ -78,11 +90,9 @@ def test_vague_criteria_are_low_but_measurable_ones_pass():
     assert per["Testable"] == "Good"
 
 
-def test_no_criteria_tbd_when_unrefined_low_when_estimated():
-    _, per = ratings(good_story(acceptance_criteria=[], story_points=None))
-    assert per["Testable"] == "TBD"
+def test_no_criteria_is_tbd_on_estimable_small_and_testable():
     _, per = ratings(good_story(acceptance_criteria=[]))
-    assert per["Testable"] == "Low"
+    assert per["Testable"] == "TBD" and per["Small"] == "TBD" and per["Estimable"] == "TBD"
 
 
 def test_jira_issue_shape_and_adf_description():
@@ -90,7 +100,6 @@ def test_jira_issue_shape_and_adf_description():
         "key": "T-9",
         "fields": {
             "summary": "Export report",
-            "customfield_10016": 5,
             "labels": [],
             "description": {"type": "doc", "content": [
                 {"type": "paragraph", "content": [{"type": "text", "text":
@@ -106,24 +115,26 @@ def test_jira_issue_shape_and_adf_description():
         },
     }
     s = ic.normalise(issue)
-    assert s["story_points"] == 5
+    assert "story_points" not in s
     assert s["depends_on"] == ["T-8"]
     assert any("CSV" in a for a in s["acceptance_criteria"])
     _, per = ratings(s)
     assert per["Independent"] == "Low" and per["Valuable"] == "Good"
 
 
-def test_cli_on_sample_file_reports_all_three_ratings():
+def test_cli_on_sample_file_gives_a_score_for_each_story():
     out = subprocess.run([sys.executable, str(SKILL / "scripts" / "invest_check.py"),
                           str(SKILL / "assets" / "sample_stories.json"), "--format", "json"],
                          capture_output=True, text=True, check=True).stdout
-    overall = {r["key"]: r["overall"] for r in json.loads(out)}
-    assert overall == {"HCA-141": "Good", "HCA-153": "Low", "HCA-143": "TBD", "HCA-181": "Low"}
+    scores = {r["key"]: r["score"] for r in json.loads(out)}
+    assert scores == {"HCA-141": "6/6", "HCA-153": "1/6", "HCA-143": "2/6", "HCA-181": "5/6"}
 
 
 def test_previous_table_is_read_back_but_does_not_sway_the_check():
-    desc = good_story()["description"] + "\n\n### INVEST: TBD\n\n| Criterion | Rating | Why |\n|---|---|---|\n| Negotiable | TBD | scope TBD |"
+    desc = good_story()["description"] + "\n\n### INVEST score: 5/6\n\n| Criterion | Rating | Why |\n|---|---|---|\n| Negotiable | TBD | scope TBD |"
     r = ic.rate(good_story(description=desc))
-    assert r["previous"] == "TBD"
-    assert r["overall"] == "Good"          # the old table's "TBD" text is not re-read as open scope
+    assert r["previous"] == "5/6"
+    assert r["score"] == "6/6"             # the old table's "TBD" text is not re-read as open scope
+    legacy = good_story()["description"] + "\n\n### INVEST: TBD\n"
+    assert ic.rate(good_story(description=legacy))["previous"] == "TBD"
     assert "label" not in r

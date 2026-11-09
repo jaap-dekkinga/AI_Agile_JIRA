@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Rate user stories against INVEST: Low / Good / TBD per criterion, plus an overall rating.
+"""Score user stories against INVEST: Good / TBD / Low for each criterion, and a score out of 6.
 
   python invest_check.py stories.json                 # text report
   python invest_check.py stories.json --format json   # machine-readable
@@ -14,24 +14,27 @@ Atlassian MCP.
     "summary": "Offer vendor test requests by name",
     "description": "As an operator I want ... so that ...",
     "acceptance_criteria": ["Given ... When ... Then ..."],   # list or text
-    "story_points": 5,                                        # null = not estimated
     "depends_on": ["HCA-140"],                                # unresolved blockers
     "open_questions": ["Q-047"],                              # unanswered questions
-    "labels": ["spike-needed"]
+    "labels": ["spike-needed"]                               # or "too-big"
   }
 
-The rules are heuristics: a FIRST PASS that a person (or the assistant) reviews. They never
-invent certainty. When the text does not say enough to judge a criterion, the rating is TBD,
+The team uses #NoEstimates, so the script does not use story points. A "story_points" field in
+the input is ignored.
+
+The rules are heuristics: a first pass that a person (or the assistant) reviews. They do not
+make up certainty. When the text does not give enough to judge a criterion, the rating is TBD,
 not Low, and the reason says what is missing. See ../references/invest-rubric.md.
 
-Overall: Low if any criterion is Low; TBD if none is Low but any is TBD; Good only if all six
-are Good. Standard library only.
+The score is the number of criteria rated Good, out of 6. It is a tool for refinement. No score
+and no rating stops a story. Standard library only.
 """
 import argparse, json, re, sys
 
 CRITERIA = ["Independent", "Negotiable", "Valuable", "Estimable", "Small", "Testable"]
-FIBONACCI = {0, 0.5, 1, 2, 3, 5, 8, 13, 20, 21, 34, 40, 100}
-MAX_POINTS = 8          # agile-practices.md: 8 is the most a single story may be
+MAX_CRITERIA = 6        # more acceptance criteria than this: ask if the story fits in one sprint
+SPIKE_LABELS = {"spike-needed", "needs-spike", "unestimable"}
+TOO_BIG_LABELS = {"too-big", "needs-split", "split-needed", "epic-sized"}
 
 DEPENDENCY_WORDS = re.compile(
     r"\b(depends on|dependent on|blocked by|after (?:story|ticket|[A-Z]+-\d+)|"
@@ -48,8 +51,9 @@ VAGUE_WORDS = re.compile(
     r"easy to use|seamless(?:ly)?|robust|as expected|nice|better)\b", re.I)
 HAS_NUMBER = re.compile(r"\d")
 SO_THAT = re.compile(r"\bso that\b\s+(.+)", re.I | re.S)
-PREVIOUS = re.compile(r"#*\s*INVEST:\s*(Good|TBD|Low)\b", re.I)
+PREVIOUS = re.compile(r"#*\s*INVEST(?: score)?:\s*(\d/6|Good|TBD|Low)\b", re.I)
 GWT = re.compile(r"\bgiven\b.+\bwhen\b.+\bthen\b", re.I | re.S)
+SPANS_SPRINTS = re.compile(r"\b(several|multiple|two|three|more than one) sprints\b|\bacross sprints\b", re.I)
 
 
 # ---------------------------------------------------------------------------
@@ -90,7 +94,7 @@ def split_criteria(text):
     return out
 
 
-def normalise(item, sp_field="customfield_10016"):
+def normalise(item):
     """Accept a simple story dict or a Jira issue; return the simple shape."""
     if "fields" in item:
         f = item["fields"]
@@ -108,7 +112,6 @@ def normalise(item, sp_field="customfield_10016"):
             "summary": f.get("summary", ""),
             "description": desc,
             "acceptance_criteria": split_criteria(desc),
-            "story_points": f.get(sp_field, f.get("story_points")),
             "depends_on": links,
             "open_questions": [],
             "labels": f.get("labels") or [],
@@ -157,37 +160,43 @@ def check_valuable(s, text):
     return "TBD", "no \"so that …\" benefit stated: the PO confirms who it is for and why"
 
 
+def criteria_of(s):
+    return [a for a in s.get("acceptance_criteria") or [] if a.strip()]
+
+
 def check_estimable(s, text):
+    """#NoEstimates: estimable means that the team understands the work well enough to judge
+    if it fits in one sprint. No story points."""
     labels = {l.lower() for l in s.get("labels") or []}
-    if labels & {"spike-needed", "needs-spike", "unestimable"}:
-        return "Low", "marked as needing a spike before it can be estimated"
+    if labels & SPIKE_LABELS:
+        return "Low", "marked as needing a spike before the team can judge the work"
     if s.get("open_questions"):
-        return "TBD", f"open questions {', '.join(s['open_questions'])}: record an assumption so the team can estimate"
-    if s.get("story_points") in (None, ""):
-        return "TBD", "not estimated yet: size it in refinement (planning poker)"
-    return "Good", f"estimated at {s['story_points']} points"
+        return "TBD", f"open questions {', '.join(s['open_questions'])}: record an assumption so the team can judge the work"
+    if not criteria_of(s):
+        return "TBD", "no acceptance criteria yet: the team cannot judge the work until they are written"
+    return "Good", "the acceptance criteria tell the team what to build"
 
 
 def check_small(s, text):
-    pts = s.get("story_points")
-    if pts in (None, ""):
-        return "TBD", "size unknown until it is estimated"
-    try:
-        pts = float(pts)
-    except (TypeError, ValueError):
-        return "TBD", f"story points not a number ({pts!r})"
-    if pts > MAX_POINTS:
-        return "Low", f"{pts:g} points is over the {MAX_POINTS}-point limit: split it (by workflow step, rule, or data variation)"
-    note = "" if pts in FIBONACCI else f" (note: {pts:g} is not on the Fibonacci scale)"
-    return "Good", f"{pts:g} points fits in one sprint{note}"
+    """#NoEstimates: small means that the team can complete the story in one sprint."""
+    labels = {l.lower() for l in s.get("labels") or []}
+    if labels & TOO_BIG_LABELS:
+        return "Low", "marked as too large for one sprint: split it (by workflow step, rule, or data variation)"
+    m = SPANS_SPRINTS.search(text)
+    if m:
+        return "Low", f"the text says that the work spans sprints (\"{m.group(0)}\"): split it"
+    ac = criteria_of(s)
+    if not ac:
+        return "TBD", "size unknown until the acceptance criteria are written"
+    if len(ac) > MAX_CRITERIA:
+        return "TBD", f"{len(ac)} acceptance criteria: the team confirms that it fits in one sprint, or splits it"
+    return "Good", f"{len(ac)} acceptance {'criterion' if len(ac) == 1 else 'criteria'}: likely fits in one sprint; the team confirms in refinement"
 
 
 def check_testable(s, text):
-    ac = [a for a in s.get("acceptance_criteria") or [] if a.strip()]
+    ac = criteria_of(s)
     if not ac:
-        if s.get("story_points") in (None, ""):
-            return "TBD", "acceptance criteria not written yet: add Given/When/Then statements in refinement"
-        return "Low", "estimated but has no acceptance criteria: add Given/When/Then statements the team can verify"
+        return "TBD", "acceptance criteria not written yet: add Given/When/Then statements in refinement"
     joined = " ".join(ac)
     vague = VAGUE_WORDS.search(joined)
     if vague and not HAS_NUMBER.search(joined):
@@ -201,12 +210,9 @@ CHECKS = [check_independent, check_negotiable, check_valuable,
           check_estimable, check_small, check_testable]
 
 
-def overall(ratings):
-    if "Low" in ratings:
-        return "Low"
-    if "TBD" in ratings:
-        return "TBD"
-    return "Good"
+def score(ratings):
+    """The number of criteria rated Good, as "N/6". A tool for refinement, not a pass or a fail."""
+    return f"{sum(1 for r in ratings if r == 'Good')}/{len(CRITERIA)}"
 
 
 def strip_invest_section(desc):
@@ -221,9 +227,9 @@ def rate(story):
     for name, fn in zip(CRITERIA, CHECKS):
         r, why = fn(story, text)
         results[name] = {"rating": r, "reason": why}
-    o = overall([v["rating"] for v in results.values()])
+    sc = score([v["rating"] for v in results.values()])
     prev = PREVIOUS.search(story.get("description") or "")
-    return {"key": story.get("key"), "summary": story.get("summary"), "overall": o,
+    return {"key": story.get("key"), "summary": story.get("summary"), "score": sc,
             "previous": prev.group(1).title().replace("Tbd", "TBD") if prev else None,
             "criteria": results}
 
@@ -234,7 +240,7 @@ def rate(story):
 def jira_section(r):
     """Markdown section for the issue description or a comment. The Atlassian MCP converts
     Markdown to Jira's document format; for the REST API, convert it to ADF first."""
-    lines = [f"### INVEST: {r['overall']}", "", "| Criterion | Rating | Why |", "|---|---|---|"]
+    lines = [f"### INVEST score: {r['score']}", "", "| Criterion | Rating | Why |", "|---|---|---|"]
     for c in CRITERIA:
         v = r["criteria"][c]
         lines.append(f"| {c} | {v['rating']} | {v['reason'].replace('|', '/')} |")
@@ -243,11 +249,10 @@ def jira_section(r):
 
 def text_report(results):
     out = []
-    counts = {k: sum(1 for r in results if r["overall"] == k) for k in ("Good", "TBD", "Low")}
-    out.append(f"INVEST check: {len(results)} stories · {counts['Good']} Good · {counts['TBD']} TBD · {counts['Low']} Low\n")
+    out.append(f"INVEST scores: {len(results)} stories (the number of Good criteria, out of 6)\n")
     for r in results:
-        was = f"  (was {r['previous']})" if r["previous"] and r["previous"] != r["overall"] else ""
-        out.append(f"{r['key'] or '(no key)'}  {r['summary']}\n  overall: {r['overall']}{was}")
+        was = f"  (was {r['previous']})" if r["previous"] and r["previous"] != r["score"] else ""
+        out.append(f"{r['key'] or '(no key)'}  {r['summary']}\n  score: {r['score']}{was}")
         for c in CRITERIA:
             v = r["criteria"][c]
             mark = {"Good": "+", "TBD": "?", "Low": "!"}[v["rating"]]
@@ -271,10 +276,8 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("path", help="stories JSON file, or - for stdin")
     ap.add_argument("--format", choices=["text", "json", "jira"], default="text")
-    ap.add_argument("--sp-field", default="customfield_10016",
-                    help="Jira story-point field id, for Jira-shaped input")
     a = ap.parse_args(argv)
-    results = [rate(normalise(s, a.sp_field)) for s in load(a.path)]
+    results = [rate(normalise(s)) for s in load(a.path)]
     if a.format == "json":
         print(json.dumps(results, indent=2, ensure_ascii=False))
     elif a.format == "jira":

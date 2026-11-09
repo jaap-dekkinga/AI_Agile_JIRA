@@ -1,5 +1,5 @@
 {
-  "_comment": "Fictional backlog items from the example project (Harbor Claims Assistant), one per rating outcome.",
+  "_comment": "Fictional backlog items from the example project (Harbor Claims Assistant). The team uses #NoEstimates, so the stories have no story points.",
   "stories": [
     {
       "key": "HCA-141",
@@ -10,7 +10,6 @@
         "Given I choose a test request, When the form fills, Then nothing is sent until I submit",
         "Given a production key is configured, When I open the screen, Then no test requests are offered"
       ],
-      "story_points": 5,
       "depends_on": [],
       "labels": []
     },
@@ -18,26 +17,33 @@
       "key": "HCA-153",
       "summary": "Re-status job",
       "description": "Build the re-status job. Must use the existing batch table and add a column for the ceiling. Should be fast.",
-      "acceptance_criteria": ["Works well under load"],
-      "story_points": 13,
-      "depends_on": ["HCA-152"],
-      "labels": []
+      "acceptance_criteria": [
+        "Works well under load"
+      ],
+      "depends_on": [
+        "HCA-152"
+      ],
+      "labels": [
+        "too-big"
+      ]
     },
     {
       "key": "HCA-143",
       "summary": "Insurance discovery from demographics",
       "description": "As a billing specialist I want to find a member's plans from their demographics so that claims for patients with an unknown payer can still be checked. Scope of accepted identifiers is TBD.",
       "acceptance_criteria": [],
-      "story_points": null,
-      "open_questions": ["Q-047"],
+      "open_questions": [
+        "Q-047"
+      ],
       "labels": []
     },
     {
       "key": "HCA-181",
       "summary": "Refactor design-system tokens for dark mode",
       "description": "Refactor the colour tokens.",
-      "acceptance_criteria": ["Given dark mode is on, When any screen renders, Then text contrast is at least 4.5:1"],
-      "story_points": 3,
+      "acceptance_criteria": [
+        "Given dark mode is on, When any screen renders, Then text contrast is at least 4.5:1"
+      ],
       "labels": []
     }
   ]

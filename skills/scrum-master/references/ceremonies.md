@@ -1,48 +1,59 @@
-# Ceremonies and the Scrum Master's checklist
+# Ceremonies and the checklist of the Scrum Master
 
-The full practice, with the reasons behind each rule, is in
-[`example-project/docs/agile-practices.md`](../../../example-project/docs/agile-practices.md).
-This page is the short version the skill works from.
+[`example-project/docs/agile-practices.md`](../../../example-project/docs/agile-practices.md)
+gives the full practice, with the reason for each rule. This page is the short version that the
+skill uses.
 
 ## Roles
 
 | Role | Owns |
 |---|---|
-| **Product Owner** | Epics and stories, backlog order, value and acceptance. |
-| **Scrum Master** | The ceremonies, impediments, backlog readiness, the dashboard and the weekly status. |
-| **Team (Engineering)** | Estimates, the sprint commitment (by consensus), how the work is built. |
+| Product Owner | Epics and stories, the backlog order, value and acceptance |
+| Scrum Master | The meetings, impediments, backlog readiness, the dashboard, the weekly status and the improvement register |
+| Team (Engineering) | The size of each story (one sprint or less), the sprint commitment (by consensus) and how the work is built |
 
-The skill supports the Scrum Master and the Product Owner. It never decides what goes into a
-sprint, and never sets story points; it prepares the information and drafts the changes.
+The skill supports the Scrum Master and the Product Owner. It never decides what a sprint
+includes. It gets the information ready and writes drafts of the changes.
+
+## #NoEstimates
+
+The team does not use story points. It makes each story small enough to complete in one
+sprint, and counts stories. Throughput is the number of stories Done in a sprint.
 
 ## Definition of Ready
 
-A story is Ready when an engineer could start it tomorrow without asking anyone a question:
+A story is Ready when all of these conditions are true:
 
-1. Written with the story template, in Jira (jira-first) or the roadmap (repo-first).
-2. Acceptance criteria written, Given/When/Then.
-3. Every open question has an owner and a recorded assumption.
-4. Its dependencies are done, or stubbed.
-5. Estimated at 8 points or fewer.
-6. **INVEST rating is Good, or each TBD has an owner and a question.**
+- [ ] The title is clear.
+- [ ] The value for the user is explicit.
+- [ ] The acceptance criteria are written and detailed.
+- [ ] The team can complete the story in one sprint.
+- [ ] The dependencies are listed.
+- [ ] No blocker stops the story, and each dependency is unblocked.
+
+The INVEST score is not a condition. Refinement shows it as a tool. A low score is a topic for
+the conversation, not a reason to stop a story.
 
 ## Definition of Done
 
-Reviewed and merged; tests cite the rules they prove; the demo runs; anything new found is
-written down; the Jira issue is Done.
+The story is reviewed and merged. Its tests cite the rules that they prove. The demo operates.
+Each new thing that the team found is written down. The Jira item is Done.
 
 ## The sprint (two weeks)
 
-| When | Ceremony | What the skill does |
+| When | Meeting | What the skill does |
 |---|---|---|
-| Before day 1 | **Sprint planning** (1 h) | Runs `velocity_analyzer.py`; proposes a commitment at the 70% confidence forecast, less a 20% buffer for unplanned work; lists Ready stories in rank order up to that capacity; flags any story not Good on INVEST. |
-| Daily | **Standup** (15 min) | Lists blockers by age; any blocker older than 2 days is escalated with an owner. |
-| Around day 5 | **Backlog refinement** (1 h) | Runs `invest_check.py` on the top of the backlog; drafts rewrites for Low stories and questions for TBD ones; keeps at least one sprint of Ready points beyond the current sprint. |
-| Day 10 | **Sprint review** (1 h) | Summarises done vs committed, scope added mid-sprint, milestone progress; refreshes the dashboard. |
-| Day 10 | **Retrospective** (1 h) | Runs `sprint_health_scorer.py` and `retrospective_analyzer.py`; picks at most 3 new actions if fewer than 60% of last actions were completed; each action gets an owner and a measurable check. |
-| Weekly (Friday) | **Status** | Runs the dashboard's weekly job and the exec briefing; publishes after the user confirms. |
+| Before day 1 | Sprint planning (1 hour) | Calculates the capacity with the 80/20 rule. Lists Ready stories in rank order, up to the capacity. Marks each story that does not meet the Definition of Ready. |
+| Each day | Standup (15 minutes) | Lists blockers by age. Escalates each blocker that is older than one working day and has no owner. |
+| At about day 5 | Backlog refinement (1 hour) | Compares the top of the backlog with the Definition of Ready, and shows the INVEST score of each story. Writes rewrites, splits and questions. Keeps Ready stories for one more sprint than the current sprint. |
+| Day 10 | Sprint review (1 hour) | Gives the stories Done compared with the commitment, the stories added during the sprint, and the progress of the milestones. Updates the dashboard. |
+| Day 10 | Retrospective (1 hour) | Starts with the improvement register. Starts `sprint_health_scorer.py` and `retrospective_analyzer.py`. Proposes new register items, each with an owner, an experiment and a measure. At most three items are Active. |
+| Weekly (Monday) | Scrum Master report | Board hygiene, burndown, throughput, improvements and blockers (routine 1 in `tools/ai-scrum-master/README.md`). |
+| Weekly (Friday) | Status | Starts the weekly job of the dashboard and the executive briefing. Publishes them after the user agrees. |
 
-## Capacity, in one line
+## Capacity: the 80/20 rule
 
-capacity = average points Done over the last 3 sprints × share of team days available − 20% buffer.
-With 6+ sprints of history, prefer the Monte Carlo forecast at 70% confidence.
+capacity = the average number of stories Done in the last three sprints × the part of the team
+days that are available × 80%.
+
+The other 20% is for unplanned work: urgent bugs, outages and client requests outside the plan.

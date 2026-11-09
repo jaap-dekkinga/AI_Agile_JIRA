@@ -1,5 +1,5 @@
 ---
-description: Draft an INVEST-rated user story (or epic) and create it in Jira after approval
+description: Write a user story (or an epic) with its INVEST score, and make it after approval
 argument-hint: "<what the user needs> [epic key]"
 ---
-Use the scrum-master skill's "Write an epic or a story" workflow for: $ARGUMENTS. Draft it with the story template (or the epic template if this is an epic), rate it with `scripts/invest_check.py`, show the INVEST table with fixes for Low and questions for TBD, and create it in Jira only after I approve. Leave story points empty for the team.
+Use the "Write an epic or a story" workflow of the scrum-master skill for: $ARGUMENTS. Write a draft with the story template (or with the epic template if this is an epic). Score it with `scripts/invest_check.py`. Show the INVEST table, with corrections for Low ratings and questions for TBD ratings. Make the item only after I approve it: in Jira in jira-first mode, or in `PROJECT_ROADMAP.md` in roadmap-first mode. Do not add story points.

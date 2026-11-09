@@ -1,5 +1,5 @@
 ---
-description: Prepare sprint planning — velocity forecast, capacity, and a proposed set of Ready stories
+description: Prepare sprint planning with the 80/20 rule, and propose a set of Ready stories
 argument-hint: "[PROJECT_KEY] [days off this sprint]"
 ---
-Use the scrum-master skill's "Prepare sprint planning" workflow for $ARGUMENTS. Gather sprint history, run `scripts/analytics/velocity_analyzer.py`, compute capacity (70% forecast, scaled for days off, less a 20% buffer), and propose Ready stories in rank order up to capacity, flagging INVEST and dependency risks. This is a proposal for Engineering to agree; do not change the sprint in Jira.
+Use the "Prepare sprint planning" workflow of the scrum-master skill for $ARGUMENTS. Get the number of stories Done in the last three sprints. Calculate the capacity with the 80/20 rule: the average number of stories Done, scaled for the days off, times 80%. Keep 20% for unplanned work. Propose Ready stories in rank order, up to the capacity. Mark the stories that do not meet the Definition of Ready, and the dependency risks. This is a proposal for Engineering to agree on. Do not change the sprint in Jira. Do not use story points.

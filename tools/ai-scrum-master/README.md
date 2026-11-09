@@ -86,6 +86,8 @@ or the lock of a dashboard week. The instructions and `CLAUDE.md` hold them.
 
 ### 1. Weekly Scrum Master report
 
+You can also start this routine by hand with the `/sm-report` command of the plugin.
+
 - Schedule: Mondays at 8:30, before the standup.
 - Objective: each week, the Scrum Master gets one report on the board, the sprint, the
   improvements and the blockers.
