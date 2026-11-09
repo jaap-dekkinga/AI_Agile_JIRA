@@ -7,7 +7,7 @@ Produces a compact week-indexed JSON (every reporting week fully resolved) and
 injects it into template2.html at the __DATA__ token. The page renders 'as of'
 whichever week the dropdown selects (defaults to the latest).
 """
-import json, sqlite3, sys
+import html, json, sqlite3, sys
 from datetime import datetime
 
 import milestones
@@ -127,8 +127,32 @@ data = dict(weeks=weeks, currentWeek=CUR, projects=projects, series=series, byWe
             generatedAt=datetime.now().strftime('%d %b %Y, %H:%M'))
 con.close()
 
+def escape_all(v):
+    """HTML-escape every string (and dict key) before it reaches the page.
+
+    The template renders all values through innerHTML, so text that came from Jira (epic
+    names, owners, sprint goals, blocker notes) would otherwise run as markup or script.
+    Escaping once here covers every place the template interpolates a value, and keys are
+    escaped the same way so the template's name-keyed lookups still match.
+    """
+    if isinstance(v, str):
+        return html.escape(v, quote=True)
+    if isinstance(v, list):
+        return [escape_all(x) for x in v]
+    if isinstance(v, dict):
+        return {escape_all(k): escape_all(x) for k, x in v.items()}
+    return v
+
+
+def script_safe_json(v):
+    """JSON that cannot close the surrounding <script> element early."""
+    return (json.dumps(v, separators=(',', ':'))
+            .replace('<', '\\u003c').replace('>', '\\u003e').replace('&', '\\u0026')
+            .replace('\u2028', '\\u2028').replace('\u2029', '\\u2029'))
+
+
 tpl = open('template2.html', encoding='utf-8').read()
-out = tpl.replace('__DATA__', json.dumps(data, separators=(',', ':')))
+out = tpl.replace('__DATA__', script_safe_json(escape_all(data)))
 assert '__DATA__' not in out
 open(OUTFILE, 'w', encoding='utf-8').write(out)
 print("generated", OUTFILE, len(out), "chars from tracker.db")

@@ -86,6 +86,8 @@ or the lock of a dashboard week. The instructions and `CLAUDE.md` hold them.
 
 ### 1. Weekly Scrum Master report
 
+You can also start this routine by hand with the `/sm-report` command of the plugin.
+
 - Schedule: Mondays at 8:30, before the standup.
 - Objective: each week, the Scrum Master gets one report on the board, the sprint, the
   improvements and the blockers.
@@ -97,22 +99,22 @@ or the lock of a dashboard week. The instructions and `CLAUDE.md` hold them.
   The report has these sections, in this order:
 
   1. Board hygiene. Give one line for each Task, with its key and story id:
-     - A Task in a sprint without story points.
      - A Task whose Jira status is behind its roadmap status.
      - A roadmap story without a Task (its Jira column is `—`).
      - A Task under a station epic without the label `hca-roadmap` and without the label
        `not-hca`. Propose one of two actions: write the story in the roadmap, or give the Task
        the label `not-hca`.
      - A Task In Progress without an update for 3 working days.
-  2. Sprint burndown. Give the sprint goal and the committed story points on day 1. Make a
-     table with one row for each working day until today: the day, the ideal remaining points
-     (a straight line from the committed points to 0 on day 10), and the actual remaining
-     points (committed points minus the points of the Tasks that were Done on or before that
-     day). Then say if the sprint is ahead of the ideal line or behind it, and by how many
-     points.
-  3. Metrics. Give the velocity (the average of Done points in the last three sprints), the
-     capacity buffer used (the points of Tasks with the label `unplanned` in the active sprint),
-     and the carry-over of the last sprint (the Tasks that were not Done at its end).
+  2. Sprint burndown. The team does not use story points, so count stories. Give the sprint
+     goal and the number of committed stories on day 1. Make a table with one row for each
+     working day until today: the day, the ideal number of remaining stories (a straight line
+     from the committed stories to 0 on day 10), and the actual number of remaining stories
+     (committed stories minus the stories that were Done on or before that day). Then say if
+     the sprint is ahead of the ideal line or behind it, and by how many stories.
+  3. Metrics. Give the throughput (the average number of stories Done in the last three
+     sprints), the use of the 20% for unplanned work (the number of Tasks with the label
+     `unplanned` in the active sprint), and the carry-over of the last sprint (the Tasks that
+     were not Done at its end).
   4. Improvements. From the local register, give the number of Active items, the items that are
      after their Review by sprint, and the items that are Active without a measure or an owner.
      If the register is not available, write "Register not available on this computer".
@@ -135,8 +137,8 @@ or the lock of a dashboard week. The instructions and `CLAUDE.md` hold them.
   For each story that fails, say which of the six conditions it fails and what corrects it.
   For example: "the title does not say what the story does", "no value for the user", "no
   acceptance criteria", "too large for one sprint, split it", "needs S7-01, not listed" or
-  "blocked on Q-030". End with the Ready story points, compared with two sprints of capacity.
-- Health number: Ready story points divided by the capacity of one sprint. If the number is
+  "blocked on Q-030". End with the number of Ready stories, compared with two sprints of capacity.
+- Health number: the number of Ready stories divided by the capacity of one sprint. If the number is
   less than 1.0, the backlog needs refinement.
 
 ### 3. Retrospective follow-up

@@ -1,6 +1,6 @@
 # Automation & Margin Dashboard (Jira → weekly snapshot)
 
-This tool is a weekly portfolio dashboard. It gets epics and story points from Jira boards and
+This tool is a weekly portfolio dashboard. It gets epics and their stories from Jira boards and
 makes one self-contained HTML snapshot for executive reporting. It also makes a speaker script
 for the weekly briefing.
 
@@ -9,7 +9,7 @@ for the weekly briefing.
 
 ## What it shows
 
-- Completion for each project, weighted by story points, with partial credit for work in
+- Completion for each project, from the stories that are Done, with partial credit for work in
   progress.
 - RAG status (On Track / At Risk / Off Track) against a planned ramp.
 - The trend from week to week, from frozen weekly snapshots.
@@ -57,8 +57,9 @@ anything.
    `JIRA_API_TOKEN` and `JIRA_SITE`. Never commit `jira_config.json`. It is in `.gitignore`.
 3. Edit `config.py`. Put your board keys in `ACTIVE_KEYS`, the parent types that are not Epic
    in `PARENT_TYPES`, and the milestone labels in `MILESTONES`.
-4. Make sure that `SP_FIELD` in `pull_jira.py` is the story-point field of your site.
-   `customfield_10016` is the story-point field on most Jira Cloud sites, but not on all of them.
+4. If your boards use story points, make sure that `SP_FIELD` in `pull_jira.py` is the
+   story-point field of your site. `customfield_10016` is the story-point field on most Jira
+   Cloud sites, but not on all of them. A team that uses #NoEstimates can ignore this step.
 5. Add your projects to `tracker.db`. Start from `seed_demo_db.py`, or add rows to
    `projects` with the `jira_key` of each project. Then start the weekly job.
 
@@ -91,10 +92,11 @@ flow and the draft flow.
 
 ## Key concepts
 
-- % complete is weighted by story points across the children that are linked to an epic. It
-  gives partial credit for each status (`config.STATUS_CREDIT`: In Progress 50%, In Review
-  75%). It does not see issues without points or issues without a parent. If no issue in an
-  epic has points, it uses issue counts.
+- % complete uses the children that are linked to an epic. It gives partial credit for each
+  status (`config.STATUS_CREDIT`: In Progress 50%, In Review 75%). If no issue in an epic has
+  story points, it counts the issues. This is the case for a team that uses #NoEstimates. If
+  the issues of an epic have points, it weights each issue by its points. It does not see issues
+  without a parent.
 - Live and stale: the job pulls only the boards in `ACTIVE_KEYS`. All other projects copy their
   last locked week into the new week, and the weekly summary marks them `stale`.
 - Steps to target is `auto` (made again at each pull) or `manual` (set with `set_steps.py`,

@@ -139,9 +139,10 @@ dates are real timestamps. The dashboard shows them for audit and freshness, and
 
 ## Key concepts
 
-- % complete = the credit, weighted by story points, divided by the total, across the children
-  that are linked to an epic. It does not see stories without points or issues without an
-  epic. Give them points and link them in Jira, so that the dashboard sees them.
+- % complete = the credit divided by the total, across the children that are linked to an
+  epic. For a team that uses #NoEstimates, each issue counts once. If the issues of an epic
+  have story points, each issue counts by its points. The dashboard does not see issues without
+  an epic. Link them in Jira, so that the dashboard sees them.
 - Steps to target: `steps_source` is 'auto' or 'manual'. 'auto' is made again at each pull,
   from the epics that are closest to done or from the sprint goal. 'manual' is your choice,
   made with `set_steps.py`.
