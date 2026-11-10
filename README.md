@@ -6,15 +6,18 @@ it.
 
 It is also a Claude plugin with a Scrum Master skill. The skill helps a Scrum Master to manage
 the backlog and the sprints of a team. It helps the Product Owner to write epics and stories in
-Jira, each with an INVEST score. The team uses #NoEstimates, so the skill counts stories and
-does not use story points. The skill writes nothing to Jira until you approve a preview.
+Jira, each with an INVEST score. It helps a SAFe Practice Consultant (SPC) or a Release Train
+Engineer (RTE) to find the bottlenecks in an Agile Release Train (ART), with a draft value
+stream map, the flow metrics, the patterns of a cumulative flow diagram and a simulation of WIP
+limits. The team uses #NoEstimates, so the skill counts stories and does not use story points.
+The skill writes nothing to Jira until you approve a preview.
 
 The repository has these parts:
 
 | Folder | What it is | Start with |
 |---|---|---|
-| [`skills/scrum-master/`](skills/scrum-master/) | The skill: workflows for refinement, stories, sprint planning, retrospectives, milestones and the weekly status. It has the INVEST rubric, story and epic templates, an INVEST checker and scripts for sprint analytics. | [SKILL.md](skills/scrum-master/SKILL.md) |
-| [`commands/`](commands/) | Slash commands: `/refine`, `/new-story`, `/plan-sprint`, `/retro`, `/weekly-status` and `/sm-report`. | — |
+| [`skills/scrum-master/`](skills/scrum-master/) | The skill: workflows for refinement, stories, sprint planning, retrospectives, milestones, the weekly status and the flow of an ART. It has the INVEST rubric, story and epic templates, an INVEST checker, scripts for sprint analytics, and flow scripts for Jira and Azure DevOps. | [SKILL.md](skills/scrum-master/SKILL.md) |
+| [`commands/`](commands/) | Slash commands: `/refine`, `/new-story`, `/plan-sprint`, `/retro`, `/weekly-status`, `/sm-report`, `/flow-report`, `/vsm-workshop`, `/wip-sim` and `/flow-coach`. | — |
 | [`example-project/`](example-project/) | A full Context Driven Development (CDD) setup for a fictional product. It holds the method, the sprint rhythm, a roadmap that is mirrored into Jira, an open-questions register, a decision log, an improvement register, a glossary, a spec area and the conventions file that an AI coding assistant reads. Copy it as a template. | [START_HERE.md](example-project/START_HERE.md) |
 | [`tools/jira-dashboard/`](tools/jira-dashboard/) | A small Python tool. Each week, it gets epics and their stories from Jira and freezes the week as a snapshot. Then it makes a self-contained HTML portfolio dashboard and a script for the executive briefing. It can operate offline on demo data. | [README.md](tools/jira-dashboard/README.md) |
 | [`tools/ai-scrum-master/`](tools/ai-scrum-master/) | Four routines that an AI assistant operates for a team on a schedule: a weekly Scrum Master report (board hygiene, sprint burndown, metrics, improvements and blockers), a Definition of Ready check, retrospective follow-up and the weekly dashboard. Each routine reports or proposes, and a person approves. They operate as Claude Code scheduled tasks, or as [Conductor](https://github.com/shannonbay/Conductor) goals with a level of autonomy for each kind of action. | [README.md](tools/ai-scrum-master/README.md) |
@@ -43,6 +46,14 @@ The repository has these parts:
   format.
   → [continuous-improvement.md](example-project/docs/continuous-improvement.md)
 
+- Find the bottleneck with data, then decide in a workshop. The flow scripts read the status
+  history of Jira or Azure DevOps. They make a draft value stream map, the six SAFe flow
+  metrics and the patterns of the cumulative flow diagram. A Monte Carlo simulation tests a WIP
+  limit before the ART uses it. The people in the workshop correct the map and choose the
+  experiments.
+  → [flow-metrics.md](skills/scrum-master/references/flow-metrics.md),
+  [vsm-workshop.md](skills/scrum-master/references/vsm-workshop.md)
+
 ## Install
 
 The repository is a Claude plugin (`.claude-plugin/plugin.json`).
@@ -60,6 +71,17 @@ To see the INVEST score of the sample backlog, and to start the tests:
 ```bash
 python skills/scrum-master/scripts/invest_check.py skills/scrum-master/assets/sample_stories.json
 python -m pytest -q tests      # the test suite
+```
+
+## Try the flow scripts
+
+The sample data is a fictional ART with three teams and six months of history.
+
+```bash
+cd skills/scrum-master
+python scripts/flow/flow_report.py assets/sample_flow_data.json assets/sample_status_map.json --workdays --segment label:dor-met
+python scripts/flow/cfd.py assets/sample_flow_data.json assets/sample_status_map.json --svg cfd.svg
+python scripts/flow/wip_sim.py assets/sample_flow_model.json --set Development=4 --sweep Testing=1:6
 ```
 
 ## Try the dashboard

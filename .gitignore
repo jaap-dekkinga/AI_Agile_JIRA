@@ -14,3 +14,6 @@ sm-reports/
 **/jira_config.json
 **/tracker.db
 **/tracker.db.bak*
+
+# Raw exports and results of the flow scripts (they can hold summaries and names)
+flow-data/

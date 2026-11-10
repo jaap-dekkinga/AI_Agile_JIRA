@@ -1,7 +1,7 @@
 {
   "name": "ai-agile-jira",
-  "version": "0.2.0",
-  "description": "Scrum Master skill: refine the backlog, write epics and stories with an INVEST score, plan sprints with the 80/20 rule (#NoEstimates), track milestones, and publish a weekly status dashboard.",
+  "version": "0.3.0",
+  "description": "Scrum Master and flow skill: refine the backlog, write epics and stories with an INVEST score, plan sprints with the 80/20 rule (#NoEstimates), track milestones, publish a weekly status dashboard, and find bottlenecks in an ART with a draft value stream map, flow metrics, CFD patterns and WIP simulation.",
   "author": {
     "name": "Jaap Dekkinga"
   },
@@ -14,6 +14,13 @@
     "backlog",
     "sprint",
     "dashboard",
-    "noestimates"
+    "noestimates",
+    "kanban",
+    "flow-metrics",
+    "value-stream-mapping",
+    "safe",
+    "wip-limits",
+    "cfd",
+    "azure-devops"
   ]
 }

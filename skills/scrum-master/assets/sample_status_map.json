@@ -1,0 +1,14 @@
+{
+  "note": "Reviewed status map for assets/sample_flow_data.json. The three fictional teams use different names for the same stage. This map puts them into one value stream.",
+  "stages": [
+    {"name": "Backlog", "kind": "backlog", "statuses": ["To Do", "Backlog"]},
+    {"name": "Ready", "kind": "wait", "statuses": ["Selected for Development", "Ready"]},
+    {"name": "Development", "kind": "active", "statuses": ["In Progress", "In Development"]},
+    {"name": "Ready for Test", "kind": "wait", "statuses": ["Ready for QA", "Dev Complete"]},
+    {"name": "Testing", "kind": "active", "statuses": ["In QA", "Testing"]},
+    {"name": "Ready for Release", "kind": "wait", "statuses": ["Ready for Release", "Awaiting Deploy"]},
+    {"name": "Done", "kind": "done", "statuses": ["Done", "Closed"]}
+  ],
+  "blocked": ["Blocked"],
+  "discarded": ["Won't Do"]
+}
